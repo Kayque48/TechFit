@@ -9,7 +9,7 @@
 
     <div>
         <h1>Página de Cadastro do Usuário</h1>
-        <a href="public/cadUser.html">Aqui</a>
+        <a href="../public/cadUser.php">Aqui</a>
     </div>
 
     <div>

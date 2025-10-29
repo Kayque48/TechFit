@@ -16,7 +16,11 @@
   <title>Cadastro de Clientes - TechFit</title>
 </head>
 <body>
- 
+
+<?php
+  require_once('../src/views/header.php');
+?>
+
   <main class="container mt-4">
     <div class="row g-3">
 
