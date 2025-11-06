@@ -28,139 +28,6 @@ body {
     min-height: 100vh;
 }
 
-/* Header */
-.techfit-header {
-    background: linear-gradient(135deg, var(--verde-escuro), #2a7a4a);
-    color: white;
-    padding: 1rem 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.header-container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: white;
-    text-decoration: none;
-}
-
-.logo-icon {
-    background: var(--amarelo);
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--verde-escuro);
-}
-
-.search-form {
-    max-width: 500px;
-    width: 100%;
-}
-
-.search-form .form-control {
-    border-radius: 25px;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.1);
-    color: white;
-    padding: 0.75rem 1.5rem;
-}
-
-.search-form .form-control::placeholder {
-    color: rgba(255,255,255,0.7);
-}
-
-.search-form .form-control:focus {
-    background: rgba(255,255,255,0.15);
-    border-color: var(--amarelo);
-    box-shadow: 0 0 0 0.2rem rgba(251, 199, 11, 0.25);
-    color: white;
-}
-
-.user-menu img {
-    border: 2px solid var(--amarelo);
-    transition: transform 0.3s ease;
-}
-
-.user-menu img:hover {
-    transform: scale(1.1);
-}
-
-/* Layout Principal */
-.main-container {
-    display: flex;
-    flex: 1;
-}
-
-/* Sidebar */
-.techfit-sidebar {
-    width: 280px;
-    background: white;
-    padding: 1.5rem;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
-    height: calc(100vh - 80px);
-    position: sticky;
-    top: 0;
-    overflow-y: auto;
-}
-
-.sidebar-header {
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--gray-medium);
-    margin-bottom: 1.5rem;
-}
-
-.sidebar-title {
-    color: var(--verde-escuro);
-    font-weight: 700;
-    font-size: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.nav-pills .nav-link {
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    padding: 0.75rem 1rem;
-    color: var(--dark-color);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.nav-pills .nav-link:hover {
-    background-color: rgba(104, 168, 66, 0.1);
-    color: var(--verde-escuro);
-    transform: translateX(5px);
-}
-
-.nav-pills .nav-link.active {
-    background: linear-gradient(135deg, var(--verde-claro), #5a9438);
-    color: white;
-    box-shadow: 0 4px 8px rgba(104, 168, 66, 0.3);
-}
-
-.nav-icon {
-    width: 20px;
-    text-align: center;
-}
-
 /* Conteúdo Principal */
 .main-content {
     flex: 1;
@@ -360,28 +227,6 @@ a:hover {
 }
 
 /* Responsividade */
-@media (max-width: 992px) {
-    .main-container {
-        flex-direction: column;
-    }
-    
-    .techfit-sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-    
-    .header-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .logo {
-        justify-content: center;
-    }
-}
-
 @media (max-width: 768px) {
     .main-content {
         padding: 1rem;
@@ -413,10 +258,6 @@ a:hover {
     .status-option {
         text-align: center;
     }
-    
-    .techfit-sidebar {
-        padding: 1rem;
-    }
 }
 
 /* Animações */
@@ -435,28 +276,9 @@ a:hover {
     animation: fadeIn 0.5s ease-out;
 }
 
-/* Scrollbar personalizada */
-.techfit-sidebar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.techfit-sidebar::-webkit-scrollbar-track {
-    background: var(--gray-light);
-}
-
-.techfit-sidebar::-webkit-scrollbar-thumb {
-    background: var(--verde-claro);
-    border-radius: 3px;
-}
-
-.techfit-sidebar::-webkit-scrollbar-thumb:hover {
-    background: #5a9438;
-}
-
 /* Estados de foco para acessibilidade */
 .btn-techfit:focus,
-.form-control-custom:focus,
-.nav-link:focus {
+.form-control-custom:focus {
     outline: 2px solid var(--amarelo);
     outline-offset: 2px;
 }

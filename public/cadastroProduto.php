@@ -11,93 +11,17 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="techfit-header">
-        <div class="header-container">
-            <!-- Logo -->
-            <a href="/" class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-dumbbell"></i>
-                </div>
-                TechFit Admin
-            </a>
-
-            <!-- Barra de busca -->
-            <form class="search-form" role="search">
-                <input type="search" class="form-control" placeholder="Buscar produtos, usuários, relatórios...">
-            </form>
-
-            <!-- Menu do usuário -->
-            <div class="user-menu dropdown">
-                <a href="#" class="d-block text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-                    <img src="https://github.com/mdo.png" alt="Admin" width="40" height="40" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow">
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configurações</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
-
+     <?php
+        require_once '../src/views/header.php';
+     ?>
+    
     <!-- Layout Principal -->
     <div class="main-container">
         <!-- Sidebar -->
-        <nav class="techfit-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Painel de Controle
-                </div>
-            </div>
+       <?php
+        require_once '../src/views/sidebars.php';
+       ?>
 
-            <!-- Menu de Navegação -->
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-home"></i>
-                        Visão Geral
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-users"></i>
-                        Alunos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-dumbbell"></i>
-                        Treinos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-user-tie"></i>
-                        Instrutores
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-shopping-bag"></i>
-                        Produtos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-bar"></i>
-                        Relatórios
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-cog"></i>
-                        Configurações
-                    </a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- Conteúdo Principal -->
         <main class="main-content">
