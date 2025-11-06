@@ -19,7 +19,7 @@
     <div class="main-container">
         <!-- Sidebar -->
        <?php
-        require_once '../src/views/sidebars.php';
+        require_once '../src/views/sidebarsProduct.php';
        ?>
 
 

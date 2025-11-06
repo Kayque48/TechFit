@@ -64,82 +64,164 @@
                             <h3 class="section-title pb-2 border-bottom">
                                 <i class="fas fa-dumbbell me-2"></i>
                                 Detalhes dos Exercícios
+                            </h3>c  
+
+                            <div class="row justify-content-center text-center mb-4">
+                                <?php
+                                $dias = [
+                                    ['nome' => 'Segunda-feira', 'img' => 'img/dias/segunda.png'],
+                                    ['nome' => 'Terça-feira', 'img' => 'img/dias/terca.png'],
+                                    ['nome' => 'Quarta-feira', 'img' => 'img/dias/quarta.png'],
+                                    ['nome' => 'Quinta-feira', 'img' => 'img/dias/quinta.png'],
+                                    ['nome' => 'Sexta-feira', 'img' => 'img/dias/sexta.png'],
+                                    ['nome' => 'Sábado', 'img' => 'img/dias/sabado.png'],
+                                    ['nome' => 'Domingo', 'img' => 'img/dias/domingo.png'],
+                                ];
+                                foreach ($dias as $dia): ?>
+                                    <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex flex-column align-items-center dia-semana" 
+                                         onclick="atualizarTitulo('<?= $dia['nome'] ?>')">
+                                        <img src="<?= $dia['img'] ?>" alt="<?= $dia['nome'] ?>" class="rounded-circle shadow" width="100" height="100" style="object-fit:cover; background:#f8f9fa;">
+                                        <h5 class="fw-normal mt-3"><?= $dia['nome'] ?></h5>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span id="titulo-treino">Treinos da Semana</span>
                             </h3>
 
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Segunda-feira</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Terça-feira</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Quarta-feira</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Quinta-feira</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Sexta-feira</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Sábado</h2>
-                                </div>
-                                <div class="col-lg-4">
-                                    <svg aria-label="Placeholder" class="bd-placeholder-img rounded-circle" height="100" preserveAspectRatio="xMidYMid slice" role="img" width="100" xmlns="http://www.w3.org/2000/svg">
-                                        <title>Placeholder</title>
-                                        <rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect>
-                                    </svg>
-                                    <h2 class="fw-normal">Domingo</h2>
-                                </div>
-                            </div>
-
+                            <script>
+                                function atualizarTitulo(dia) {
+                                    document.getElementById('titulo-treino').textContent = 'Treinos de ' + dia;
+                                }
+                            </script>
                             <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-                                <!-- Card 1 -->
-                                <div class="col">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
-                                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                                            <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">ABS</h4>
-                                            <ul class="d-flex list-unstyled mt-auto">
-                                                <li class="me-auto">
-                                                    <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-                                                </li>
-                                                <li class="d-flex align-items-center me-3">
-                                                    <i class="fas fa-location-dot me-2"></i>
-                                                    <small>JORGE ARMADO</small>
-                                                </li>
-                                                <li class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-day me-2"></i>
-                                                    <small>06:00 - 06:30</small>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                  <!-- Card 1 -->            
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">ABS</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>JORGE ARMADO</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>06:00 - 06:30</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Peito</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>MARIA SILVA</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>07:00 - 07:45</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Costas</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>PAULO SOUZA</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>08:00 - 08:50</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Pernas</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>ANA LIMA</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>09:00 - 09:50</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Bíceps</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://randomuser.me/api/portraits/men/50.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>CARLOS MELO</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>10:00 - 10:30</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Tríceps</h4>
+                                <ul class="d-flex list-unstyled mt-auto">
+                                    <li class="me-auto">
+                                        <img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                    </li>
+                                    <li class="d-flex align-items-center me-3">
+                                        <i class="fas fa-location-dot me-2"></i>
+                                        <small>FERNANDA DIAS</small>
+                                    </li>
+                                    <li class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-day me-2"></i>
+                                        <small>11:00 - 11:30</small>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
                                 <!-- Additional cards can be added here -->
 
@@ -319,30 +401,6 @@
                 </nav>
 
                 <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-                                <!-- Card 1 -->
-                                <div class="col">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('');">
-                                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                                            <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">ABS</h4>
-                                            <ul class="d-flex list-unstyled mt-auto">
-                                                <li class="me-auto">
-                                                    <img src="https://github.com/twbs.png" alt="Bootstrap" width="32" height="32" class="rounded-circle border border-white">
-                                                </li>
-                                                <li class="d-flex align-items-center me-3">
-                                                    <i class="fas fa-location-dot me-2"></i>
-                                                    <small>JORGE ARMADO</small>
-                                                </li>
-                                                <li class="d-flex align-items-center">
-                                                    <i class="fas fa-calendar-day me-2"></i>
-                                                    <small>06:00 - 06:30</small>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Additional cards can be added here -->
-                </div>
 
                 <!-- Conteúdo do treino será adicionado aqui -->
             </div>

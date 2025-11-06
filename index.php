@@ -14,17 +14,17 @@
 
     <div>
         <h1>Página de Login do Usuário</h1>
-        <a href="public/loginUser.html">Aqui</a>
+        <a href="public/loginUser.php">Aqui</a>
     </div>
 
     <div>
         <h1>Página de Cadastro de Produto</h1>
-        <a href="public/cadastroProduto.html">Aqui</a>
+        <a href="public/cadastroProduto.php">Aqui</a>
     </div>
 
     <div>
         <h1>Página da Tela do Cliente</h1>
-        <a href="public/telaCliente.html">Aqui</a>
+        <a href="public/telaCliente.php">Aqui</a>
     </div>
 
 
