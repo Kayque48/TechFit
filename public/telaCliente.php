@@ -25,7 +25,7 @@
 
         <!-- Sessão Visão Geral -->
         <main class="main-content">
-            <div id="geral" class="hidden"></div>
+            <div id="geral" class="hidden">
                 <div class="content-header">
                     <h1 class="page-title">Seu Perfil</h1>
                     <p class="page-subtitle">Gerencie suas informações aqui</p>
@@ -270,10 +270,10 @@
             </div>
 
             <!-- Sessão Plano -->
-        <section id="plano" class="plans container py-5 hidden">
-            <div class="container py-3">
-            <div class="content-header">
-                <h1 class="page-title">Nossos Planos</h1>
+            <section id="plano" class="plans container py-5 hidden">
+                <div class="container py-3">
+                <div class="content-header">
+                    <h1 class="page-title">Nossos Planos</h1>
                 <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
             </div>
             <div class="product-form-container">
@@ -469,6 +469,6 @@
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 <script src="js/hidden.js"></script>
 </html>
