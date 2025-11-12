@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styleCadProduto.css">
     <link rel="stylesheet" href="css/hidden.css">
+    <link rel="stylesheet" href="css/modal.css">
     <title> Perfil - TechFit</title>
 
 </head>
@@ -69,13 +70,13 @@
                             <div class="row justify-content-center text-center mb-4">
                                 <?php
                                 $dias = [
-                                    ['nome' => 'Segunda-feira', 'img' => 'img/dias/segunda.jpg'],
-                                    ['nome' => 'Terça-feira',   'img' => 'img/dias/terca.jpg'],
-                                    ['nome' => 'Quarta-feira',  'img' => 'img/dias/quarta.jpg'],
-                                    ['nome' => 'Quinta-feira',  'img' => 'img/dias/quinta.jpg'],
-                                    ['nome' => 'Sexta-feira',   'img' => 'img/dias/sexta.jpg'],
-                                    ['nome' => 'Sábado',        'img' => 'img/dias/sabado.jpg'],
-                                    ['nome' => 'Domingo',       'img' => 'img/dias/domingo.jpg'],
+                                    ['nome' => 'Segunda-feira', 'img' => 'https://plus.unsplash.com/premium_photo-1672862927484-cfc92dd88081?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Terça-feira',   'img' => 'https://plus.unsplash.com/premium_photo-1661630801762-b59faf22d543?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Quarta-feira',  'img' => 'https://images.unsplash.com/photo-1669989179344-3e84780dab7d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Quinta-feira',  'img' => 'https://images.unsplash.com/photo-1605720789771-a7fb8ab19d04?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Sexta-feira',   'img' => 'https://images.unsplash.com/photo-1734458211458-4d508abf564e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Sábado',        'img' => 'https://images.unsplash.com/photo-1609899517237-77d357b047cf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Domingo',       'img' => 'https://images.unsplash.com/photo-1581122584612-713f89daa8eb?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
                                 ];
                                 foreach ($dias as $dia): ?>
                                     <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex flex-column align-items-center dia-semana"
@@ -271,54 +272,71 @@
 
             <!-- Sessão Plano -->
             <section id="plano" class="plans container py-5 hidden">
-                <div class="container py-3">
+            <div class="container py-3">
                 <div class="content-header">
-                    <h1 class="page-title">Nossos Planos</h1>
+                <h1 class="page-title">Nossos Planos</h1>
                 <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
-            </div>
-            <div class="product-form-container">
-                <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+                </div>
+
+                <div class="product-form-container">
+                <div class="pricing-header text-center">
                     <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
                     <p class="fs-5 text-body-secondary">
                     Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
                     </p>
                 </div>
 
-                <main>
-                    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Plano Básico</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">$20 <small class="text-body-secondary fw-light">/mo</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                            <li>Acesso a todas as máquinas</li>
-                            <li>1 aula de grupo por semana</li>
-                            <li>Suporte online</li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Inscreva-se</button>
-                        </div>
-                        </div>
+                <main class="planos-container">
+                    <div class="card" data-plano="Básico">
+                    <h4>Plano Básico</h4>
+                    <h1>$20 <small class="text-body-secondary fw-light">/mês</small></h1>
+                    <ul>
+                        <li>Acesso a todas as máquinas</li>
+                        <li>1 aula de grupo por semana</li>
+                        <li>Suporte online</li>
+                    </ul>
+                    <button class="btn-inscrever">Inscreva-se</button>
                     </div>
 
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm">
-                        <div class="card-header py-3">
-                            <h4 class="my-0 fw-normal">Plano Avançado</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">$40 <small class="text-body-secondary fw-light">/mo</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                            <li>Acesso ilimitado a todas as áreas</li>
-                            <li>3 aulas de grupo por semana</li>
-                            <li>Treinamento personalizado</li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Comece agora</button>
-                        </div>
-                        </div>
+                    <div class="card" data-plano="Intermediário">
+                    <h4>Plano Intermediário</h4>
+                    <h1>$35 <small class="text-body-secondary fw-light">/mês</small></h1>
+                    <ul>
+                        <li>Acesso ilimitado</li>
+                        <li>3 aulas por semana</li>
+                        <li>Acompanhamento com personal</li>
+                    </ul>
+                    <button class="btn-inscrever">Inscreva-se</button>
                     </div>
+
+                    <div class="card" data-plano="Premium">
+                    <h4>Plano Premium</h4>
+                    <h1>$50 <small class="text-body-secondary fw-light">/mês</small></h1>
+                    <ul>
+                        <li>Acesso 24h</li>
+                        <li>Aulas ilimitadas</li>
+                        <li>Consultoria nutricional</li>
+                    </ul>
+                    <button class="btn-inscrever">Inscreva-se</button>
+                    </div>
+                </main>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="modalPlano" class="modal hidden">
+                <div class="modal-content">
+                <span id="fecharModal" class="fechar">&times;</span>
+                <h2 id="modalTitulo">Inscrição</h2>
+                <form id="formPlano">
+                    <input type="text" placeholder="Nome completo" required>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Senha" required>
+                    <button type="submit">Confirmar Inscrição</button>
+                </form>
+                </div>
+            </div>
+
 
                     <div class="col">
                         <div class="card mb-4 rounded-3 shadow-sm border-primary">
@@ -463,12 +481,21 @@
         </main>
     </div>
 
+
+
     <!-- SESSÃO ALUNOS -->
-     
+    
+
+
+     <footer>
+      <?php 
+        require_once '../src/views/footer.php';
+      ?>
 
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 <script src="js/hidden.js"></script>
+<script src="js/modal.js"></script>
 </html>

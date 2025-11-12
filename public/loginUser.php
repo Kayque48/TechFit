@@ -14,6 +14,7 @@
     <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
     <meta name="theme-color" content="#712cf9">
     <link href="css/sign-in.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/modal.css">
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -192,6 +193,12 @@
       <p class="mt-5 mb-3 text-body-secondary">© 2017–2025</p>
     </form>
   </main>
+
+  <footer>
+      <?php 
+        require_once '../../src/views/footer.php';
+      ?>
+  </footer>
 
   <!-- Bootstrap JS -->
   <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
