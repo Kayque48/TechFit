@@ -591,3 +591,53 @@ a:hover {
 }
 
 
+/* === SEÇÃO TREINO === */
+.treino-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.treino-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.treino-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  border-color: var(--verde-claro);
+}
+
+.treino-card h3 {
+  color: var(--verde-escuro);
+  margin-bottom: 0.75rem;
+}
+
+.treino-card ul {
+  list-style: none;
+  color: var(--gray-dark);
+  margin-bottom: 1rem;
+}
+
+.btn-ver-treino {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--azul), #007bb8);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-ver-treino:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 147, 209, 0.3);
+}

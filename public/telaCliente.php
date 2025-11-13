@@ -295,7 +295,7 @@
                         <li>1 aula de grupo por semana</li>
                         <li>Suporte online</li>
                     </ul>
-                    <button class="btn-inscrever">Inscreva-se</button>
+                    <butto class="abrirModal btn-inscrever">Inscreva-se</button>
                     </div>
 
                     <div class="card" data-plano="Intermediário">
@@ -306,7 +306,7 @@
                         <li>3 aulas por semana</li>
                         <li>Acompanhamento com personal</li>
                     </ul>
-                    <button class="btn-inscrever">Inscreva-se</button>
+                    <button class="abrirModal btn-inscrever">Inscreva-se</button>
                     </div>
 
                     <div class="card" data-plano="Premium">
@@ -316,8 +316,9 @@
                         <li>Acesso 24h</li>
                         <li>Aulas ilimitadas</li>
                         <li>Consultoria nutricional</li>
+                        <li>Treinamento pessoal ilimitado</li>
                     </ul>
-                    <button class="btn-inscrever">Inscreva-se</button>
+                    <button class="abrirModal btn-inscrever">Inscreva-se</button>
                     </div>
                 </main>
                 </div>
@@ -338,28 +339,10 @@
             </div>
 
 
-                    <div class="col">
-                        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                        <div class="card-header py-3 text-bg-primary border-primary">
-                            <h4 class="my-0 fw-normal">Plano Premium</h4>
-                        </div>
-                        <div class="card-body">
-                            <h1 class="card-title pricing-card-title">$60 <small class="text-body-secondary fw-light">/mo</small></h1>
-                            <ul class="list-unstyled mt-3 mb-4">
-                            <li>Acesso total 24/7</li>
-                            <li>Aulas ilimitadas de grupo</li>
-                            <li>Consultoria nutricional</li>
-                            <li>Treinamento pessoal ilimitado</li>
-                            </ul>
-                            <button type="button" class="w-100 btn btn-lg btn-primary">Entre em contato</button>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
 
-                    <h2 class="display-6 text-center mb-4">Compare os planos</h2>
+            <h2 class="display-6 text-center mb-4">Compare os planos</h2>
 
-                    <div class="table-responsive">
+                <div class="table-responsive">
                     <table class="table text-center">
                         <thead>
                             <tr>
@@ -414,72 +397,111 @@
             </div>
         </section>
 
-            <!-- Sessão Treino -->
-            <div id="treino" class="hidden">
-                <div class="content-header">
-                    <h1 class="page-title">Seu Treino</h1>
-                    <p class="page-subtitle">Acompanhe seu treino diário</p>
-                </div>
+        <!-- Sessão Treino -->
+       <div id="treino" class="hidden">
+            <div class="content-header">
+                <h1 class="page-title">Seu Treino</h1>
+                <p class="page-subtitle">Acompanhe seu treino diário</p>
+            </div>
 
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
-                    <div class="container-fluid">
-                        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
-                            <div class="offcanvas-header">
-                                <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Menu</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Meus Treinos</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Opções
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Histórico</a></li>
-                                            <li><a class="dropdown-item" href="#">Metas</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" href="#" suze>Configurações</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <form class="d-flex mt-3 mt-lg-0" role="search">
-                                    <input class="form-control me-2" type="search" placeholder="Buscar treino" aria-label="Search" style="min-width:320px; max-width:680px; width:42vw;">
-                                    <button class="btn btn-outline-success" type="submit">Buscar</button>
-                                </form>
-                            </div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
+                <div class="container-fluid">
+                    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Menu</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                                <li class="nav-item"><a class="nav-link" href="#">Meus Treinos</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Opções</a>
+                                    <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Histórico</a></li>
+                                    <li><a class="dropdown-item" href="#">Metas</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Configurações</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <form class="d-flex mt-3 mt-lg-0" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Buscar treino" aria-label="Search" style="min-width:320px; max-width:680px; width:42vw;">
+                                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                            </form>
                         </div>
                     </div>
-                </nav>
-
-                <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
-
-                <!-- Conteúdo do treino será adicionado aqui -->
-            </div>
-
-            <!-- Sessão Ficha -->
-            <div id="ficha" class="hidden">
-                <div class="content-header">
-                    <h1 class="page-title">Sua Ficha</h1>
-                    <p class="page-subtitle">Acompanhe sua evolução</p>
                 </div>
-                <!-- Conteúdo da ficha será adicionado aqui -->
+            </nav>
+
+            <div class="treino-container">
+            <!-- Card 1 -->
+            <div class="treino-card" data-treino="Peito e Tríceps">
+                <h3>Peito e Tríceps</h3>
+                <ul>
+                <li>Supino Reto – 4x10</li>
+                <li>Crucifixo Inclinado – 3x12</li>
+                <li>Tríceps Testa – 3x10</li>
+                </ul>
+                <button class="btn-ver-treino">Ver Detalhes</button>
             </div>
 
-            <!-- Sessão Configurações -->
-            <div id="config" class="hidden">
-                <div class="content-header">
-                    <h1 class="page-title">Configurações</h1>
-                    <p class="page-subtitle">Ajuste suas preferências</p>
-                </div>
-                <!-- Conteúdo das configurações será adicionado aqui -->
+            <!-- Card 2 -->
+            <div class="treino-card" data-treino="Costas e Bíceps">
+                <h3>Costas e Bíceps</h3>
+                <ul>
+                <li>Puxada Frontal – 4x10</li>
+                <li>Remada Curvada – 3x12</li>
+                <li>Rosca Direta – 3x10</li>
+                </ul>
+                <button class="btn-ver-treino">Ver Detalhes</button>
             </div>
-        </main>
-    </div>
+
+            <!-- Card 3 -->
+            <div class="treino-card" data-treino="Pernas e Ombros">
+                <h3>Pernas e Ombros</h3>
+                <ul>
+                <li>Agachamento – 4x10</li>
+                <li>Leg Press – 3x12</li>
+                <li>Desenvolvimento Militar – 3x10</li>
+                </ul>
+                <button class="btn-ver-treino">Ver Detalhes</button>
+            </div>
+            </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="modalTreino" class="modal hidden">
+            <div class="modal-content">
+            <span id="fecharTreinoModal" class="fechar">&times;</span>
+            <h2 id="tituloTreino">Treino</h2>
+            <p id="descricaoTreino">Aqui aparecerão os detalhes completos do treino selecionado.</p>
+            <button id="confirmarTreino">Concluir Treino</button>
+            </div>
+            </div>
+
+
+            <!-- Conteúdo do treino será adicionado aqui -->
+        </div>
+
+        <!-- Sessão Ficha -->
+        <div id="ficha" class="hidden">
+            <div class="content-header">
+                <h1 class="page-title">Sua Ficha</h1>
+                <p class="page-subtitle">Acompanhe sua evolução</p>
+            </div>
+            <!-- Conteúdo da ficha será adicionado aqui -->
+        </div>
+
+        <!-- Sessão Configurações -->
+        <div id="config" class="hidden">
+            <div class="content-header">
+                <h1 class="page-title">Configurações</h1>
+                <p class="page-subtitle">Ajuste suas preferências</p>
+            </div>
+            <!-- Conteúdo das configurações será adicionado aqui -->
+        </div>
+    </main>
+</div>
 
 
 

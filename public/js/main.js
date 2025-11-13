@@ -31,3 +31,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const botoesTreino = document.querySelectorAll(".btn-ver-treino");
+  const modalTreino = document.getElementById("modalTreino");
+  const fecharModalTreino = document.getElementById("fecharTreinoModal");
+  const tituloTreino = document.getElementById("tituloTreino");
+  const descricaoTreino = document.getElementById("descricaoTreino");
+
+  botoesTreino.forEach(btn => {
+    btn.addEventListener("click", e => {
+      const card = e.target.closest(".treino-card");
+      const nome = card.dataset.treino;
+      tituloTreino.textContent = nome;
+      descricaoTreino.textContent = `Confira os detalhes do treino de ${nome}.`;
+      modalTreino.classList.remove("hidden");
+    });
+  });
+
+  fecharModalTreino.addEventListener("click", () => {
+    modalTreino.classList.add("hidden");
+  });
+
+  modalTreino.addEventListener("click", e => {
+    if (e.target === modalTreino) {
+      modalTreino.classList.add("hidden");
+    }
+  });
+});
+

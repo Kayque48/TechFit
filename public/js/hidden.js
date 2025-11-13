@@ -1,16 +1,15 @@
 function mostrarSecao(secao) {
-  const secoes = ["geral", "plano", "treino", "ficha", "config"     ];
+  const secoes = ["geral", "plano", "treino", "ficha", "config"];
   secoes.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.classList.add("hidden");
+    if (el) el.classList.remove("active");
   });
 
   const ativa = document.getElementById(secao);
-  if (ativa) {
-    ativa.classList.remove("hidden");
-    console.log("Mostrando:", secao);
-  }
+  if (ativa) ativa.classList.add("active");
+  atualizarEstadoMenu(secao);
 }
+
 
 
 // Mostra a seção "geral" por padrão ao carregar
@@ -60,3 +59,13 @@ function mostrarSecao(secao) {
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSecao("geral");
 });
+
+const ativa = document.getElementById(secao);
+if (ativa) {
+  ativa.classList.remove("hidden");
+  ativa.style.position = "relative"; // <-- garante alinhamento correto
+  ativa.style.visibility = "visible";
+  ativa.style.opacity = "1";
+  ativa.style.pointerEvents = "auto";
+  console.log("Mostrando:", secao);
+}
