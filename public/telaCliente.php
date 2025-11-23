@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="css/styleCadProduto.css">
     <link rel="stylesheet" href="css/hidden.css">
     <link rel="stylesheet" href="css/modal.css">
-    <link rel="stylesheet" href="css/treino.css">
+    <link rel="stylesheet" href="css/ajuste.css">
+    <link rel="stylesheet" href="css/secTreino.css">
+    <link rel="stylesheet" href="css/secPlano.css">
+    <link rel="stylesheet" href="css/secConfig.css">
     <title> Perfil - TechFit</title>
 
 </head>
@@ -271,7 +274,7 @@
                 </div>
             </div>
 
-            <!-- Sessão Plano -->
+            <!-- Seção Plano -->
             <section id="plano" class="plans container py-5 hidden">
                 <div class="container py-3">
                     <div class="content-header">
@@ -397,118 +400,271 @@
             </section>
             
 
-        <!-- Sessão Treino -->
-       <div id="treino" class="hidden">
-            <div class="content-header">
-                <h1 class="page-title">Seu Treino</h1>
-                <p class="page-subtitle">Acompanhe seu treino diário</p>
-            </div>
+            <!-- ===================== SEÇÃO TREINO ===================== -->
+            <div id="treino" class="hidden">
 
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
-                <div class="container-fluid">
-                    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasNavbar2Label">Menu</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="content-header">
+                    <h1 class="page-title">Histórico de Treinos</h1>
+                    <p class="page-subtitle">Consulte os treinos realizados e o total de horas treinadas</p>
+                </div>
+
+            <div class="product-form-container">
+
+                <!-- Busca -->
+                <div class="form-section">
+                    <h2 class="section-title">Buscar Treinos</h2>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Pesquisar por nome do treino</label>
+                            <input type="text" class="form-control-custom" placeholder="Ex: Peito, Costas, Pernas...">
                         </div>
-                        <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                <li class="nav-item"><a class="nav-link" href="#">Meus Treinos</a></li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Opções</a>
-                                    <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Histórico</a></li>
-                                    <li><a class="dropdown-item" href="#">Metas</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Configurações</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <form class="d-flex mt-3 mt-lg-0" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Buscar treino" aria-label="Search" style="min-width:320px; max-width:680px; width:42vw;">
-                                <button class="btn btn-outline-success" type="submit">Buscar</button>
-                            </form>
+
+                        <div class="form-group">
+                            <label class="form-label">Filtrar por data</label>
+                            <input type="date" class="form-control-custom">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Filtrar por duração</label>
+                            <select class="form-control-custom">
+                                <option value="">Selecione</option>
+                                <option>Menos de 30 min</option>
+                                <option>30 min - 1h</option>
+                                <option>1h - 2h</option>
+                                <option>Mais de 2h</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-            </nav>
 
-            <div class="treino-container">
-            <!-- Card 1 -->
-            <div class="treino-card" data-treino="Peito e Tríceps">
-                <h3>Peito e Tríceps</h3>
-                <ul>
-                <li>Supino Reto – 4x10</li>
-                <li>Crucifixo Inclinado – 3x12</li>
-                <li>Tríceps Testa – 3x10</li>
-                </ul>
-                <button class="btn-ver-treino">Ver Detalhes</button>
-            </div>
+                <!-- Histórico -->
+                <div class="form-section">
+                    <h2 class="section-title">Treinos Realizados</h2>
 
-            <!-- Card 2 -->
-            <div class="treino-card" data-treino="Costas e Bíceps">
-                <h3>Costas e Bíceps</h3>
-                <ul>
-                <li>Puxada Frontal – 4x10</li>
-                <li>Remada Curvada – 3x12</li>
-                <li>Rosca Direta – 3x10</li>
-                </ul>
-                <button class="btn-ver-treino">Ver Detalhes</button>
-            </div>
+                    <div class="table-responsive">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Treino</th>
+                                    <th>Duração</th>
+                                    <th>Calorias</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
 
-            <!-- Card 3 -->
-            <div class="treino-card" data-treino="Pernas e Ombros">
-                <h3>Pernas e Ombros</h3>
-                <ul>
-                <li>Agachamento – 4x10</li>
-                <li>Leg Press – 3x12</li>
-                <li>Desenvolvimento Militar – 3x10</li>
-                </ul>
-                <button class="btn-ver-treino">Ver Detalhes</button>
-            </div>
-            </div>
-            </div>
+                            <tbody id="tabela-treinos">
+                                <tr>
+                                    <td>20/11/2025</td>
+                                    <td>Peito e Tríceps</td>
+                                    <td>01:12h</td>
+                                    <td>430 kcal</td>
+                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>18/11/2025</td>
+                                    <td>Pernas e Ombros</td>
+                                    <td>01:45h</td>
+                                    <td>520 kcal</td>
+                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>16/11/2025</td>
+                                    <td>Costas e Bíceps</td>
+                                    <td>00:58h</td>
+                                    <td>390 kcal</td>
+                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-            <!-- Modal -->
-            <div id="modalTreino" class="modal hidden">
-            <div class="modal-content">
-            <span id="fecharTreinoModal" class="fechar">&times;</span>
-            <h2 id="tituloTreino">Treino</h2>
-            <p id="descricaoTreino">Aqui aparecerão os detalhes completos do treino selecionado.</p>
-            <button id="confirmarTreino">Concluir Treino</button>
-            </div>
-            </div>
+                <!-- Estatísticas -->
+                <div class="form-section">
+                    <h2 class="section-title">Estatísticas Gerais</h2>
 
+                    <div class="form-grid">
 
-            <!-- Conteúdo do treino será adicionado aqui -->
+                        <div class="form-group">
+                            <label class="form-label">Total de treinos realizados</label>
+                            <input type="text" class="form-control-custom" value="34 treinos" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Total de horas treinadas</label>
+                            <input type="text" class="form-control-custom" value="41h e 22min" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Média semanal</label>
+                            <input type="text" class="form-control-custom" value="4 treinos/semana" disabled>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- Sessão Ficha -->
+        
+         <!-- ===================== SEÇÃO FICHA ===================== -->
         <div id="ficha" class="hidden">
+
             <div class="content-header">
-                <h1 class="page-title">Sua Ficha</h1>
-                <p class="page-subtitle">Acompanhe sua evolução</p>
+                <h1 class="page-title">Ficha de Avaliação Física</h1>
+                <p class="page-subtitle">Acompanhe suas medidas, evolução e composição corporal</p>
             </div>
-            <!-- Conteúdo da ficha será adicionado aqui -->
+
+            <div class="product-form-container">
+
+                <!-- Medidas corporais -->
+                <div class="form-section">
+                    <h2 class="section-title">Medidas Corporais</h2>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label class="form-label">Peso (kg)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 78.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Altura (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 178">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Peitoral (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 100">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Cintura (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 84">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Quadril (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 96">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Braço Direito (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 34">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Braço Esquerdo (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 33.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Coxa (cm)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 56">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Composição corporal -->
+                <div class="form-section">
+                    <h2 class="section-title">Composição Corporal</h2>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label class="form-label">IMC</label>
+                            <input type="text" class="form-control-custom" placeholder="Automático" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">% Gordura</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 14%">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">% Massa Magra</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 86%">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">TMB (kcal)</label>
+                            <input type="number" class="form-control-custom" placeholder="Ex: 1750">
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Histórico -->
+                <div class="form-section">
+                    <h2 class="section-title">Histórico de Avaliações</h2>
+
+                    <div class="table-responsive">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Peso</th>
+                                    <th>% Gordura</th>
+                                    <th>% Massa Magra</th>
+                                    <th>Cintura</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="historico-avaliacoes">
+                                <tr>
+                                    <td>12/11/2025</td>
+                                    <td>78.5 kg</td>
+                                    <td>16%</td>
+                                    <td>84%</td>
+                                    <td>84 cm</td>
+                                    <td><button class="btn-techfit btn-danger">Excluir</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Botões -->
+                <div class="action-buttons">
+                    <button class="btn-techfit btn-primary">Salvar Avaliação</button>
+                    <button class="btn-techfit btn-success">Nova Avaliação</button>
+                </div>
+
+            </div>
         </div>
 
-        <!-- Sessão Configurações -->
-        <div id="config" class="hidden">
-            <div class="content-header">
-                <h1 class="page-title">Configurações</h1>
-                <p class="page-subtitle">Ajuste suas preferências</p>
-            </div>
-            <!-- Conteúdo das configurações será adicionado aqui -->
+
+
+          <section id="configuracoes" class="config-section">
+    <h2 class="section-title">Configurações</h2>
+
+    <!-- Tema -->
+    <div class="config-card">
+        <h3>Tema do Site</h3>
+        <div class="tema-opcoes">
+            <button class="btn-opcao" data-tema="light">Tema Claro</button>
+            <button class="btn-opcao" data-tema="dark">Tema Escuro</button>
         </div>
-    </main>
-</div>
+    </div>
 
+    <!-- Conta -->
+    <div class="config-card">
+        <h3>Conta</h3>
 
+        <button id="btnMinhaConta" class="config-btn">Acessar Minha Conta</button>
+        <button id="btnOutraConta" class="config-btn">Entrar com Outra Conta</button>
 
-    <!-- SESSÃO ALUNOS -->
-    
+        <h4 class="subtitulo">Outras Contas</h4>
+        <ul id="listaContas" class="contas-lista">
+            <!-- Inserido via JS -->
+        </ul>
+    </div>
+</section>
 
-
+        </main>
+    </div>
      <footer>
       <?php 
         require_once '../src/views/footer.php';
@@ -520,4 +676,6 @@
 <script src="js/script.js"></script>
 <script src="js/hidden.js"></script>
 <script src="js/modal.js"></script>
+<script src="js/treino.js"></script>
+<script src="js/config.js"></script>
 </html>

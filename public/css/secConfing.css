@@ -1,0 +1,91 @@
+.config-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+.config-card {
+    background: #f7f9fb;
+    border: 1px solid #d9dfe5;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+
+.config-card h3 {
+    margin-bottom: 1rem;
+    color: #1E5332;
+}
+
+.tema-opcoes {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-opcao {
+    padding: .7rem 1.4rem;
+    border-radius: 8px;
+    border: 2px solid #68A842;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-opcao:hover {
+    background: #68A842;
+    color: white;
+}
+
+.config-btn {
+    width: 100%;
+    padding: .9rem;
+    border: none;
+    background: #0093D1;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: .8rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.config-btn:hover {
+    background: #0075a8;
+}
+
+.subtitulo {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.contas-lista {
+    list-style: none;
+    padding-left: 0;
+    margin-top: .5rem;
+}
+
+.contas-lista li {
+    background: white;
+    border: 1px solid #d9dfe5;
+    padding: .7rem 1rem;
+    border-radius: 8px;
+    margin-bottom: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contas-lista button {
+    padding: .3rem .7rem;
+    background: #68A842;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}

@@ -408,3 +408,27 @@ a:hover {
 }
 
 
+.dark-mode {
+    background: #151515 !important;
+    color: white !important;
+}
+
+.dark-mode .config-section,
+.dark-mode .config-card {
+    background: #222 !important;
+    border-color: #444 !important;
+}
+
+.dark-mode .btn-opcao {
+    border-color: #0093D1;
+}
+
+.dark-mode .btn-opcao:hover {
+    background: #0093D1;
+}
+
+.dark-mode .config-btn {
+    background: #68A842;
+}
+
+
