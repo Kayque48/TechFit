@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/styleCadProduto.css">
     <link rel="stylesheet" href="css/hidden.css">
     <link rel="stylesheet" href="css/modal.css">
+    <link rel="stylesheet" href="css/treino.css">
     <title> Perfil - TechFit</title>
 
 </head>
@@ -272,130 +273,129 @@
 
             <!-- Sessão Plano -->
             <section id="plano" class="plans container py-5 hidden">
-            <div class="container py-3">
-                <div class="content-header">
-                <h1 class="page-title">Nossos Planos</h1>
-                <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
-                </div>
-
-                <div class="product-form-container">
-                <div class="pricing-header text-center">
-                    <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
-                    <p class="fs-5 text-body-secondary">
-                    Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
-                    </p>
-                </div>
-
-                <main class="planos-container">
-                    <div class="card" data-plano="Básico">
-                    <h4>Plano Básico</h4>
-                    <h1>$20 <small class="text-body-secondary fw-light">/mês</small></h1>
-                    <ul>
-                        <li>Acesso a todas as máquinas</li>
-                        <li>1 aula de grupo por semana</li>
-                        <li>Suporte online</li>
-                    </ul>
-                    <butto class="abrirModal btn-inscrever">Inscreva-se</button>
+                <div class="container py-3">
+                    <div class="content-header">
+                        <h1 class="page-title">Nossos Planos</h1>
+                        <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
                     </div>
 
-                    <div class="card" data-plano="Intermediário">
-                    <h4>Plano Intermediário</h4>
-                    <h1>$35 <small class="text-body-secondary fw-light">/mês</small></h1>
-                    <ul>
-                        <li>Acesso ilimitado</li>
-                        <li>3 aulas por semana</li>
-                        <li>Acompanhamento com personal</li>
-                    </ul>
-                    <button class="abrirModal btn-inscrever">Inscreva-se</button>
+                    <div class="product-form-container">
+                        <div class="pricing-header text-center">
+                            <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
+                            <p class="fs-5 text-body-secondary">
+                            Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
+                            </p>
+                        </div>
+                    
+
+                        <main class="planos-container">
+                            <div class="card" data-plano="Básico">
+                                <h4>Plano Básico</h4>
+                                <h1>$20 <small class="text-body-secondary fw-light">/mês</small></h1>
+                                <ul>
+                                    <li>Acesso a todas as máquinas</li>
+                                    <li>1 aula de grupo por semana</li>
+                                    <li>Suporte online</li>
+                                </ul>
+                                <butto class="abrirModal btn-inscrever">Inscreva-se</button>
+                            </div>
+
+                            <div class="card" data-plano="Intermediário">
+                                <h4>Plano Intermediário</h4>
+                                <h1>$35 <small class="text-body-secondary fw-light">/mês</small></h1>
+                                <ul>
+                                    <li>Acesso ilimitado</li>
+                                    <li>3 aulas por semana</li>
+                                    <li>Acompanhamento com personal</li>
+                                </ul>
+                                <button class="abrirModal btn-inscrever">Inscreva-se</button>
+                            </div>
+
+                            <div class="card" data-plano="Premium">
+                                <h4>Plano Premium</h4>
+                                <h1>$50 <small class="text-body-secondary fw-light">/mês</small></h1>
+                                <ul>
+                                    <li>Acesso 24h</li>
+                                    <li>Aulas ilimitadas</li>
+                                    <li>Consultoria nutricional</li>
+                                    <li>Treinamento pessoal ilimitado</li>
+                                </ul>
+                                <button class="abrirModal btn-inscrever">Inscreva-se</button>
+                            </div>
+                        </main>
                     </div>
 
-                    <div class="card" data-plano="Premium">
-                    <h4>Plano Premium</h4>
-                    <h1>$50 <small class="text-body-secondary fw-light">/mês</small></h1>
-                    <ul>
-                        <li>Acesso 24h</li>
-                        <li>Aulas ilimitadas</li>
-                        <li>Consultoria nutricional</li>
-                        <li>Treinamento pessoal ilimitado</li>
-                    </ul>
-                    <button class="abrirModal btn-inscrever">Inscreva-se</button>
+                    <!-- Modal -->
+                    <div id="modalPlano" class="modal hidden">
+                        <div class="modal-content">
+                            <span id="fecharModal" class="fechar">&times;</span>
+                            <h2 id="modalTitulo">Inscrição</h2>
+                            <form id="formPlano">
+                                <input type="text" placeholder="Nome completo" required>
+                                <input type="email" placeholder="Email" required>
+                                <input type="password" placeholder="Senha" required>
+                                <button type="submit">Confirmar Inscrição</button>
+                            </form>
+                        </div>
                     </div>
-                </main>
-                </div>
-            </div>
-
-            <!-- Modal -->
-            <div id="modalPlano" class="modal hidden">
-                <div class="modal-content">
-                <span id="fecharModal" class="fechar">&times;</span>
-                <h2 id="modalTitulo">Inscrição</h2>
-                <form id="formPlano">
-                    <input type="text" placeholder="Nome completo" required>
-                    <input type="email" placeholder="Email" required>
-                    <input type="password" placeholder="Senha" required>
-                    <button type="submit">Confirmar Inscrição</button>
-                </form>
-                </div>
-            </div>
 
 
+                   <div class="product-form-container">             
+                        <h2 class="display-6 text-center mb-4">Compare os planos</h2>
 
-            <h2 class="display-6 text-center mb-4">Compare os planos</h2>
-
-                <div class="table-responsive">
-                    <table class="table text-center">
-                        <thead>
-                            <tr>
-                                <th style="width: 34%;"></th>
-                                <th style="width: 22%;">Básico</th>
-                                <th style="width: 22%;">Avançado</th>
-                                <th style="width: 22%;">Premium</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row" class="text-start">Acesso a máquinas</th>
-                                <td>Limitado</td>
-                                <td>Total</td>
-                                <td>Total 24/7</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-start">Aulas de grupo</th>
-                                <td>1 por semana</td>
-                                <td>3 por semana</td>
-                                <td>Ilimitadas</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-start">Treinamento personalizado</th>
-                                <td>Não incluso</td>
-                                <td>2x por mês</td>
-                                <td>Ilimitado</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-start">Consultoria nutricional</th>
-                                <td>Não incluso</td>
-                                <td>1x por mês</td>
-                                <td>Quinzenal</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-start">Avaliação física</th>
-                                <td>Trimestral</td>
-                                <td>Bimestral</td>
-                                <td>Mensal</td>
-                            </tr>
-                            <tr>
-                                <th scope="row" class="text-start">Horário de acesso</th>
-                                <td>Comercial</td>
-                                <td>Estendido</td>
-                                <td>24 horas</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 34%;"></th>
+                                        <th style="width: 22%;">Básico</th>
+                                        <th style="width: 22%;">Avançado</th>
+                                        <th style="width: 22%;">Premium</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" class="text-start">Acesso a máquinas</th>
+                                        <td>Limitado</td>
+                                        <td>Total</td>
+                                        <td>Total 24/7</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-start">Aulas de grupo</th>
+                                        <td>1 por semana</td>
+                                        <td>3 por semana</td>
+                                        <td>Ilimitadas</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-start">Treinamento personalizado</th>
+                                        <td>Não incluso</td>
+                                        <td>2x por mês</td>
+                                        <td>Ilimitado</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-start">Consultoria nutricional</th>
+                                        <td>Não incluso</td>
+                                        <td>1x por mês</td>
+                                        <td>Quinzenal</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-start">Avaliação física</th>
+                                        <td>Trimestral</td>
+                                        <td>Bimestral</td>
+                                        <td>Mensal</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="text-start">Horário de acesso</th>
+                                        <td>Comercial</td>
+                                        <td>Estendido</td>
+                                        <td>24 horas</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </main>
-                </div>
-            </div>
-        </section>
+            </section>
+            
 
         <!-- Sessão Treino -->
        <div id="treino" class="hidden">

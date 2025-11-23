@@ -1,0 +1,64 @@
+/* === LAYOUT PRINCIPAL (NOVO) === */
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Cabeçalho fixo em cima */
+.techfit-header {
+    background: linear-gradient(135deg, var(--verde-escuro), #2a7a4a);
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    z-index: 10;
+}
+
+/* Container interno do header */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* === ESTRUTURA PRINCIPAL === */
+
+.main-container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    margin-top: 0; /* gruda no header */
+}
+
+/* SIDEBAR À ESQUERDA */
+.techfit-sidebar {
+    width: 280px;
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    height: calc(100vh - 80px);
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+/* CONTEÚDO PRINCIPAL À DIREITA */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    background-color: var(--gray-light);
+    min-height: calc(100vh - 80px);
+}
+
+/* Header da página dentro do conteúdo */
+.content-header {
+    margin-bottom: 2rem;
+}
