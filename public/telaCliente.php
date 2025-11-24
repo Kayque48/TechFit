@@ -634,37 +634,6 @@
 
             </div>
         </div>
-
-
-
-          <section id="configuracoes" class="config-section">
-    <h2 class="section-title">Configurações</h2>
-
-    <!-- Tema -->
-    <div class="config-card">
-        <h3>Tema do Site</h3>
-        <div class="tema-opcoes">
-            <button class="btn-opcao" data-tema="light">Tema Claro</button>
-            <button class="btn-opcao" data-tema="dark">Tema Escuro</button>
-        </div>
-    </div>
-
-    <!-- Conta -->
-    <div class="config-card">
-        <h3>Conta</h3>
-
-        <button id="btnMinhaConta" class="config-btn">Acessar Minha Conta</button>
-        <button id="btnOutraConta" class="config-btn">Entrar com Outra Conta</button>
-
-        <h4 class="subtitulo">Outras Contas</h4>
-        <ul id="listaContas" class="contas-lista">
-            <!-- Inserido via JS -->
-        </ul>
-    </div>
-</section>
-
-        </main>
-    </div>
      <footer>
       <?php 
         require_once '../src/views/footer.php';

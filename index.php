@@ -77,12 +77,12 @@
 
     <div class="card">
         <h1>Página de Cadastro do Usuário</h1>
-        <a href="../public/cadUser.php">Acessar</a>
+        <a href="../public/cadastroCliente.php">Acessar</a>
     </div>
 
     <div class="card">
         <h1>Página de Login do Usuário</h1>
-        <a href="public/loginUser.php">Acessar</a>
+        <a href="public/loginCliente.php">Acessar</a>
     </div>
 
     <div class="card">
