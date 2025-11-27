@@ -31,5 +31,9 @@
         public function buscarPorEmail($email) {
             return $this->dao->buscarPorEmail($email);
         }
+
+        public function getDAO() {
+            return $this->dao;
+        }
     }
 ?>

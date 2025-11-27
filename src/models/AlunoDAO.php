@@ -133,4 +133,27 @@ class AlunoDAO {
         $stmt->execute([':email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    // VERIFICAR SE EMAIL EXISTE
+    public function emailExiste($email) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Alunos WHERE EMAIL = :email");
+        $stmt->execute([':email' => $email]);
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
+    // VERIFICAR SE TELEFONE EXISTE
+    public function telefoneExiste($telefone) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Alunos WHERE TELEFONE = :telefone");
+        $stmt->execute([':telefone' => $telefone]);
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
+    // ATUALIZAR SENHA
+    public function atualizarSenha($email, $senhaHash) {
+        $stmt = $this->conn->prepare("UPDATE Alunos SET senha = :senha WHERE EMAIL = :email");
+        $stmt->execute([
+            ':senha' => $senhaHash,
+            ':email' => $email
+        ]);
+    }
 }

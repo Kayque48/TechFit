@@ -19,27 +19,40 @@
             $plano = $_POST['plano'] ?? '';
             $senha = $_POST['senha'] ?? '';
             
+            // Validação de email e telefone duplicados
+            $erroValidacao = '';
+            
+            if ($controller->getDAO()->emailExiste($email)) {
+                $erroValidacao = 'Email já cadastrado no sistema';
+            } elseif (!empty($telefone) && $controller->getDAO()->telefoneExiste($telefone)) {
+                $erroValidacao = 'Telefone já cadastrado no sistema';
+            }
+            
             // Hash da senha
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             
             if (!empty($nome) && !empty($email) && !empty($endereco) && !empty($senha)) {
-                try {
-                    $controller->criar(
-                        $nome,
-                        $idade,
-                        $endereco,
-                        $telefone,
-                        $email,
-                        $avaliacao, // avaliacao vazia inicialmente
-                        $plano,
-                        $senhaHash
-                    );
-                    
-                    // Redirecionar para login com sucesso
-                    header('Location: loginCliente.php?cadastro=sucesso');
-                    exit;
-                } catch (Exception $e) {
-                    $erro = "Erro ao cadastrar: " . $e->getMessage();
+                if (!empty($erroValidacao)) {
+                    $erro = $erroValidacao;
+                } else {
+                    try {
+                        $controller->criar(
+                            $nome,
+                            $idade,
+                            $endereco,
+                            $telefone,
+                            $email,
+                            $avaliacao, // avaliacao vazia inicialmente
+                            $plano,
+                            $senhaHash
+                        );
+                        
+                        // Redirecionar para login com sucesso
+                        header('Location: loginCliente.php?cadastro=sucesso');
+                        exit;
+                    } catch (Exception $e) {
+                        $erro = "Erro ao cadastrar: " . $e->getMessage();
+                    }
                 }
             } else {
                 $erro = "Preencha todos os campos obrigatórios";

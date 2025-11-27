@@ -4,8 +4,51 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
+    // Inicia sessão
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 
-    require_once __DIR__ . '/../src/controllers/AlunoIntegracao.php';
+    require_once __DIR__ . '/../src/controllers/AlunoController.php';
+    $controller = new AlunoController();
+
+    // Processar login
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar') {
+        $email = trim($_POST['email'] ?? '');
+        $senha = trim($_POST['senha'] ?? '');
+        
+        if (empty($email) || empty($senha)) {
+            header('Location: loginCliente.php?erro=1');
+            exit;
+        }
+
+        try {
+            $aluno = $controller->buscarPorEmail($email);
+            
+            if ($aluno && isset($aluno['senha'])) {
+                // Verificar senha com password_verify
+                if (password_verify($senha, $aluno['senha'])) {
+                    // Login bem-sucedido
+                    $_SESSION['usuario_id'] = $aluno['ID_ALUNO'] ?? null;
+                    $_SESSION['usuario_email'] = $aluno['EMAIL'];
+                    $_SESSION['usuario_nome'] = $aluno['NOME_ALUNO'];
+                    $_SESSION['usuario_logado'] = true;
+                    
+                    header('Location: telaCliente.php');
+                    exit;
+                } else {
+                    header('Location: loginCliente.php?erro=1');
+                    exit;
+                }
+            } else {
+                header('Location: loginCliente.php?erro=1');
+                exit;
+            }
+        } catch (Exception $e) {
+            header('Location: loginCliente.php?erro=1');
+            exit;
+        }
+    }
 ?>
 
 
@@ -221,6 +264,12 @@
             border: 1px solid #fcc;
         }
 
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
         @media (max-width: 768px) {
             .login-container {
                 grid-template-columns: 1fr;
@@ -261,6 +310,20 @@
             </div>
             <?php endif; ?>
 
+            <?php if(isset($_GET['recuperacao']) && $_GET['recuperacao'] === 'sucesso'): ?>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                Senha redefinida com sucesso! Faça login com sua nova senha.
+            </div>
+            <?php endif; ?>
+
+            <?php if(isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                Cadastro realizado com sucesso! Faça login com suas credenciais.
+            </div>
+            <?php endif; ?>
+
             <form action="" method="POST">
                 <div class="form-group">
                     <input type="hidden" name="acao" value="logar">
@@ -298,7 +361,7 @@
                         <input type="checkbox" name="lembrar">
                         <span>Lembrar-me</span>
                     </label>
-                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                    <a href="recuperarSenha.php" class="forgot-password">Esqueceu a senha?</a>
                 </div>
 
                 <button type="submit" class="btn-login">
