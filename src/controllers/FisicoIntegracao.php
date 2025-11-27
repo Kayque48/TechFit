@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['gordura'],
             $_POST['masMagra'],
             $_POST['tmb'],
-            $_POST['imc']
+            $_POST['imc'],
+            $_POST['aluno']
         );
     } elseif ($acao === 'deletar') {
         $controller->excluir($_POST['data']);

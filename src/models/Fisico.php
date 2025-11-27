@@ -1,6 +1,7 @@
 <?php
 
     class Fisico {
+        private $id;
         private $data;
         private $peso;
         private $altura;
@@ -14,8 +15,10 @@
         private $masMagra;
         private $tmb;
         private $imc;
+        private $fkAluno;
 
-        public function __construct ($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc) {
+        public function __construct ($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $fkAluno = null, $id = null) {
+            $this->id = $id;
             $this->setData($data);
             $this->setPeso($peso);
             $this->setAltura($altura);
@@ -29,6 +32,23 @@
             $this->setMasMagra($masMagra);
             $this->setTmb($tmb);
             $this->setImc($imc);
+            $this->fkAluno = $fkAluno;
+        }
+
+        public function getId () {
+            return $this->id;
+        }
+
+        public function setId ($id) {
+            $this->id = $id;
+        }
+
+        public function getFkAluno () {
+            return $this->fkAluno;
+        }
+
+        public function setFkAluno ($fkAluno) {
+            $this->fkAluno = $fkAluno;
         }
 
         public function setData ($data) {

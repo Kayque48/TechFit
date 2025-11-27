@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['endereco'],
             $_POST['telefone'],
             $_POST['email'],
-            $_POST['avaliacao']
+            $_POST['avaliacao'],
+            $_POST['plano']
         );
     } elseif ($acao === 'deletar') {
         $controller->excluir($_POST['nome']);
@@ -24,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['novoEndereco'],
             $_POST['novoTelefone'],
             $_POST['novoEmail'],
-            $_POST['novaAvaliacao']
+            $_POST['novaAvaliacao'],
+            $_POST['plano']
         );
     }
 }

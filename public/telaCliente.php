@@ -1,3 +1,35 @@
+<?php
+session_start();
+
+// Importar os controllers
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/FisicoController.php';
+
+$controllerAluno = new AlunoController();
+$controllerFisico = new FisicoController();
+
+// Buscar dados do aluno logado
+$aluno = $controllerAluno->buscarPorEmail($_SESSION['aluno_email']) ;
+
+if (!$aluno) {
+    // Se não encontrar no banco, criar array com dados da sessão
+    $aluno = [
+        'ID_ALUNO' => $_SESSION['aluno_id'],
+        'NOME_ALUNO' => $_SESSION['aluno_nome'],
+        'EMAIL' => $_SESSION['aluno_email'],
+        'IDADE' => 'N/A',
+        'ENDERECO_ALUNO' => 'N/A',
+        'TELEFONE' => 'N/A',
+        'plano' => 'N/A'
+    ];
+}
+
+// Buscar ficha de avaliação física (mais recente)
+$idAluno = $aluno['ID_ALUNO'];
+$fichas = $controllerFisico->lerPorIdAluno($idAluno);
+$fichaRecente = !empty($fichas) ? $fichas[0] : null;
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -47,24 +79,30 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="clientName">Nome:</label>
-                                    <p id="nome-cliente">Nome do Cliente</p>
+                                    <p id="nome-cliente"><?php echo htmlspecialchars($aluno['NOME_ALUNO'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientYear">Idade:</label>
-                                    <p id="idade-cliente">Idade</p>
+                                    <p id="idade-cliente"><?php echo htmlspecialchars($aluno['IDADE'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="clientOld">Membro desde:</label>
-                                    <p id="membro-cliente">Data de assinatura</p>
+                                    <label class="form-label" for="clientOld">Endereço:</label>
+                                    <p id="endereco-cliente"><?php echo htmlspecialchars($aluno['ENDERECO_ALUNO'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPlan">Plano:</label>
-                                    <p id="Plano-cliente">Tipo do Plano do Cliente</p>
+                                    <p id="Plano-cliente"><?php echo htmlspecialchars($aluno['plano'] ?? 'N/A'); ?></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="clientPhone">Telefone:</label>
+                                    <p id="telefone-cliente"><?php echo htmlspecialchars($aluno['TELEFONE'] ?? 'N/A'); ?></p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="clientEmail">Email:</label>
+                                    <p id="email-cliente"><?php echo htmlspecialchars($aluno['EMAIL'] ?? 'N/A'); ?></p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Detalhes Exercícios -->
                         <div class="exercise-details container px-4 py-5" id="custom-cards">
                             <h3 class="section-title pb-2 border-bottom">
                                 <i class="fas fa-dumbbell me-2"></i>
@@ -517,119 +555,137 @@
 
             <div class="product-form-container">
 
-                <!-- Medidas corporais -->
+                <!-- Tabela com dados do banco -->
                 <div class="form-section">
-                    <h2 class="section-title">Medidas Corporais</h2>
+                    <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente</h2>
 
-                    <div class="form-grid">
-
-                        <div class="form-group">
-                            <label class="form-label">Peso (kg)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 78.5">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Altura (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 178">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Peitoral (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 100">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Cintura (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 84">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Quadril (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 96">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Braço Direito (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 34">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Braço Esquerdo (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 33.5">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Coxa (cm)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 56">
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Composição corporal -->
-                <div class="form-section">
-                    <h2 class="section-title">Composição Corporal</h2>
-
-                    <div class="form-grid">
-
-                        <div class="form-group">
-                            <label class="form-label">IMC</label>
-                            <input type="text" class="form-control-custom" placeholder="Automático" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">% Gordura</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 14%">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">% Massa Magra</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 86%">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">TMB (kcal)</label>
-                            <input type="number" class="form-control-custom" placeholder="Ex: 1750">
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Histórico -->
-                <div class="form-section">
-                    <h2 class="section-title">Histórico de Avaliações</h2>
-
+                    <?php if ($fichaRecente): ?>
                     <div class="table-responsive">
-                        <table class="table text-center">
-                            <thead>
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-light">
                                 <tr>
-                                    <th>Data</th>
-                                    <th>Peso</th>
-                                    <th>% Gordura</th>
-                                    <th>% Massa Magra</th>
-                                    <th>Cintura</th>
-                                    <th>Ação</th>
+                                    <th>Campo</th>
+                                    <th>Valor</th>
                                 </tr>
                             </thead>
-
-                            <tbody id="historico-avaliacoes">
+                            <tbody>
                                 <tr>
-                                    <td>12/11/2025</td>
-                                    <td>78.5 kg</td>
-                                    <td>16%</td>
-                                    <td>84%</td>
-                                    <td>84 cm</td>
-                                    <td><button class="btn-techfit btn-danger">Excluir</button></td>
+                                    <td><strong>Data da Avaliação</strong></td>
+                                    <td><?= !empty($fichaRecente->getData()) ? date('d/m/Y', strtotime($fichaRecente->getData())) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Peso (kg)</strong></td>
+                                    <td><?= !empty($fichaRecente->getPeso()) ? htmlspecialchars($fichaRecente->getPeso()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Altura (m)</strong></td>
+                                    <td><?= !empty($fichaRecente->getAltura()) ? htmlspecialchars($fichaRecente->getAltura()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>IMC</strong></td>
+                                    <td><?= !empty($fichaRecente->getImc()) ? htmlspecialchars($fichaRecente->getImc()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Peitoral (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getPeitoral()) ? htmlspecialchars($fichaRecente->getPeitoral()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cintura (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getCintura()) ? htmlspecialchars($fichaRecente->getCintura()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Quadril (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getQuadril()) ? htmlspecialchars($fichaRecente->getQuadril()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Braço Esquerdo (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getBraEsquerdo()) ? htmlspecialchars($fichaRecente->getBraEsquerdo()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Braço Direito (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getBraDireito()) ? htmlspecialchars($fichaRecente->getBraDireito()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Coxa (cm)</strong></td>
+                                    <td><?= !empty($fichaRecente->getCoxa()) ? htmlspecialchars($fichaRecente->getCoxa()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gordura Corporal (%)</strong></td>
+                                    <td><?= !empty($fichaRecente->getGordura()) ? htmlspecialchars($fichaRecente->getGordura()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Massa Magra (kg)</strong></td>
+                                    <td><?= !empty($fichaRecente->getMasMagra()) ? htmlspecialchars($fichaRecente->getMasMagra()) : 'null' ?></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>TMB (kcal)</strong></td>
+                                    <td><?= !empty($fichaRecente->getTmb()) ? htmlspecialchars($fichaRecente->getTmb()) : 'null' ?></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    <?php else: ?>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Sem dados registrados</strong>
+                        <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastroFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
-                <!-- Botões -->
+                <!-- Histórico de Avaliações -->
+                <div class="form-section">
+                    <h2 class="section-title"><i class="fas fa-history me-2"></i> Histórico de Avaliações</h2>
+
+                    <?php if (!empty($fichas) && count($fichas) > 1): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Peso (kg)</th>
+                                    <th>Altura (m)</th>
+                                    <th>IMC</th>
+                                    <th>% Gordura</th>
+                                    <th>Cintura (cm)</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($fichas as $ficha): ?>
+                                <tr>
+                                    <td><?= !empty($ficha->getData()) ? date('d/m/Y', strtotime($ficha->getData())) : 'null' ?></td>
+                                    <td><?= !empty($ficha->getPeso()) ? htmlspecialchars($ficha->getPeso()) : 'null' ?></td>
+                                    <td><?= !empty($ficha->getAltura()) ? htmlspecialchars($ficha->getAltura()) : 'null' ?></td>
+                                    <td><?= !empty($ficha->getImc()) ? htmlspecialchars($ficha->getImc()) : 'null' ?></td>
+                                    <td><?= !empty($ficha->getGordura()) ? htmlspecialchars($ficha->getGordura()) . '%' : 'null' ?></td>
+                                    <td><?= !empty($ficha->getCintura()) ? htmlspecialchars($ficha->getCintura()) : 'null' ?></td>
+                                    <td>
+                                        <a href="listaFichas.php?editar=<?= $ficha->getId() ?>" class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php else: ?>
+                    <div class="alert alert-secondary">
+                        <i class="fas fa-calendar me-2"></i>
+                        Você tem apenas 1 avaliação registrada. Crie mais fichas para acompanhar sua evolução.
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Botões de Ação -->
                 <div class="action-buttons">
-                    <button class="btn-techfit btn-primary">Salvar Avaliação</button>
-                    <button class="btn-techfit btn-success">Nova Avaliação</button>
+                    <a href="cadastroFicha.php" class="btn-techfit btn-primary">
+                        <i class="fas fa-plus me-2"></i> Nova Avaliação
+                    </a>
+                    <a href="listaFichas.php" class="btn-techfit btn-success">
+                        <i class="fas fa-list me-2"></i> Ver Todas as Fichas
+                    </a>
                 </div>
 
             </div>
