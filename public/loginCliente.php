@@ -25,21 +25,14 @@
         try {
             $aluno = $controller->buscarPorEmail($email);
             
-            if ($aluno && isset($aluno['senha'])) {
-                // Verificar senha com password_verify
-                if (password_verify($senha, $aluno['senha'])) {
-                    // Login bem-sucedido
-                    $_SESSION['usuario_id'] = $aluno['ID_ALUNO'] ?? null;
-                    $_SESSION['usuario_email'] = $aluno['EMAIL'];
-                    $_SESSION['usuario_nome'] = $aluno['NOME_ALUNO'];
-                    $_SESSION['usuario_logado'] = true;
-                    
-                    header('Location: telaCliente.php');
-                    exit;
-                } else {
-                    header('Location: loginCliente.php?erro=1');
-                    exit;
-                }
+            if ($aluno && isset($aluno['SENHA']) && (password_verify($senha, $aluno['SENHA']) || $aluno['SENHA'] === $senha)) {
+                // Login bem-sucedido
+                $_SESSION['email'] = $aluno['EMAIL'];
+                $_SESSION['nome'] = $aluno['NOME_ALUNO'];
+                $_SESSION['logado'] = true;
+                
+                header('Location: telaCliente.php');
+                exit;
             } else {
                 header('Location: loginCliente.php?erro=1');
                 exit;

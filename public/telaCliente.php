@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Verificar se o usuário está logado
+if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
+    header('Location: loginCliente.php');
+    exit;
+}
+
 // Importar os controllers
 require_once __DIR__ . '/../src/controllers/AlunoController.php';
 require_once __DIR__ . '/../src/controllers/FisicoController.php';
@@ -9,24 +15,36 @@ $controllerAluno = new AlunoController();
 $controllerFisico = new FisicoController();
 
 // Buscar dados do aluno logado
-$aluno = $controllerAluno->buscarPorEmail($_SESSION['aluno_email']) ;
+$aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
 
 if (!$aluno) {
-    // Se não encontrar no banco, criar array com dados da sessão
-    $aluno = [
-        'ID_ALUNO' => $_SESSION['aluno_id'],
-        'NOME_ALUNO' => $_SESSION['aluno_nome'],
-        'EMAIL' => $_SESSION['aluno_email'],
-        'IDADE' => 'N/A',
-        'ENDERECO_ALUNO' => 'N/A',
-        'TELEFONE' => 'N/A',
-        'plano' => 'N/A'
-    ];
+    // Se não encontrar no banco, redirecionar para login
+    header('Location: loginCliente.php');
+    exit;
+}
+
+// Definir o ID do aluno
+$id = $aluno['ID_ALUNO'] ?? null;
+
+// Usar o email do aluno
+$Alunoemail = $_SESSION['aluno_email'];
+
+// Processar atualização do plano
+$mensagemPlano = '';
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
+    $novoPlano = trim($_POST['plano_selecionado'] ?? '');
+    if (!empty($novoPlano)) {
+        try {
+            $controllerAluno->getDAO()->atualizarPlano($email, $novoPlano);
+            $mensagemPlano = 'Plano atualizado com sucesso!';
+        } catch (Exception $e) {
+            $mensagemPlano = 'Erro ao atualizar plano: ' . $e->getMessage();
+        }
+    }
 }
 
 // Buscar ficha de avaliação física (mais recente)
-$idAluno = $aluno['ID_ALUNO'];
-$fichas = $controllerFisico->lerPorIdAluno($idAluno);
+$fichas = !empty($email) ? $controllerFisico->lerPorIdAluno($id) : [];
 $fichaRecente = !empty($fichas) ? $fichas[0] : null;
 ?>
 
@@ -91,7 +109,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPlan">Plano:</label>
-                                    <p id="Plano-cliente"><?php echo htmlspecialchars($aluno['plano'] ?? 'N/A'); ?></p>
+                                    <p id="Plano-cliente"><?php echo htmlspecialchars($aluno['PLANO'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPhone">Telefone:</label>
@@ -328,57 +346,66 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                             </p>
                         </div>
                     
-
-                        <main class="planos-container">
-                            <div class="card" data-plano="Básico">
-                                <h4>Plano Básico</h4>
-                                <h1>$20 <small class="text-body-secondary fw-light">/mês</small></h1>
-                                <ul>
-                                    <li>Acesso a todas as máquinas</li>
-                                    <li>1 aula de grupo por semana</li>
-                                    <li>Suporte online</li>
-                                </ul>
-                                <butto class="abrirModal btn-inscrever">Inscreva-se</button>
-                            </div>
-
-                            <div class="card" data-plano="Intermediário">
-                                <h4>Plano Intermediário</h4>
-                                <h1>$35 <small class="text-body-secondary fw-light">/mês</small></h1>
-                                <ul>
-                                    <li>Acesso ilimitado</li>
-                                    <li>3 aulas por semana</li>
-                                    <li>Acompanhamento com personal</li>
-                                </ul>
-                                <button class="abrirModal btn-inscrever">Inscreva-se</button>
-                            </div>
-
-                            <div class="card" data-plano="Premium">
-                                <h4>Plano Premium</h4>
-                                <h1>$50 <small class="text-body-secondary fw-light">/mês</small></h1>
-                                <ul>
-                                    <li>Acesso 24h</li>
-                                    <li>Aulas ilimitadas</li>
-                                    <li>Consultoria nutricional</li>
-                                    <li>Treinamento pessoal ilimitado</li>
-                                </ul>
-                                <button class="abrirModal btn-inscrever">Inscreva-se</button>
-                            </div>
-                        </main>
-                    </div>
-
-                    <!-- Modal -->
-                    <div id="modalPlano" class="modal hidden">
-                        <div class="modal-content">
-                            <span id="fecharModal" class="fechar">&times;</span>
-                            <h2 id="modalTitulo">Inscrição</h2>
-                            <form id="formPlano">
-                                <input type="text" placeholder="Nome completo" required>
-                                <input type="email" placeholder="Email" required>
-                                <input type="password" placeholder="Senha" required>
-                                <button type="submit">Confirmar Inscrição</button>
-                            </form>
+                        <?php if (!empty($mensagemPlano)): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
+                        <?php endif; ?>
+
+                        <form method="POST" action="">
+                            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                                <!-- Plano Básico -->
+                                <div class="col">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">Plano Básico</h5>
+                                            <p class="card-text display-6">$20<small class="text-body-secondary fw-light">/mês</small></p>
+                                            <ul class="list-unstyled mb-4 flex-grow-1">
+                                                <li><i class="fas fa-check text-success me-2"></i>Acesso a todas as máquinas</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>1 aula de grupo por semana</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>Suporte online</li>
+                                            </ul>
+                                            <button type="submit" name="plano_selecionado" value="mensal" class="btn btn-primary">Selecionar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Plano Intermediário -->
+                                <div class="col">
+                                    <div class="card h-100 shadow-sm border-primary">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">Plano Intermediário</h5>
+                                            <p class="card-text display-6">$35<small class="text-body-secondary fw-light">/mês</small></p>
+                                            <ul class="list-unstyled mb-4 flex-grow-1">
+                                                <li><i class="fas fa-check text-success me-2"></i>Acesso ilimitado</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>3 aulas por semana</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>Acompanhamento com personal</li>
+                                            </ul>
+                                            <button type="submit" name="plano_selecionado" value="intermediario" class="btn btn-primary">Selecionar</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Plano Premium -->
+                                <div class="col">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">Plano Premium</h5>
+                                            <p class="card-text display-6">$50<small class="text-body-secondary fw-light">/mês</small></p>
+                                            <ul class="list-unstyled mb-4 flex-grow-1">
+                                                <li><i class="fas fa-check text-success me-2"></i>Acesso 24h</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>Aulas ilimitadas</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>Consultoria nutricional</li>
+                                                <li><i class="fas fa-check text-success me-2"></i>Treinamento pessoal ilimitado</li>
+                                            </ul>
+                                            <button type="submit" name="plano_selecionado" value="premium" class="btn btn-primary">Selecionar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="atualizar_plano" value="1">
+                        </form>
 
 
                    <div class="product-form-container">             
@@ -433,6 +460,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
                         </div>
                     </div>
             </section>
@@ -687,15 +715,16 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                         <i class="fas fa-list me-2"></i> Ver Todas as Fichas
                     </a>
                 </div>
-
             </div>
         </div>
-     <footer>
+        </main>
+        </div>
+     </footer>
       <?php 
         require_once '../src/views/footer.php';
       ?>
 
-
+</body>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>

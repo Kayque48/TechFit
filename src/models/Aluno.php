@@ -1,24 +1,28 @@
 <?php
 
     class Aluno {
+        private $id;
         private $nome;
         private $idade;
         private $endereco;
         private $telefone;
         private $email;
-        private $avaliacao;
         private $plano;
         private $senha;
 
-        public function __construct ($nome, $idade, $endereco, $telefone, $email, $avaliacao, $plano, $senha = null) {
+        public function __construct ($nome, $idade, $endereco, $telefone, $email, $plano, $senha = null, $id  = '') {
             $this->setNome($nome);
             $this->setIdade($idade);
             $this->setEnder($endereco);
             $this->setTelef($telefone);
             $this->setEmail($email);
-            $this->setAvali($avaliacao);
             $this->setPlano($plano);
             $this->setSenha($senha);
+            $this->setId($id);
+        }
+
+        public function setId($id) {
+            $this->id = $id;
         }
 
         public function setNome ($nome) {
@@ -41,16 +45,16 @@
             $this->email = $email;
         }
 
-        public function setAvali ($avaliacao) {
-            $this->avaliacao = $avaliacao;
-        }
-
         public function setPlano ($plano) {
             $this->plano = $plano;
         }
 
         public function setSenha ($senha) {
             $this->senha = $senha;
+        }
+
+        public function getId() {
+            return $this->id;
         }
 
         public function getNome () {
@@ -71,10 +75,6 @@
 
         public function getEmail () {
             return $this->email;
-        }
-
-        public function getAvaliacao () {
-            return $this->avaliacao;
         }
 
         public function getPlano () {

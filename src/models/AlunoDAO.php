@@ -11,46 +11,71 @@ class AlunoDAO {
         $this->conn = Connection::getInstance();
     }
     
-
-    // CREATE
-    public function criarAluno(Aluno $Aluno) {
-
+    // helper: garante colunas ID e senha
+    private function ensureColumnExists($column, $definitionSql = 'VARCHAR(255) DEFAULT NULL') {
         try {
-            // Try direct ALTER with IF NOT EXISTS (MySQL 8.0+, MariaDB 10.0.2+, etc.)
-            $this->conn->query("ALTER TABLE Alunos ADD COLUMN IF NOT EXISTS senha VARCHAR(255) DEFAULT NULL");
+            // Try generic IF NOT EXISTS (MySQL 8+/MariaDB)
+            $this->conn->query("ALTER TABLE Alunos ADD COLUMN IF NOT EXISTS $column $definitionSql");
+            return;
         } catch (PDOException $e) {
-            // Fallback for drivers that don't support IF NOT EXISTS
+            // Fallbacks per driver
             $driver = $this->conn->getAttribute(PDO::ATTR_DRIVER_NAME);
-            $hasSenha = false;
+            $has = false;
 
             if ($driver === 'sqlite') {
                 $stmt = $this->conn->query("PRAGMA table_info(Alunos)");
                 $cols = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
                 foreach ($cols as $col) {
-                    if (isset($col['name']) && strtolower($col['name']) === 'senha') { $hasSenha = true; break; }
+                    if (isset($col['name']) && strtolower($col['name']) === strtolower($column)) { $has = true; break; }
                 }
             } elseif ($driver === 'mysql') {
-                $stmt = $this->conn->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'Alunos' AND COLUMN_NAME = 'senha'");
-                $stmt->execute();
-                $hasSenha = (bool) $stmt->fetchColumn();
+                $stmt = $this->conn->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'Alunos' AND COLUMN_NAME = :col");
+                $stmt->execute([':col' => $column]);
+                $has = (bool) $stmt->fetchColumn();
             } else {
-                // Generic attempt: try to add and ignore error if it already exists
+                // generic try
                 try {
-                    $this->conn->query("ALTER TABLE Alunos ADD COLUMN senha VARCHAR(255) DEFAULT NULL");
-                    $hasSenha = true;
+                    $this->conn->query("ALTER TABLE Alunos ADD COLUMN $column $definitionSql");
+                    $has = true;
                 } catch (PDOException $ignore) {
-                    $hasSenha = false;
+                    $has = false;
                 }
             }
 
-            if (!$hasSenha) {
-                $this->conn->query("ALTER TABLE Alunos ADD COLUMN senha VARCHAR(255) DEFAULT NULL");
+            if (!$has) {
+                // Try driver-specific add for ID to allow autoincrement where possible
+                try {
+                    if (strtolower($column) === 'id') {
+                        if ($driver === 'sqlite') {
+                            // SQLite requires INTEGER PRIMARY KEY for autoincrement behaviour on rowid
+                            $this->conn->query("ALTER TABLE Alunos ADD COLUMN ID INTEGER");
+                            // Note: converting existing table to add PK in SQLite is non-trivial; leave as column.
+                        } elseif ($driver === 'mysql') {
+                            // Try add auto_increment primary key
+                            $this->conn->query("ALTER TABLE Alunos ADD COLUMN ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY");
+                        } else {
+                            $this->conn->query("ALTER TABLE Alunos ADD COLUMN ID INT DEFAULT NULL");
+                        }
+                    } else {
+                        $this->conn->query("ALTER TABLE Alunos ADD COLUMN $column $definitionSql");
+                    }
+                } catch (PDOException $ignore) {
+                    // ignore failures
+                }
             }
         }
+    }
+
+    // CREATE
+    public function criarAluno(Aluno $Aluno) {
+
+        // Ensure columns exist
+        $this->ensureColumnExists('ID_ALUNO');
+        $this->ensureColumnExists('SENHA', 'VARCHAR(255) DEFAULT NULL');
 
         $stmt = $this->conn->prepare("
-            INSERT INTO Alunos (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, FK_AVALIACAO_FISICA, plano, senha)
-            VALUES (:nome, :idade, :endereco, :telefone, :email, :avaliacao, :plano, :senha)
+            INSERT INTO Alunos (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, plano, senha)
+            VALUES (:nome, :idade, :endereco, :telefone, :email, :plano, :senha)
         ");
         $stmt->execute([
             ':nome' => $Aluno->getNome(),
@@ -58,10 +83,17 @@ class AlunoDAO {
             ':endereco' => $Aluno->getEndereco(),
             ':telefone' => $Aluno->getTelefone(),
             ':email' => $Aluno->getEmail(),
-            ':avaliacao' => $Aluno->getAvaliacao(),
             ':plano' => $Aluno->getPlano(),
             ':senha' => $Aluno->getSenha(),
         ]);
+
+        // Retornar ID inserido (se disponível)
+        try {
+            $lastId = $this->conn->lastInsertId();
+            return $lastId !== '0' ? $lastId : null;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     // READ
@@ -70,24 +102,24 @@ class AlunoDAO {
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Aluno(
+                $row['ID_ALUNO'] ?? null,
                 $row['NOME_ALUNO'],
                 $row['IDADE'],
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
-                $row['FK_AVALIACAO_FISICA'],
-                $row['plano'],
-                $row['senha'] ?? null
+                $row['PLANO'] ?? $row['plano'] ?? null,
+                $row['SENHA'] ?? null
             );
         }
         return $result;
     }
 
-    // UPDATE
-    public function atualizarAluno($nomeOriginal, $novoNome, $idade, $endereco, $telefone, $email, $avaliacao, $plano) {
+    // UPDATE by nome (mantido por compatibilidade)
+    public function atualizarAluno($nomeOriginal, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
-            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_AVALIACAO_FISICA = :avaliacao, plano = :plano
+            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, plano = :plano
             WHERE NOME_ALUNO = :nomeOriginal
         ");
         $stmt->execute([
@@ -96,16 +128,39 @@ class AlunoDAO {
             ':endereco' => $endereco,
             ':telefone' => $telefone,
             ':email' => $email,
-            ':avaliacao' => $avaliacao,
             ':plano' => $plano,
             ':nomeOriginal' => $nomeOriginal
         ]);
     }
 
-    // DELETE
+    // UPDATE by ID (recomendado)
+    public function atualizarAlunoPorId($id, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
+        $stmt = $this->conn->prepare("
+            UPDATE Alunos
+            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, plano = :plano
+            WHERE ID = :id
+        ");
+        $stmt->execute([
+            ':novoNome' => $novoNome,
+            ':idade' => $idade,
+            ':endereco' => $endereco,
+            ':telefone' => $telefone,
+            ':email' => $email,
+            ':plano' => $plano,
+            ':id' => $id
+        ]);
+    }
+
+    // DELETE by nome (mantido)
     public function excluirAluno($nome) {
         $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE NOME_ALUNO = :nome");
         $stmt->execute([':nome' => $nome]);
+    }
+
+    // DELETE by ID (recomendado)
+    public function excluirAlunoPorId($id) {
+        $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE ID = :id");
+        $stmt->execute([':id' => $id]);
     }
 
     // BUSCAR POR NOME
@@ -115,13 +170,14 @@ class AlunoDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new Aluno(
+                $row['ID_ALUNO'] ?? null,
                 $row['NOME_ALUNO'],
                 $row['IDADE'],
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
-                $row['FK_AVALIACAO_FISICA'],
-                $row['plano']
+                $row['plano'] ?? $row['PLANO'] ?? null,
+                $row['SENHA'] ?? null
             );
         }
         return null;
@@ -131,7 +187,19 @@ class AlunoDAO {
     public function buscarPorEmail($email) {
         $stmt = $this->conn->prepare("SELECT * FROM Alunos WHERE EMAIL = :email LIMIT 1");
         $stmt->execute([':email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return [
+                'NOME_ALUNO' => $row['NOME_ALUNO'],
+                'IDADE' => $row['IDADE'],
+                'ENDERECO_ALUNO' => $row['ENDERECO_ALUNO'],
+                'TELEFONE' => $row['TELEFONE'],
+                'EMAIL' => $row['EMAIL'],
+                'PLANO' => $row['Plano'],
+                'SENHA' => $row['SENHA'] ?? null
+            ];
+        }
+        return null;
     }
 
     // VERIFICAR SE EMAIL EXISTE
@@ -153,6 +221,15 @@ class AlunoDAO {
         $stmt = $this->conn->prepare("UPDATE Alunos SET senha = :senha WHERE EMAIL = :email");
         $stmt->execute([
             ':senha' => $senhaHash,
+            ':email' => $email
+        ]);
+    }
+
+    // ATUALIZAR PLANO
+    public function atualizarPlano($email, $plano) {
+        $stmt = $this->conn->prepare("UPDATE Alunos SET plano = :plano WHERE EMAIL = :email");
+        $stmt->execute([
+            ':plano' => $plano,
             ':email' => $email
         ]);
     }

@@ -1,4 +1,6 @@
 <?php
+
+  session_start();
     
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -16,7 +18,6 @@
             $endereco = trim($_POST['endereco'] ?? '');
             $telefone = trim($_POST['telefone'] ?? '');
             $idade = intval($_POST['idade'] ?? 0);
-            $plano = $_POST['plano'] ?? '';
             $senha = $_POST['senha'] ?? '';
             
             // Validação de email e telefone duplicados
@@ -42,8 +43,7 @@
                             $endereco,
                             $telefone,
                             $email,
-                            $avaliacao, // avaliacao vazia inicialmente
-                            $plano,
+                            '', // plano será escolhido após login
                             $senhaHash
                         );
                         
@@ -93,8 +93,8 @@
         <input type="hidden" name="cadastro" value="criar">
         
         <!-- Nome -->
-        <div class="col-sm-6">
-          <label for="name" class="form-label">Primeiro nome *</label>
+        <div class="col-sm-12">
+          <label for="name" class="form-label">Nome Completo *</label>
           <input type="text" class="form-control" id="name" name="name" required>
         </div>
 
@@ -132,19 +132,6 @@
         <div class="col-md-3">
           <label for="cep" class="form-label">CEP</label>
           <input type="text" class="form-control" id="cep" name="cep">
-        </div>
-
-        <!-- Plano -->
-        <div class="col-md-9">
-          <label for="plano" class="form-label">Assinatura *</label>
-          <select class="form-select" id="plano" name="plano">
-              <option value="">Selecione seu plano</option>
-              <option value="mensal">Plano Mensal - R$ 99,90</option>
-              <option value="trimestral">Plano Trimestral - R$ 269,90 (economia de 10%)</option>
-              <option value="semestral">Plano Semestral - R$ 499,90 (economia de 15%)</option>
-              <option value="anual">Plano Anual - R$ 899,90 (economia de 25%)</option>
-              <option value="vip">Plano VIP - R$ 1.299,90 (acesso ilimitado + personal trainer)</option>
-          </select>
         </div>
 
         <div class="col-12 mt-3">
