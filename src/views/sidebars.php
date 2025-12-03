@@ -42,12 +42,6 @@
                         Ficha
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-section="config" onclick="mostrarSecao('config'); return false;">
-                        <i class="nav-icon fas fa-cog"></i>
-                        Configurações
-                    </a>
-                </li>
             </ul>
         </nav>
     
