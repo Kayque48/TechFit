@@ -353,6 +353,21 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                         </div>
                         <?php endif; ?>
 
+                        <!-- Formulário para Atualizar Plano -->
+                        <form id="updatePlanForm" method="POST" action="../../src/models/atualizarPlano.php">
+                            <input type="hidden" id="selectedPlanInput" name="selectedPlan" value="">
+                        </form>
+
+                        <script>
+                            function updatePlan(plan) {
+                                // Define o valor do plano selecionado no campo oculto
+                                document.getElementById('selectedPlanInput').value = plan;
+
+                                // Submete o formulário para atualizar o plano
+                                document.getElementById('updatePlanForm').submit();
+                            }
+                        </script>
+
                         <form method="POST" action="">
                             <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
                                 <!-- Plano Básico -->
@@ -366,8 +381,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                                 <li><i class="fas fa-check text-success me-2"></i>1 aula de grupo por semana</li>
                                                 <li><i class="fas fa-check text-success me-2"></i>Suporte online</li>
                                             </ul>
-                                            <button type="submit" name="plano_selecionado" value="mensal" class="btn btn-primary">Selecionar</button>
-                                        </div>
+                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="basico" onclick="updatePlan('basico')">Selecionar Plano Básico</button>
                                     </div>
                                 </div>
 
@@ -382,7 +396,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                                 <li><i class="fas fa-check text-success me-2"></i>3 aulas por semana</li>
                                                 <li><i class="fas fa-check text-success me-2"></i>Acompanhamento com personal</li>
                                             </ul>
-                                            <button type="submit" name="plano_selecionado" value="intermediario" class="btn btn-primary">Selecionar</button>
+                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="intermediario" onclick="updatePlan('intermediario')">Selecionar Plano Intermediário</button>
                                         </div>
                                     </div>
                                 </div>
@@ -399,7 +413,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                                 <li><i class="fas fa-check text-success me-2"></i>Consultoria nutricional</li>
                                                 <li><i class="fas fa-check text-success me-2"></i>Treinamento pessoal ilimitado</li>
                                             </ul>
-                                            <button type="submit" name="plano_selecionado" value="premium" class="btn btn-primary">Selecionar</button>
+                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="premium" onclick="updatePlan('premium')">Selecionar Plano Premium</button>
                                         </div>
                                     </div>
                                 </div>
