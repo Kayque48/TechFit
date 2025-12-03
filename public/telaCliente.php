@@ -722,7 +722,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
 
                 <!-- Botões de Ação -->
                 <div class="action-buttons">
-                    <a href="cadastroFicha.php" class="btn-techfit btn-primary">
+                    <a href="cadastrarFicha.php" class="btn-techfit btn-primary">
                         <i class="fas fa-plus me-2"></i> Nova Avaliação
                     </a>
                     <a href="listaFichas.php" class="btn-techfit btn-success">
