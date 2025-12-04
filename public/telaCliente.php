@@ -670,7 +670,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-2"></i>
                         <strong>Sem dados registrados</strong>
-                        <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastroFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
+                        <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastrarFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
                     </div>
                     <?php endif; ?>
                 </div>

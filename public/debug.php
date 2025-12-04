@@ -18,6 +18,7 @@ if (!empty($alunos)) {
     echo "<tr><th>Nome</th><th>Email</th><th>Senha</th><th>Telefone</th></tr>";
     foreach ($alunos as $aluno) {
         echo "<tr>";
+        echo "<td>" . htmlspecialchars($id->getId()) . "</td>";
         echo "<td>" . htmlspecialchars($aluno->getNome()) . "</td>";
         echo "<td>" . htmlspecialchars($aluno->getEmail()) . "</td>";
         echo "<td>" . htmlspecialchars($aluno->getSenha() ?? 'VAZIO') . "</td>";

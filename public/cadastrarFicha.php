@@ -1,3 +1,68 @@
+<?php
+session_start();
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
+    header('Location: loginCliente.php');
+    exit;
+}
+
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/FisicoController.php';
+
+$controllerAluno = new AlunoController();
+$controllerFisico = new FisicoController();
+
+// Buscar dados do aluno logado
+$aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
+
+if (!$aluno) {
+    // Se não encontrar no banco, redirecionar para login
+    header('Location: telaCliente.php');
+    exit;
+}
+
+// Definir o ID do aluno
+$id = $aluno['ID_ALUNO'] ?? null;
+
+// Usar o email do aluno
+$Alunoemail = $_SESSION['aluno_email'];
+
+// Processar atualização do plano
+$mensagemPlano = '';
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
+    $novoPlano = trim($_POST['plano_selecionado'] ?? '');
+    if (!empty($novoPlano)) {
+        try {
+            $controllerAluno->getDAO()->atualizarPlano($email, $novoPlano);
+            $mensagemPlano = 'Plano atualizado com sucesso!';
+        } catch (Exception $e) {
+            $mensagemPlano = 'Erro ao atualizar plano: ' . $e->getMessage();
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
+    if ($_POST['cadastro'] == 'criar') {
+        // Validação básica
+        $data         = trim($_POST['data'] ?? '');
+        $peso         = trim($_POST['peso'] ?? '');
+        $altura       = trim($_POST['altura'] ?? '');
+        $peitoral     = trim($_POST['peitoral'] ?? '');
+        $cintura      = trim($_POST['cintura'] ?? '');
+        $quadril      = trim($_POST['quadril'] ?? '');
+        $braEsquerdo  = trim($_POST['braEsquerdo'] ?? '');
+        $braDireito   = trim($_POST['braDireito'] ?? '');
+        $coxa         = trim($_POST['coxa'] ?? '');
+        $gordura      = trim($_POST['gordura'] ?? '');
+        $masMagra     = trim($_POST['masMagra'] ?? '');
+        $tmb          = trim($_POST['tmb'] ?? '');
+        $imc          = trim($_POST['imc'] ?? '');
+
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -273,12 +338,14 @@
           <i class="fas fa-user-circle"></i>
         </div>
         <div>
-          <h3 class="mb-1 fw-bold">Fernando Silva</h3>
-          <p class="mb-1 opacity-90">fernando@gmail.com</p>
-          <small class="opacity-75">ID: 123</small>
+          <h3 class="mb-1 fw-bold" id="nome-cliente" ><?php echo htmlspecialchars($aluno['NOME_ALUNO']); ?></h3>
+          <p class="mb-1 opacity-90" id="email-cliente"><?php echo htmlspecialchars($aluno['EMAIL'] ?? 'N/A'); ?></p>
+          <small class="opacity-75" id="id-cliente">ID:<?php echo htmlspecialchars($aluno['ID_ALUNO'] ?? 'N/A'); ?></small>
         </div>
       </div>
     </div>
+
+    
 
     <!-- Alertas (exemplo) -->
     <div class="alert-ficha alert-ficha-success">
@@ -288,7 +355,8 @@
 
     <!-- Card do Formulário -->
     <div class="form-card">
-      <form id="fichaForm">
+      <form id="fichaForm" method="post">
+        <input type="hidden" name="cadastro" value="criar">
         
         <!-- Dados Principais -->
         <h4 class="form-section-title">
@@ -394,7 +462,7 @@
           <div class="form-group-animated">
             <label class="form-label-ficha">TMB (kcal)</label>
             <input type="number" class="form-control-ficha" name="tmb" step="0.1" min="0">
-            <small class="helper-text">Taxa Metabólica Basal</small>
+            <small class="helper-text" >Taxa Metabólica Basal</small>
           </div>
         </div>
 

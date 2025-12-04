@@ -102,14 +102,14 @@ class AlunoDAO {
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Aluno(
-                $row['ID_ALUNO'] ?? null,
                 $row['NOME_ALUNO'],
                 $row['IDADE'],
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
                 $row['PLANO'] ?? $row['plano'] ?? null,
-                $row['SENHA'] ?? null
+                $row['SENHA'] ?? null,
+                $row['ID_ALUNO'] ?? null,
             );
         }
         return $result;
@@ -170,14 +170,14 @@ class AlunoDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new Aluno(
-                $row['ID_ALUNO'] ?? null,
                 $row['NOME_ALUNO'],
                 $row['IDADE'],
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
                 $row['plano'] ?? $row['PLANO'] ?? null,
-                $row['SENHA'] ?? null
+                $row['SENHA'] ?? null,
+                $row['ID_ALUNO'] ?? null
             );
         }
         return null;
@@ -190,6 +190,7 @@ class AlunoDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return [
+                'ID_ALUNO' => $row['ID_ALUNO'],
                 'NOME_ALUNO' => $row['NOME_ALUNO'],
                 'IDADE' => $row['IDADE'],
                 'ENDERECO_ALUNO' => $row['ENDERECO_ALUNO'],
