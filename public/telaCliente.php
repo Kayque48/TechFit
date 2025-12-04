@@ -568,7 +568,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                     <div class="form-grid">
 
                         <div class="form-group">
-                            <label class="form-label">Total de treinos realizados</label>
+                            <label cla  ss="form-label">Total de treinos realizados</label>
                             <input type="text" class="form-control-custom" value="34 treinos" disabled>
                         </div>
 
