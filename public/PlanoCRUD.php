@@ -104,26 +104,36 @@ if (isset($_GET['editar'])) {
 
         <p>
             <label for="acesso"><strong>Horário de Acesso</strong></label><br>
-            <input type="text" name="acesso" id="acesso" size="50"
-                   value="<?php echo $planoEditar ? htmlspecialchars($planoEditar->getAcesso()) : ''; ?>" 
-                   placeholder="Ex: 24h ou 06:00 às 22:00">
+            <select name="acesso" id="acesso">
+                <option value="Comercial"  <?php echo ($planoEditar && $planoEditar->getAcesso() == "Comercial") ? "selected" : ""; ?>>Comercial</option>
+
+                <option value="Estendido"  <?php echo ($planoEditar && $planoEditar->getAcesso() == "Estendido") ? "selected" : ""; ?>>Estendido</option>
+
+                <option value="24h"        <?php echo ($planoEditar && $planoEditar->getAcesso() == "24h") ? "selected" : ""; ?>>24h</option>
+            </select>
         </p>
 
         <p><strong>Recursos Inclusos:</strong></p>
         <p>
-            <label>
-                <input type="checkbox" name="maquinas" value="1" 
-                       <?php echo ($planoEditar && $planoEditar->getMaquinas()) ? 'checked' : ''; ?>>
-                Acesso às Máquinas
-            </label>
+            <label for="maquina" id="maquina"><strong>Nível de Acesso às Máquinas</strong></label>
+            <select name="maquina" id=""maquina>
+                <option value="Limitado"    <?php echo ($planoEditar && $planoEditar->getMaquinas() == "Limitado") ? "selected" : ""; ?>>Limitado</option>
+
+                <option value="Total"  <?php echo ($planoEditar && $planoEditar->getMaquinas() == "Total") ? "selected" : ""; ?>>Total</option>
+
+                <option value="Total 24/7"  <?php echo ($planoEditar && $planoEditar->getMaquinas() == "Total 24/7") ? "selected" : ""; ?>>Total 24/7</option>
+            </select>
         </p>
 
         <p>
-            <label>
-                <input type="checkbox" name="aulasGrupo" value="1" 
-                       <?php echo ($planoEditar && $planoEditar->getAulas_grupo()) ? 'checked' : ''; ?>>
-                Aulas em Grupo
-            </label>
+            <label><strong>Aluas em Grupo</strong></label>
+            <select name="aulasGrupo" id="aulasGrupo">
+                <option value="1 aula por semana"    <?php echo ($planoEditar && $planoEditar->getAulasGrupo() == "1 aula por semana") ? "selected" : ""; ?>>1 aula por semana</option>
+
+                <option value="3 aulas por semana"  <?php echo ($planoEditar && $planoEditar->getAulasGrupo() == "3 aulas por semana") ? "selected" : ""; ?>>3 aulas por semana</option>
+
+                <option value="Ilimitado"  <?php echo ($planoEditar && $planoEditar->getAulasGrupo() == "Ilimitado") ? "selected" : ""; ?>>Ilimitado</option>
+            </select>
         </p>
 
         <p>
@@ -188,8 +198,8 @@ if (isset($_GET['editar'])) {
                         echo "<td>" . htmlspecialchars($plano->getId()) . "</td>";
                         echo "<td><strong>" . htmlspecialchars($plano->getTipoPlano()) . "</strong></td>";
                         echo "<td>" . htmlspecialchars($plano->getDescricao()) . "</td>";
-                        echo "<td>" . ($plano->getMaquinas() ? '✓' : '✗') . "</td>";
-                        echo "<td>" . ($plano->getAulasGrupo() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . ($plano->getMaquinas()) . "</td>";
+                        echo "<td>" . ($plano->getAulasGrupo()) . "</td>";
                         echo "<td>" . ($plano->getTreinamentos() ? '✓' : '✗') . "</td>";
                         echo "<td>" . ($plano->getConsultoria() ? '✓' : '✗') . "</td>";
                         echo "<td>" . ($plano->getAvaliacao() ? '✓' : '✗') . "</td>";
