@@ -74,7 +74,7 @@ class AlunoDAO {
         $this->ensureColumnExists('SENHA', 'VARCHAR(255) DEFAULT NULL');
 
         $stmt = $this->conn->prepare("
-            INSERT INTO Alunos (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, plano, senha)
+            INSERT INTO Alunos (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, FK_PLANO, senha)
             VALUES (:nome, :idade, :endereco, :telefone, :email, :plano, :senha)
         ");
         $stmt->execute([
@@ -107,7 +107,7 @@ class AlunoDAO {
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
-                $row['PLANO'] ?? $row['plano'] ?? null,
+                $row['FK_PLANO'] ?? $row['plano'] ?? null,
                 $row['SENHA'] ?? null,
                 $row['ID_ALUNO'] ?? null,
             );
@@ -119,7 +119,7 @@ class AlunoDAO {
     public function atualizarAluno($nomeOriginal, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
-            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, plano = :plano
+            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, fk_plano = :plano
             WHERE NOME_ALUNO = :nomeOriginal
         ");
         $stmt->execute([
@@ -137,7 +137,7 @@ class AlunoDAO {
     public function atualizarAlunoPorId($id, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
-            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, plano = :plano
+            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_PLANO = :plano
             WHERE ID = :id
         ");
         $stmt->execute([
@@ -175,7 +175,7 @@ class AlunoDAO {
                 $row['ENDERECO_ALUNO'],
                 $row['TELEFONE'],
                 $row['EMAIL'],
-                $row['plano'] ?? $row['PLANO'] ?? null,
+                $row['FK_PLANO'] ?? null,
                 $row['SENHA'] ?? null,
                 $row['ID_ALUNO'] ?? null
             );
@@ -196,7 +196,7 @@ class AlunoDAO {
                 'ENDERECO_ALUNO' => $row['ENDERECO_ALUNO'],
                 'TELEFONE' => $row['TELEFONE'],
                 'EMAIL' => $row['EMAIL'],
-                'PLANO' => $row['Plano'],
+                'FK_PLANO' => $row['FK_PLANO'] ?? null,
                 'SENHA' => $row['SENHA'] ?? null
             ];
         }
@@ -228,7 +228,7 @@ class AlunoDAO {
 
     // ATUALIZAR PLANO
     public function atualizarPlano($email, $plano) {
-        $stmt = $this->conn->prepare("UPDATE Alunos SET plano = :plano WHERE EMAIL = :email");
+        $stmt = $this->conn->prepare("UPDATE Alunos SET fk_plano = :plano WHERE EMAIL = :email");
         $stmt->execute([
             ':plano' => $plano,
             ':email' => $email

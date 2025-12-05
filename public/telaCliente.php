@@ -10,6 +10,7 @@ if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
 // Importar os controllers
 require_once __DIR__ . '/../src/controllers/AlunoController.php';
 require_once __DIR__ . '/../src/controllers/FisicoController.php';
+require_once __DIR__ . '/../src/controllers/PlanoController.php';
 
 $controllerAluno = new AlunoController();
 $controllerFisico = new FisicoController();
@@ -27,7 +28,7 @@ if (!$aluno) {
 $id = $aluno['ID_ALUNO'] ?? null;
 
 // Usar o email do aluno
-$Alunoemail = $_SESSION['aluno_email'];
+$Alunoemail = $_SESSION['email'];
 
 // Processar atualização do plano
 $mensagemPlano = '';

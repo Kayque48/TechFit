@@ -10,7 +10,7 @@
         private $plano;
         private $senha;
 
-        public function __construct ($nome, $idade, $endereco, $telefone, $email, $plano, $senha = null, $id  = '') {
+        public function __construct ($nome, $idade, $endereco, $telefone, $email, $plano = '', $senha = null, $id  = '') {
             $this->setNome($nome);
             $this->setIdade($idade);
             $this->setEnder($endereco);

@@ -43,7 +43,7 @@
                             $endereco,
                             $telefone,
                             $email,
-                            '', // plano será escolhido após login
+                            null, // plano será escolhido após login
                             $senhaHash
                         );
                         
