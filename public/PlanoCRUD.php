@@ -1,78 +1,217 @@
 <?php
 
-require_once '../src/controllers/PlanoController.php';
+require_once __DIR__ . '/../src/controllers/PlanoController.php';
 $controller = new PlanoController();
+
+$mensagem = '';
+$tipoMensagem = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $acao = $_POST['acao'] ?? null;
-    if ($acao == 'criar') {
-        $controller->criar(
-            $_POST['tipoPlano'],
-            $_POST['duracaoMes'],
-            $_POST['preco']
-        );
-    } elseif ($acao === 'deletar') {
-        $controller->excluir($_POST['nome']);
-    } elseif ($acao === 'editar') {
-        $controller->atualizar(
-            $_POST['id'],
-            $_POST['tipoPlano'],
-            $_POST['duracaoMes'],
-            $_POST['preco']
-        );
+    
+    try {
+        if ($acao == 'criar') {
+            $controller->criar(
+                $_POST['tipoPlano'],
+                $_POST['descricao'],
+                isset($_POST['maquinas']) ? 1 : 0,
+                isset($_POST['aulasGrupo']) ? 1 : 0,
+                isset($_POST['treinamentos']) ? 1 : 0,
+                isset($_POST['consultoria']) ? 1 : 0,
+                isset($_POST['avaliacao']) ? 1 : 0,
+                $_POST['acesso'],
+                $_POST['preco']
+            );
+            $mensagem = '✓ Plano criado com sucesso!';
+            $tipoMensagem = 'sucesso';
+        } elseif ($acao === 'deletar') {
+            $controller->excluir($_POST['id']);
+            $mensagem = '✓ Plano excluído com sucesso!';
+            $tipoMensagem = 'sucesso';
+        } elseif ($acao === 'editar') {
+            $controller->atualizar(
+                $_POST['id'],
+                $_POST['tipoPlano'],
+                $_POST['descricao'],
+                isset($_POST['maquinas']) ? 1 : 0,
+                isset($_POST['aulasGrupo']) ? 1 : 0,
+                isset($_POST['treinamentos']) ? 1 : 0,
+                isset($_POST['consultoria']) ? 1 : 0,
+                isset($_POST['avaliacao']) ? 1 : 0,
+                $_POST['acesso'],
+                $_POST['preco']
+            );
+            $mensagem = '✓ Plano atualizado com sucesso!';
+            $tipoMensagem = 'sucesso';
+        }
+    } catch (Exception $e) {
+        $mensagem = '✗ Erro: ' . $e->getMessage();
+        $tipoMensagem = 'erro';
     }
+}
+
+$planoEditar = null;
+if (isset($_GET['editar'])) {
+    $planoEditar = $controller->buscarPorId($_GET['editar']);
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Debug CRUD Planos</title>
 </head>
 <body>
+    <h1>🏋️ Debug CRUD - Gestão de Planos</h1>
+    
+    <p><strong>ℹ️ Informação:</strong> Esta é uma página de debug para testar todas as operações CRUD dos planos da academia.</p>
 
-    <h1>Cadastrar Plano</h1>
+    <?php if ($mensagem): ?>
+        <p style="padding: 10px; background-color: <?php echo $tipoMensagem === 'sucesso' ? '#d4edda' : '#f8d7da'; ?>; border: 1px solid <?php echo $tipoMensagem === 'sucesso' ? '#c3e6cb' : '#f5c6cb'; ?>;">
+            <?php echo $mensagem; ?>
+        </p>
+    <?php endif; ?>
+
+    <hr>
+
+    <h2><?php echo $planoEditar ? '✏️ Editar Plano' : '➕ Cadastrar Novo Plano'; ?></h2>
     <form action="" method="post">
-        <input type="text" name="acao" value="criar">
+        <input type="hidden" name="acao" value="<?php echo $planoEditar ? 'editar' : 'criar'; ?>">
+        <?php if ($planoEditar): ?>
+            <input type="hidden" name="id" value="<?php echo $planoEditar->getId(); ?>">
+        <?php endif; ?>
 
-        <label for="Tipo do Plano">Nome Plano</label>
-        <input type="text" name="tipoPlano" required>
+        <p>
+            <label for="tipoPlano"><strong>Tipo do Plano *</strong></label><br>
+            <input type="text" name="tipoPlano" id="tipoPlano" size="50"
+                   value="<?php echo $planoEditar ? htmlspecialchars($planoEditar->getTipoPlano()) : ''; ?>" 
+                   required>
+        </p>
 
-        <label for="Duração em Meses"></label>
-        <input type="number" name="duracaoMes" required>
+        <p>
+            <label for="descricao"><strong>Descrição</strong></label><br>
+            <textarea name="descricao" id="descricao" rows="3" cols="50"><?php echo $planoEditar ? htmlspecialchars($planoEditar->getDescricao()) : ''; ?></textarea>
+        </p>
 
-        <label for="Preço"></label>
-        <input type="number" step="0.01" name="preco" required>
-        <button type="submit">Cadastrar Plano</button>
+        <p>
+            <label for="preco"><strong>Preço (R$) *</strong></label><br>
+            <input type="number" step="0.01" name="preco" id="preco" 
+                   value="<?php echo $planoEditar ? htmlspecialchars($planoEditar->getPreco()) : ''; ?>" 
+                   required>
+        </p>
+
+        <p>
+            <label for="acesso"><strong>Horário de Acesso</strong></label><br>
+            <input type="text" name="acesso" id="acesso" size="50"
+                   value="<?php echo $planoEditar ? htmlspecialchars($planoEditar->getAcesso()) : ''; ?>" 
+                   placeholder="Ex: 24h ou 06:00 às 22:00">
+        </p>
+
+        <p><strong>Recursos Inclusos:</strong></p>
+        <p>
+            <label>
+                <input type="checkbox" name="maquinas" value="1" 
+                       <?php echo ($planoEditar && $planoEditar->getMaquinas()) ? 'checked' : ''; ?>>
+                Acesso às Máquinas
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" name="aulasGrupo" value="1" 
+                       <?php echo ($planoEditar && $planoEditar->getAulas_grupo()) ? 'checked' : ''; ?>>
+                Aulas em Grupo
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" name="treinamentos" value="1" 
+                       <?php echo ($planoEditar && $planoEditar->getTreinamentos()) ? 'checked' : ''; ?>>
+                Treinamentos Personalizados
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" name="consultoria" value="1" 
+                       <?php echo ($planoEditar && $planoEditar->getConsultoria()) ? 'checked' : ''; ?>>
+                Consultoria Nutricional
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input type="checkbox" name="avaliacao" value="1" 
+                       <?php echo ($planoEditar && $planoEditar->getAvaliacao()) ? 'checked' : ''; ?>>
+                Avaliação Física
+            </label>
+        </p>
+
+        <p>
+            <button type="submit"><?php echo $planoEditar ? 'Atualizar Plano' : 'Cadastrar Plano'; ?></button>
+            <?php if ($planoEditar): ?>
+                <a href="?">Cancelar</a>
+            <?php endif; ?>
+        </p>
     </form>
 
-    <table>
-        <th>
-            <tr>
-                <td>ID</td>
-                <td>Tipo do Plano</td>
-                <td>Duração em Meses</td>
-                <td>Preço</td>
+    <hr>
+
+    <h2>📋 Lista de Planos Cadastrados</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr style="background-color: #f0f0f0;">
+                <th>ID</th>
+                <th>Tipo do Plano</th>
+                <th>Descrição</th>
+                <th>Máquinas</th>
+                <th>Aulas Grupo</th>
+                <th>Treinamentos</th>
+                <th>Consultoria</th>
+                <th>Avaliação</th>
+                <th>Acesso</th>
+                <th>Preço</th>
+                <th>Ações</th>
             </tr>
-        </th>
+        </thead>
         <tbody>
             <?php
                 $planos = $controller->ler();
-                foreach ($planos as $plano) {
-                    echo "<tr>";
-                    echo "<td>" . htmlspecialchars($plano->getId()) . "</td>";
-                    echo "<td>" . htmlspecialchars($plano->getTipoPlano()) . "</td>";
-                    echo "<td>" . htmlspecialchars($plano->getDuracaoMes()) . "</td>";
-                    echo "<td>" . htmlspecialchars($plano->getPreco()) . "</td>";
-                    echo "</tr>";
+                if (empty($planos)) {
+                    echo "<tr><td colspan='11' style='text-align: center;'>Nenhum plano cadastrado ainda.</td></tr>";
+                } else {
+                    foreach ($planos as $plano) {
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($plano->getId()) . "</td>";
+                        echo "<td><strong>" . htmlspecialchars($plano->getTipoPlano()) . "</strong></td>";
+                        echo "<td>" . htmlspecialchars($plano->getDescricao()) . "</td>";
+                        echo "<td>" . ($plano->getMaquinas() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . ($plano->getAulasGrupo() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . ($plano->getTreinamentos() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . ($plano->getConsultoria() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . ($plano->getAvaliacao() ? '✓' : '✗') . "</td>";
+                        echo "<td>" . htmlspecialchars($plano->getAcesso()) . "</td>";
+                        echo "<td>R$ " . number_format($plano->getPreco(), 2, ',', '.') . "</td>";
+                        echo "<td>";
+                        echo "<a href='?editar=" . $plano->getId() . "'>Editar</a> | ";
+                        echo "<form action='' method='post' style='display: inline;' onsubmit='return confirm(\"Tem certeza que deseja excluir este plano?\")'>";
+                        echo "<input type='hidden' name='acao' value='deletar'>";
+                        echo "<input type='hidden' name='id' value='" . $plano->getId() . "'>";
+                        echo "<button type='submit' style='color: red; background: none; border: none; cursor: pointer; text-decoration: underline;'>Excluir</button>";
+                        echo "</form>";
+                        echo "</td>";
+                        echo "</tr>";
+                    }
                 }
             ?>
         </tbody>
     </table>
 
-
+    <hr>
+    <p><small>Debug CRUD - Versão 1.0 | Total de planos: <?php echo count($planos ?? []); ?></small></p>
     
 </body>
 </html>

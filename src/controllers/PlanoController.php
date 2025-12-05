@@ -15,8 +15,19 @@ class PlanoController {
         return $this->dao->lerPlanos();
     }
 
-    public function criar($tipoPlano, $duracaoMes, $preco) {
-        $plano = new Plano($tipoPlano, $duracaoMes, $preco);
+    public function criar($tipoPlano, $descricao, $maquinas, $aulasGrupo, $treinamentos, $consultoria, $avaliacao, $acesso, $preco) {
+        $plano = new Plano(
+            null, // ID será gerado pelo banco
+            $tipoPlano,
+            $descricao,
+            $maquinas,
+            $aulasGrupo,
+            $treinamentos,
+            $consultoria,
+            $avaliacao,
+            $acesso,
+            $preco
+        );
         $this->dao->criarPlano($plano);
     }
 
@@ -24,8 +35,19 @@ class PlanoController {
         $this->dao->excluirPlano($id);
     }
 
-    public function atualizar($id, $tipoPlano, $duracaoMes, $preco) {
-        $this->dao->atualizarPlano($id, $tipoPlano, $duracaoMes, $preco);
+    public function atualizar($id, $tipoPlano, $descricao, $maquinas, $aulasGrupo, $treinamentos, $consultoria, $avaliacao, $acesso, $preco) {
+        $this->dao->atualizarPlano(
+            $id,
+            $tipoPlano,
+            $descricao,
+            $maquinas,
+            $aulasGrupo,
+            $treinamentos,
+            $consultoria,
+            $avaliacao,
+            $acesso,
+            $preco
+        );
     }
 
     public function buscarPorId($id) {

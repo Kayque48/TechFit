@@ -18,7 +18,7 @@
             $this->setTipoPlano($tipoPlano);
             $this->setDescricao($descricao);
             $this->setMaquinas($maquinas);
-            $this->setAulas_grupo($aluasGrupo);
+            $this->setAulasGrupo($aluasGrupo);
             $this->setTreinamentos($treinamentos);
             $this->setConsultoria($consultoria);
             $this->setavaliacao($avaliacao);
@@ -58,11 +58,11 @@
             return $this->maquinas;
         }
 
-        public function setAulas_grupo ($aulasGrupo) {
+        public function setAulasGrupo ($aulasGrupo) {
             $this->aulasGrupo = $aulasGrupo;
         }
 
-        public function getAulas_grupo () {
+        public function getAulasGrupo () {
             return $this->aulasGrupo;
         }
 
