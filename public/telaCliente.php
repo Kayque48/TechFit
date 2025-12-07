@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+$idade = $_SESSION['idade'];
+
 // Verificar se o usuário está logado
 if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
     header('Location: loginCliente.php');
@@ -102,7 +104,7 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientYear">Idade:</label>
-                                    <p id="idade-cliente"><?php echo htmlspecialchars($aluno['IDADE'] ?? 'N/A'); ?></p>
+                                    <p id="idade-cliente"><?php echo htmlspecialchars($idade ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientOld">Endereço:</label>

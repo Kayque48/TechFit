@@ -15,17 +15,17 @@
             return $this->dao->lerAlunos();
         }
 
-        public function criar($nome, $idade, $endereco, $telefone, $email, $plano, $senhaHash = null) {
-            $aluno = new Aluno( $nome, $idade, $endereco, $telefone, $email, $plano, $senhaHash);
+        public function criar($nome, $dataNasc, $endereco, $telefone, $email, $plano, $senhaHash = null) {
+            $aluno = new Aluno( $nome, $dataNasc, $endereco, $telefone, $email, $plano, $senhaHash);
             $this->dao->criarAluno($aluno);
         }
 
         public function excluir($nome) {
             $this->dao->excluirAluno($nome);
         }
-
-        public function atualizar($nome, $novoNome, $novaIdade, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano) {
-            $this->dao->atualizarAluno($nome, $novoNome, $novaIdade, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano);
+        
+        public function atualizar($nome, $novoNome, $novoDataNasc, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano) {
+            $this->dao->atualizarAluno($nome, $novoNome, $novoDataNasc, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano);
         }
 
         public function buscarPorEmail($email) {

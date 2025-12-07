@@ -3,16 +3,16 @@
     class Aluno {
         private $id;
         private $nome;
-        private $idade;
+        private $dataNasc;
         private $endereco;
         private $telefone;
         private $email;
         private $plano;
         private $senha;
 
-        public function __construct ($nome, $idade, $endereco, $telefone, $email, $plano = '', $senha = null, $id  = '') {
+        public function __construct ($nome, $dataNasc, $endereco, $telefone, $email, $plano = '', $senha = null, $id  = '') {
             $this->setNome($nome);
-            $this->setIdade($idade);
+            $this->setDataNasc($dataNasc);
             $this->setEnder($endereco);
             $this->setTelef($telefone);
             $this->setEmail($email);
@@ -29,8 +29,8 @@
             $this->nome = $nome;
         }
 
-        public function setIdade ($idade) {
-            $this->idade = $idade;
+        public function setdataNasc ($dataNasc) {
+            $this->dataNasc = $dataNasc;
         }
 
         public function setEnder ($endereco) {
@@ -61,8 +61,8 @@
             return $this->nome;
         }
 
-        public function getIdade () {
-            return $this->idade;
+        public function getDataNasc () {
+            return $this->dataNasc;
         }
 
         public function getEndereco () {

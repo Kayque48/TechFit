@@ -75,11 +75,11 @@ class AlunoDAO {
 
         $stmt = $this->conn->prepare("
             INSERT INTO Alunos (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, FK_PLANO, senha)
-            VALUES (:nome, :idade, :endereco, :telefone, :email, :plano, :senha)
+            VALUES (:nome, :dataNasc, :endereco, :telefone, :email, :plano, :senha)
         ");
         $stmt->execute([
             ':nome' => $Aluno->getNome(),
-            ':idade' => $Aluno->getIdade(),
+            ':dataNasc' => $Aluno->getDataNasc(),
             ':endereco' => $Aluno->getEndereco(),
             ':telefone' => $Aluno->getTelefone(),
             ':email' => $Aluno->getEmail(),
@@ -116,15 +116,15 @@ class AlunoDAO {
     }
 
     // UPDATE by nome (mantido por compatibilidade)
-    public function atualizarAluno($nomeOriginal, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
+    public function atualizarAluno($nomeOriginal, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano) {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
-            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, fk_plano = :plano
+            SET NOME_ALUNO = :novoNome, IDADE = :dataNasc, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, fk_plano = :plano
             WHERE NOME_ALUNO = :nomeOriginal
         ");
         $stmt->execute([
             ':novoNome' => $novoNome,
-            ':idade' => $idade,
+            ':dataNasc' => $dataNasc,
             ':endereco' => $endereco,
             ':telefone' => $telefone,
             ':email' => $email,
@@ -134,15 +134,15 @@ class AlunoDAO {
     }
 
     // UPDATE by ID (recomendado)
-    public function atualizarAlunoPorId($id, $novoNome, $idade, $endereco, $telefone, $email, $plano) {
+    public function atualizarAlunoPorId($id, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano) {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
-            SET NOME_ALUNO = :novoNome, IDADE = :idade, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_PLANO = :plano
+            SET NOME_ALUNO = :novoNome, IDADE = :dataNasc, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_PLANO = :plano
             WHERE ID = :id
         ");
         $stmt->execute([
             ':novoNome' => $novoNome,
-            ':idade' => $idade,
+            ':dataNasc' => $dataNasc,
             ':endereco' => $endereco,
             ':telefone' => $telefone,
             ':email' => $email,
