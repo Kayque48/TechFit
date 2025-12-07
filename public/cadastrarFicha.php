@@ -12,6 +12,8 @@ require_once __DIR__ . '/../src/controllers/FisicoController.php';
 
 $controllerAluno = new AlunoController();
 $controllerFisico = new FisicoController();
+$dataHoje = date('d/m/Y'); // Formata a data de hoje
+
 
 // Buscar dados do aluno logado
 $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
@@ -70,6 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Flatpickr -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+  <!-- Estilos do Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <title>Cadastro de Ficha - TechFit</title>
   
   <style>
@@ -370,7 +378,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
               <i class="fas fa-calendar"></i>
               Data da Avaliação *
             </label>
-            <input type="date" class="form-control-ficha" name="data" required>
+            <div style="position: relative;">
+              <input 
+                type="text" 
+                class="form-control-ficha" 
+                id="data" 
+                name="data" 
+                placeholder="00/00/0000"
+                autocomplete="off"
+                maxlength="10"
+                value="<?php echo $dataHoje; ?>" 
+                required
+              >
+              <i class="fas fa-calendar-alt" id="calendar-icon-data" 
+                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6c757d;"></i>
+            </div>
           </div>
 
           <div class="form-group-animated">
@@ -553,6 +575,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
         this.parentElement.style.transform = 'translateY(0)';
       });
     });
+  </script>
+
+  <script>
+    // Formatação automática da data
+    const dataInput = document.getElementById('data');
+    const dataIcon = document.getElementById('calendar-icon-data');
+    
+    dataInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      
+      if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2);
+      }
+      if (value.length >= 5) {
+        value = value.substring(0, 5) + '/' + value.substring(5, 9);
+      }
+      
+      e.target.value = value;
+    });
+    
+    // Inicializa flatpickr para data
+    const dataPicker = flatpickr("#data", {
+      dateFormat: "d/m/Y",
+      allowInput: true,
+      locale: "pt",
+      maxDate: new Date(),
+    });
+    
+    // Abre calendário ao clicar no ícone
+    dataIcon.addEventListener('click', function() {
+      dataPicker.open();
+    });
+
+     // Formatação automática com "/"
+    input.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
+      
+      if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2);
+      }
+      if (value.length >= 5) {
+        value = value.substring(0, 5) + '/' + value.substring(5, 9);
+      }
+      
+      e.target.value = value;
+    });
+    
+    // Inicializa flatpickr
+    const picker = flatpickr("#dataNasc", {
+      dateFormat: "d/m/Y",
+      allowInput: true,
+      locale: "pt",
+      minDate: "01/01/1900",
+      maxDate: new Date(),
+    });
+    
+    // Abre calendário ao clicar no ícone
+    icon.addEventListener('click', function() {
+      picker.open();
+    });
+
+    // Formatação automática de telefone
+    const telefoneInput = document.getElementById('telefone');
+
+    telefoneInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
+      
+      if (value.length <= 10) {
+        // Formato: (00) 0000-0000
+        if (value.length >= 2) {
+          value = '(' + value.substring(0, 2) + ') ' + value.substring(2);
+        }
+        if (value.length >= 10) {
+          value = value.substring(0, 10) + '-' + value.substring(10, 14);
+        }
+      } else {
+        // Formato: (00) 00000-0000
+        value = '(' + value.substring(0, 2) + ') ' + value.substring(2, 7) + '-' + value.substring(7, 11);
+      }
+      
+      e.target.value = value;
+    });
+
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
