@@ -16,7 +16,7 @@ class FisicoDAO {
     public function criarAvaliacao(Fisico $fisico) {
         $stmt = $this->conn->prepare("
             INSERT INTO AVALIACOES_FISICAS (DATA_AVALIACAO, PESO, ALTURA, PEITORAL, CINTURA, QUADRIL, BRAÇO_ESQUERDO, BRAÇO_DIREITO, COXA, GORDURA_CORPORAL, MASSA_MEGRA, TMB, IMC, FK_ALUNO)
-            VALUES (:data, :peso, :altura, :peitoral, :cintura, :quadril, :braEsquerdo, :braDireito, :coxa, :gordura, :masMagra, :tmb, :imc, :fkAluno)
+            VALUES (:data, :peso, :altura, :peitoral, :cintura, :quadril, :braEsquerdo, :braDireito, :coxa, :gordura, :masMagra, :tmb, :imc :idAluno)
         ");
         $stmt->execute([
             ':data' => $fisico->getData(),
@@ -32,7 +32,7 @@ class FisicoDAO {
             ':masMagra' => $fisico->getMasMagra(),
             ':tmb' => $fisico->getTmb(),
             ':imc' => $fisico->getImc(),
-            ':fkAluno' => $fisico->getFkAluno(),
+            ':idAluno' => $fisico->getIdAluno()
         ]);
     }
 
@@ -55,8 +55,7 @@ class FisicoDAO {
                 $row['MASSA_MEGRA'],
                 $row['TMB'],
                 $row['IMC'],
-                $row['FK_ALUNO'],
-                $row['ID_AVALIACAO']
+                $row['FK_ALUNO']
             );
         }
         return $result;
@@ -64,8 +63,8 @@ class FisicoDAO {
 
     // READ - Avaliações por ID do aluno
     public function buscarPorIdAluno($idAluno) {
-        $stmt = $this->conn->prepare("SELECT * FROM AVALIACOES_FISICAS WHERE FK_ALUNO = :fkAluno ORDER BY DATA_AVALIACAO DESC");
-        $stmt->execute([':fkAluno' => $idAluno]);
+        $stmt = $this->conn->prepare("SELECT * FROM AVALIACOES_FISICAS WHER =  ORDER BY DATA_AVALIACAO DESC");
+        $stmt->execute(['' => $idAluno]);
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Fisico(
@@ -82,8 +81,7 @@ class FisicoDAO {
                 $row['MASSA_MEGRA'],
                 $row['TMB'],
                 $row['IMC'],
-                $row['FK_ALUNO'],
-                $row['ID_AVALIACAO']
+                $row['FK_ALUNO']
             );
         }
         return $result;
@@ -110,7 +108,7 @@ class FisicoDAO {
                 $row['TMB'],
                 $row['IMC'],
                 $row['FK_ALUNO'],
-                $row['ID_AVALIACAO']
+                id: $row['ID_AVALIACAO']
             );
         }
         return null;
@@ -132,7 +130,8 @@ class FisicoDAO {
                 GORDURA_CORPORAL = :gordura, 
                 MASSA_MEGRA = :masMagra, 
                 TMB = :tmb, 
-                IMC = :imc
+                IMC = :imc,
+                FK_ALUNO = :idAluno,
             WHERE ID_AVALIACAO = :id
         ");
         $stmt->execute([
@@ -149,7 +148,8 @@ class FisicoDAO {
             ':masMagra' => $fisico->getMasMagra(),
             ':tmb' => $fisico->getTmb(),
             ':imc' => $fisico->getImc(),
-            ':id' => $fisico->getId(),
+            ':idAluno' => $fisico->getIdAluno(),
+            ':id' => $fisico->getId()
         ]);
     }
 
@@ -161,8 +161,8 @@ class FisicoDAO {
 
     // BUSCAR POR DATA E ID_ALUNO (alternativa)
     public function buscarPorDataEAluno($data, $idAluno) {
-        $stmt = $this->conn->prepare("SELECT * FROM AVALIACOES_FISICAS WHERE DATA_AVALIACAO = :data AND FK_ALUNO = :fkAluno LIMIT 1");
-        $stmt->execute([':data' => $data, ':fkAluno' => $idAluno]);
+        $stmt = $this->conn->prepare("SELECT * FROM AVALIACOES_FISICAS WHERE DATA_AVALIACAO = :data AN =  LIMIT 1");
+        $stmt->execute([':data' => $data, '' => $idAluno]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new Fisico(
@@ -180,7 +180,7 @@ class FisicoDAO {
                 $row['TMB'],
                 $row['IMC'],
                 $row['FK_ALUNO'],
-                $row['ID_AVALIACAO']
+                id: $row['ID_AVALIACAO']
             );
         }
         return null;

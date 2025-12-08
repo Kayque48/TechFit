@@ -45,10 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
         }
     }
 }
-
-// Buscar ficha de avaliação física (mais recente)
-$fichas = !empty($email) ? $controllerFisico->lerPorIdAluno($id) : [];
-$fichaRecente = !empty($fichas) ? $fichas[0] : null;
 ?>
 
 <!DOCTYPE html>
@@ -599,6 +595,11 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
             </div>
 
             <div class="product-form-container">
+                <?php
+                // Buscar ficha de avaliação física (mais recente)
+                $fichas = !empty($email) ? $controllerFisico->lerPorIdAluno($id) : [];
+                $fichaRecente = !empty($fichas) ? $fichas[0] : null;
+                ?>
 
                 <!-- Tabela com dados do banco -->
                 <div class="form-section">
@@ -733,6 +734,13 @@ $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                     </a>
                 </div>
             </div>
+            <!-- Mensagem de sucesso da ficha -->
+            <?php if (isset($_GET['ficha']) && $_GET['ficha'] === 'sucesso'): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i> Ficha de avaliação cadastrada com sucesso!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php endif; ?>
         </div>
         </main>
         </div>

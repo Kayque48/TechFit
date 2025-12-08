@@ -27,14 +27,14 @@
         }
 
         // CREATE
-        public function criar($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $fkAluno) {
-            $fisico = new Fisico($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $fkAluno);
+        public function criar($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $idAluno) {
+            $fisico = new Fisico($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $idAluno);
             $this->dao->criarAvaliacao($fisico);
         }
 
         // UPDATE
-        public function atualizar($id, $data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc) {
-            $fisico = new Fisico($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, null, $id);
+        public function atualizar($id, $data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $aluno) {
+            $fisico = new Fisico($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $aluno,);
             $this->dao->atualizarAvaliacao($fisico);
         }
 

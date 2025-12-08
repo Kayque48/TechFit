@@ -15,10 +15,10 @@
         private $masMagra;
         private $tmb;
         private $imc;
-        private $fkAluno;
+        private $idAluno;
 
-        public function __construct ($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $fkAluno = null, $id = null) {
-            $this->id = $id;
+        public function __construct ($data, $peso, $altura, $peitoral, $cintura, $quadril, $braEsquerdo, $braDireito, $coxa, $gordura, $masMagra, $tmb, $imc, $idAluno = null, $id = null) {
+            $this->setId($id);
             $this->setData($data);
             $this->setPeso($peso);
             $this->setAltura($altura);
@@ -32,7 +32,8 @@
             $this->setMasMagra($masMagra);
             $this->setTmb($tmb);
             $this->setImc($imc);
-            $this->fkAluno = $fkAluno;
+            $this->setIdAluno($idAluno);
+        ;
         }
 
         public function getId () {
@@ -42,15 +43,6 @@
         public function setId ($id) {
             $this->id = $id;
         }
-
-        public function getFkAluno () {
-            return $this->fkAluno;
-        }
-
-        public function setFkAluno ($fkAluno) {
-            $this->fkAluno = $fkAluno;
-        }
-
         public function setData ($data) {
             $this->data = $data;
         }
@@ -103,6 +95,10 @@
             $this->imc = $imc;
         }
 
+        public function setIdAluno($idAluno) {
+            $this->idAluno = $idAluno;
+        }
+
         public function getData () {
             return $this->data;
         }
@@ -153,5 +149,9 @@
 
         public function getImc () {
             return $this->imc;
+        }
+
+        public function getIdAluno() {
+            return $this->idAluno;
         }
     }

@@ -45,21 +45,63 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
-    if ($_POST['cadastro'] == 'criar') {
-        // Validação básica
-        $data         = trim($_POST['data'] ?? '');
-        $peso         = trim($_POST['peso'] ?? '');
-        $altura       = trim($_POST['altura'] ?? '');
-        $peitoral     = trim($_POST['peitoral'] ?? '');
-        $cintura      = trim($_POST['cintura'] ?? '');
-        $quadril      = trim($_POST['quadril'] ?? '');
-        $braEsquerdo  = trim($_POST['braEsquerdo'] ?? '');
-        $braDireito   = trim($_POST['braDireito'] ?? '');
-        $coxa         = trim($_POST['coxa'] ?? '');
-        $gordura      = trim($_POST['gordura'] ?? '');
-        $masMagra     = trim($_POST['masMagra'] ?? '');
-        $tmb          = trim($_POST['tmb'] ?? '');
-        $imc          = trim($_POST['imc'] ?? '');
+  if ($_POST['cadastro'] == 'criar') {
+    // Validação básica
+    $data         = trim($_POST['data'] ?? '');
+    $peso         = trim($_POST['peso'] ?? '');
+    $altura       = trim($_POST['altura'] ?? '');
+    $peitoral     = trim($_POST['peitoral'] ?? '');
+    $cintura      = trim($_POST['cintura'] ?? '');
+    $quadril      = trim($_POST['quadril'] ?? '');
+    $braEsquerdo  = trim($_POST['braEsquerdo'] ?? '');
+    $braDireito   = trim($_POST['braDireito'] ?? '');
+    $coxa         = trim($_POST['coxa'] ?? '');
+    $gordura      = trim($_POST['gordura'] ?? '');
+    $masMagra     = trim($_POST['masMagra'] ?? '');
+    $tmb          = trim($_POST['tmb'] ?? '');
+    $imc          = trim($_POST['imc'] ?? '');
+
+    // Converter data de dd/mm/yyyy para yyyy-mm-dd
+    $dataObj = DateTime::createFromFormat('d/m/Y', $data);
+    if ($dataObj) {
+        $data = $dataObj->format('Y-m-d');
+    }
+
+      // Criar a ficha
+      try {
+          $controllerFisico->criar(
+              $data,
+              floatval($peso),
+              floatval($altura),
+              floatval($peitoral),
+              floatval($cintura),
+              floatval($quadril),
+              floatval($braEsquerdo),
+              floatval($braDireito),
+              floatval($coxa),
+              floatval($gordura),
+              floatval($masMagra),
+              floatval($tmb),
+              floatval($imc),
+              $id
+          );
+
+          // INSERE A AVALIAÇÃO
+          $sql = "INSERT INTO avaliacoes_fisica (data, peso, altura, ...) VALUES (?, ?, ?, ...)";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute([...]);
+
+          // PEGA O ID DA AVALIAÇÃO
+          $idAvaliacao = $conn->insert_id;
+
+          // ATUALIZA O ALUNO COM A FK
+          $conn->query("UPDATE AVALICOES_FISICAS SET FK_ALUNO = $id");
+          
+          $sucesso = true;
+
+      } catch (Exception $e) {
+          $erro = "Erro ao criar ficha: " . $e->getMessage();
+      }
 
     }
 }
@@ -338,6 +380,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
 
   <!-- Simulação do conteúdo (substitua pelo PHP real) -->
   <div class="ficha-container">
+
+    <?php if (isset($sucesso) && $sucesso): ?>
+    <div class="alert-ficha alert-ficha-success">
+      <i class="fas fa-check-circle fa-lg"></i>
+      <span>Ficha de avaliação criada com sucesso! Redirecionando em <span id="countdown">4</span> segundos...</span>
+    </div>
+    <script>
+      let segundos = 4;
+      const countdownEl = document.getElementById('countdown');
+      const intervalo = setInterval(() => {
+        segundos--;
+        countdownEl.textContent = segundos;
+        if (segundos <= 0) {
+          clearInterval(intervalo);
+          window.location.href = 'telaCliente.php';
+        }
+      }, 1000);
+    </script>
+    <?php endif; ?>
+
+    <?php if (isset($erro)): ?>
+    <div class="alert-ficha alert-ficha-danger">
+      <i class="fas fa-exclamation-circle fa-lg"></i>
+      <span><?php echo htmlspecialchars($erro); ?></span>
+    </div>
+
+    $aluno
+    <?php endif; ?>
     
     <!-- Card do Aluno -->
     <div class="aluno-card">
@@ -351,14 +421,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
           <small class="opacity-75" id="id-cliente">ID:<?php echo htmlspecialchars($aluno['ID_ALUNO'] ?? 'N/A'); ?></small>
         </div>
       </div>
-    </div>
-
-    
-
-    <!-- Alertas (exemplo) -->
-    <div class="alert-ficha alert-ficha-success">
-      <i class="fas fa-check-circle fa-lg"></i>
-      <span>Ficha de avaliação criada com sucesso!</span>
     </div>
 
     <!-- Card do Formulário -->
@@ -499,6 +561,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
             Voltar
           </a>
         </div>
+
+        
+
       </form>
     </div>
   </div>
@@ -562,7 +627,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
       
       // Aqui você enviaria os dados via AJAX ou submeteria o formulário
       console.log('Formulário validado e pronto para envio!');
-      // this.submit(); // Descomente para enviar de verdade
+      this.submit(); // Envia o formulário
     });
 
     // Animação suave ao focar nos campos
