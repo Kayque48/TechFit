@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
     $masMagra     = trim($_POST['masMagra'] ?? '');
     $tmb          = trim($_POST['tmb'] ?? '');
     $imc          = trim($_POST['imc'] ?? '');
+    $idAluno      = $_POST['idAluno'] ?? '';
 
     // Converter data de dd/mm/yyyy para yyyy-mm-dd
     $dataObj = DateTime::createFromFormat('d/m/Y', $data);
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
           // INSERE A AVALIAÇÃO
           $sql = "INSERT INTO avaliacoes_fisica (data, peso, altura, ...) VALUES (?, ?, ?, ...)";
           $stmt = $conn->prepare($sql);
-          $stmt->execute([...]);
+          $stmt->execute([$sql]);
 
           // PEGA O ID DA AVALIAÇÃO
           $idAvaliacao = $conn->insert_id;

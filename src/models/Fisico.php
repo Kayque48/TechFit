@@ -33,7 +33,6 @@
             $this->setTmb($tmb);
             $this->setImc($imc);
             $this->setIdAluno($idAluno);
-        ;
         }
 
         public function getId () {
