@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,10 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
     <title> Perfil - TechFit</title>
 
 </head>
+
 <body>
     <!-- Header -->
     <?php
-        require_once '../src/views/headerUser.php'
+    require_once '../src/views/headerUser.php'
     ?>
 
     <!-- Layout Principal -->
@@ -139,8 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                 ];
                                 foreach ($dias as $dia): ?>
                                     <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex flex-column align-items-center dia-semana"
-                                         onclick="atualizarTitulo('<?= $dia['nome'] ?>')"
-                                         role="button" style="cursor:pointer;">
+                                        onclick="atualizarTitulo('<?= $dia['nome'] ?>')"
+                                        role="button" style="cursor:pointer;">
                                         <img src="<?= $dia['img'] ?>" alt="<?= $dia['nome'] ?>" class="rounded-circle shadow" width="100" height="100" style="object-fit:cover; background:#f8f9fa;">
                                         <h5 class="fw-normal mt-3"><?= $dia['nome'] ?></h5>
                                     </div>
@@ -154,8 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                             <style>
                                 /* pequeno destaque para o dia selecionado */
-                                .dia-semana.active-day { outline: 3px solid #0d6efd; border-radius: 12px; padding: 4px; }
-                                .d-none { display: none !important; }
+                                .dia-semana.active-day {
+                                    outline: 3px solid #0d6efd;
+                                    border-radius: 12px;
+                                    padding: 4px;
+                                }
+
+                                .d-none {
+                                    display: none !important;
+                                }
                             </style>
 
                             <script>
@@ -166,13 +175,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                     // destacar dia selecionado
                                     document.querySelectorAll('.dia-semana').forEach(el => {
                                         const text = el.querySelector('h5')?.textContent?.trim();
-                                        if (text === dia) el.classList.add('active-day'); else el.classList.remove('active-day');
+                                        if (text === dia) el.classList.add('active-day');
+                                        else el.classList.remove('active-day');
                                     });
 
                                     // mostrar apenas cards do dia selecionado
                                     document.querySelectorAll('.card-col').forEach(card => {
                                         const cardDay = card.dataset.day;
-                                        if (cardDay === dia) card.classList.remove('d-none'); else card.classList.add('d-none');
+                                        if (cardDay === dia) card.classList.remove('d-none');
+                                        else card.classList.add('d-none');
                                     });
                                 }
 
@@ -341,15 +352,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                         <div class="pricing-header text-center">
                             <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
                             <p class="fs-5 text-body-secondary">
-                            Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
+                                Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
                             </p>
                         </div>
-                    
+
                         <?php if (!empty($mensagemPlano)): ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         <?php endif; ?>
 
                         <!-- Formulário para Atualizar Plano -->
@@ -381,103 +392,103 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                                 <li><i class="fas fa-check text-success me-2"></i>Suporte online</li>
                                             </ul>
                                             <button type="button" class="btn btn-primary btn-select-plan" data-plan="basico" onclick="updatePlan('basico')">Selecionar Plano Básico</button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Plano Intermediário -->
-                                <div class="col">
-                                    <div class="card h-100 shadow-sm border-primary">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">Plano Intermediário</h5>
-                                            <p class="card-text display-6">$35<small class="text-body-secondary fw-light">/mês</small></p>
-                                            <ul class="list-unstyled mb-4 flex-grow-1">
-                                                <li><i class="fas fa-check text-success me-2"></i>Acesso ilimitado</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>3 aulas por semana</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Acompanhamento com personal</li>
-                                            </ul>
-                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="intermediario" onclick="updatePlan('intermediario')">Selecionar Plano Intermediário</button>
+                                    <!-- Plano Intermediário -->
+                                    <div class="col">
+                                        <div class="card h-100 shadow-sm border-primary">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title">Plano Intermediário</h5>
+                                                <p class="card-text display-6">$35<small class="text-body-secondary fw-light">/mês</small></p>
+                                                <ul class="list-unstyled mb-4 flex-grow-1">
+                                                    <li><i class="fas fa-check text-success me-2"></i>Acesso ilimitado</li>
+                                                    <li><i class="fas fa-check text-success me-2"></i>3 aulas por semana</li>
+                                                    <li><i class="fas fa-check text-success me-2"></i>Acompanhamento com personal</li>
+                                                </ul>
+                                                <button type="button" class="btn btn-primary btn-select-plan" data-plan="intermediario" onclick="updatePlan('intermediario')">Selecionar Plano Intermediário</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Plano Premium -->
+                                    <div class="col">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body d-flex flex-column">
+                                                <h5 class="card-title">Plano Premium</h5>
+                                                <p class="card-text display-6">$50<small class="text-body-secondary fw-light">/mês</small></p>
+                                                <ul class="list-unstyled mb-4 flex-grow-1">
+                                                    <li><i class="fas fa-check text-success me-2"></i>Acesso 24h</li>
+                                                    <li><i class="fas fa-check text-success me-2"></i>Aulas ilimitadas</li>
+                                                    <li><i class="fas fa-check text-success me-2"></i>Consultoria nutricional</li>
+                                                    <li><i class="fas fa-check text-success me-2"></i>Treinamento pessoal ilimitado</li>
+                                                </ul>
+                                                <button type="button" class="btn btn-primary btn-select-plan" data-plan="premium" onclick="updatePlan('premium')">Selecionar Plano Premium</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Plano Premium -->
-                                <div class="col">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">Plano Premium</h5>
-                                            <p class="card-text display-6">$50<small class="text-body-secondary fw-light">/mês</small></p>
-                                            <ul class="list-unstyled mb-4 flex-grow-1">
-                                                <li><i class="fas fa-check text-success me-2"></i>Acesso 24h</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Aulas ilimitadas</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Consultoria nutricional</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Treinamento pessoal ilimitado</li>
-                                            </ul>
-                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="premium" onclick="updatePlan('premium')">Selecionar Plano Premium</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="hidden" name="atualizar_plano" value="1">
+                                <input type="hidden" name="atualizar_plano" value="1">
                         </form>
 
 
-                   <div class="product-form-container">             
-                        <h2 class="display-6 text-center mb-4">Compare os planos</h2>
+                        <div class="product-form-container">
+                            <h2 class="display-6 text-center mb-4">Compare os planos</h2>
 
-                        <div class="table-responsive">
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 34%;"></th>
-                                        <th style="width: 22%;">Básico</th>
-                                        <th style="width: 22%;">Avançado</th>
-                                        <th style="width: 22%;">Premium</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" class="text-start">Acesso a máquinas</th>
-                                        <td>Limitado</td>
-                                        <td>Total</td>
-                                        <td>Total 24/7</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-start">Aulas de grupo</th>
-                                        <td>1 por semana</td>
-                                        <td>3 por semana</td>
-                                        <td>Ilimitadas</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-start">Treinamento personalizado</th>
-                                        <td>Não incluso</td>
-                                        <td>2x por mês</td>
-                                        <td>Ilimitado</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-start">Consultoria nutricional</th>
-                                        <td>Não incluso</td>
-                                        <td>1x por mês</td>
-                                        <td>Quinzenal</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-start">Avaliação física</th>
-                                        <td>Trimestral</td>
-                                        <td>Bimestral</td>
-                                        <td>Mensal</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-start">Horário de acesso</th>
-                                        <td>Comercial</td>
-                                        <td>Estendido</td>
-                                        <td>24 horas</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <div class="table-responsive">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 34%;"></th>
+                                            <th style="width: 22%;">Básico</th>
+                                            <th style="width: 22%;">Avançado</th>
+                                            <th style="width: 22%;">Premium</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row" class="text-start">Acesso a máquinas</th>
+                                            <td>Limitado</td>
+                                            <td>Total</td>
+                                            <td>Total 24/7</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-start">Aulas de grupo</th>
+                                            <td>1 por semana</td>
+                                            <td>3 por semana</td>
+                                            <td>Ilimitadas</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-start">Treinamento personalizado</th>
+                                            <td>Não incluso</td>
+                                            <td>2x por mês</td>
+                                            <td>Ilimitado</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-start">Consultoria nutricional</th>
+                                            <td>Não incluso</td>
+                                            <td>1x por mês</td>
+                                            <td>Quinzenal</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-start">Avaliação física</th>
+                                            <td>Trimestral</td>
+                                            <td>Bimestral</td>
+                                            <td>Mensal</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" class="text-start">Horário de acesso</th>
+                                            <td>Comercial</td>
+                                            <td>Estendido</td>
+                                            <td>24 horas</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
             </section>
-            
+
 
             <!-- ===================== SEÇÃO TREINO ===================== -->
             <div id="treino" class="hidden">
@@ -487,270 +498,265 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                     <p class="page-subtitle">Consulte os treinos realizados e o total de horas treinadas</p>
                 </div>
 
-            <div class="product-form-container">
+                <div class="product-form-container">
 
-                <!-- Busca -->
-                <div class="form-section">
-                    <h2 class="section-title">Buscar Treinos</h2>
+                    <!-- Busca -->
+                    <div class="form-section">
+                        <h2 class="section-title">Buscar Treinos</h2>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Pesquisar por nome do treino</label>
-                            <input type="text" class="form-control-custom" placeholder="Ex: Peito, Costas, Pernas...">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Pesquisar por nome do treino</label>
+                                <input type="text" class="form-control-custom" placeholder="Ex: Peito, Costas, Pernas...">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Filtrar por data</label>
+                                <input type="date" class="form-control-custom">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Filtrar por duração</label>
+                                <select class="form-control-custom">
+                                    <option value="">Selecione</option>
+                                    <option>Menos de 30 min</option>
+                                    <option>30 min - 1h</option>
+                                    <option>1h - 2h</option>
+                                    <option>Mais de 2h</option>
+                                </select>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Filtrar por data</label>
-                            <input type="date" class="form-control-custom">
+                    <!-- Histórico -->
+                    <div class="form-section">
+                        <h2 class="section-title">Treinos Realizados</h2>
+
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Treino</th>
+                                        <th>Duração</th>
+                                        <th>Calorias</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tabela-treinos">
+                                    <tr>
+                                        <td>20/11/2025</td>
+                                        <td>Peito e Tríceps</td>
+                                        <td>01:12h</td>
+                                        <td>430 kcal</td>
+                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>18/11/2025</td>
+                                        <td>Pernas e Ombros</td>
+                                        <td>01:45h</td>
+                                        <td>520 kcal</td>
+                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>16/11/2025</td>
+                                        <td>Costas e Bíceps</td>
+                                        <td>00:58h</td>
+                                        <td>390 kcal</td>
+                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Filtrar por duração</label>
-                            <select class="form-control-custom">
-                                <option value="">Selecione</option>
-                                <option>Menos de 30 min</option>
-                                <option>30 min - 1h</option>
-                                <option>1h - 2h</option>
-                                <option>Mais de 2h</option>
-                            </select>
+                    <!-- Estatísticas -->
+                    <div class="form-section">
+                        <h2 class="section-title">Estatísticas Gerais</h2>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label cla ss="form-label">Total de treinos realizados</label>
+                                <input type="text" class="form-control-custom" value="34 treinos" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Total de horas treinadas</label>
+                                <input type="text" class="form-control-custom" value="41h e 22min" disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Média semanal</label>
+                                <input type="text" class="form-control-custom" value="4 treinos/semana" disabled>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-
-                <!-- Histórico -->
-                <div class="form-section">
-                    <h2 class="section-title">Treinos Realizados</h2>
-
-                    <div class="table-responsive">
-                        <table class="table text-center">
-                            <thead>
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Treino</th>
-                                    <th>Duração</th>
-                                    <th>Calorias</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="tabela-treinos">
-                                <tr>
-                                    <td>20/11/2025</td>
-                                    <td>Peito e Tríceps</td>
-                                    <td>01:12h</td>
-                                    <td>430 kcal</td>
-                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                </tr>
-                                <tr>
-                                    <td>18/11/2025</td>
-                                    <td>Pernas e Ombros</td>
-                                    <td>01:45h</td>
-                                    <td>520 kcal</td>
-                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                </tr>
-                                <tr>
-                                    <td>16/11/2025</td>
-                                    <td>Costas e Bíceps</td>
-                                    <td>00:58h</td>
-                                    <td>390 kcal</td>
-                                    <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Estatísticas -->
-                <div class="form-section">
-                    <h2 class="section-title">Estatísticas Gerais</h2>
-
-                    <div class="form-grid">
-
-                        <div class="form-group">
-                            <label cla  ss="form-label">Total de treinos realizados</label>
-                            <input type="text" class="form-control-custom" value="34 treinos" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Total de horas treinadas</label>
-                            <input type="text" class="form-control-custom" value="41h e 22min" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Média semanal</label>
-                            <input type="text" class="form-control-custom" value="4 treinos/semana" disabled>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-         <!-- ===================== SEÇÃO FICHA ===================== -->
-        <div id="ficha" class="hidden">
-
-            <div class="content-header">
-                <h1 class="page-title">Ficha de Avaliação Física</h1>
-                <p class="page-subtitle">Acompanhe suas medidas, evolução e composição corporal</p>
-            </div>
-
-            <div class="product-form-container">
-                <?php
-                // Buscar ficha de avaliação física (mais recente)
-                $fichas = !empty($id) ? $controllerFisico->lerPorIdAluno($id) : [];
-                $fichaRecente = !empty($fichas) ? $fichas[0] : null;
-                ?>
-
-                <!-- Tabela com dados do banco -->
-                <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente</h2>
-
-                    
-                    <?php if ($fichaRecente): ?>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Campo</th>
-                                    <th>Valor</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Data da Avaliação</strong></td>
-                                    <td><?= !empty($fichaRecente->getData()) ? date('d/m/Y', strtotime($fichaRecente->getData())) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Peso (kg)</strong></td>
-                                    <td><?= !empty($fichaRecente->getPeso()) ? htmlspecialchars($fichaRecente->getPeso()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Altura (m)</strong></td>
-                                    <td><?= !empty($fichaRecente->getAltura()) ? htmlspecialchars($fichaRecente->getAltura()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>IMC</strong></td>
-                                    <td><?= !empty($fichaRecente->getImc()) ? htmlspecialchars($fichaRecente->getImc()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Peitoral (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getPeitoral()) ? htmlspecialchars($fichaRecente->getPeitoral()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Cintura (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getCintura()) ? htmlspecialchars($fichaRecente->getCintura()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Quadril (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getQuadril()) ? htmlspecialchars($fichaRecente->getQuadril()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Braço Esquerdo (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getBraEsquerdo()) ? htmlspecialchars($fichaRecente->getBraEsquerdo()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Braço Direito (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getBraDireito()) ? htmlspecialchars($fichaRecente->getBraDireito()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Coxa (cm)</strong></td>
-                                    <td><?= !empty($fichaRecente->getCoxa()) ? htmlspecialchars($fichaRecente->getCoxa()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Gordura Corporal (%)</strong></td>
-                                    <td><?= !empty($fichaRecente->getGordura()) ? htmlspecialchars($fichaRecente->getGordura()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Massa Magra (kg)</strong></td>
-                                    <td><?= !empty($fichaRecente->getMasMagra()) ? htmlspecialchars($fichaRecente->getMasMagra()) : 'null' ?></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>TMB (kcal)</strong></td>
-                                    <td><?= !empty($fichaRecente->getTmb()) ? htmlspecialchars($fichaRecente->getTmb()) : 'null' ?></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <?php else: ?>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        <strong>Sem dados registrados</strong>
-                        <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastrarFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
-                    </div>
-                    <?php endif; ?>
-                </div>
-
-                <!-- Histórico de Avaliações -->
-                <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-history me-2"></i> Histórico de Avaliações</h2>
-
-                    <?php if (!empty($fichas) && count($fichas) > 1): ?>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Peso (kg)</th>
-                                    <th>Altura (m)</th>
-                                    <th>IMC</th>
-                                    <th>% Gordura</th>
-                                    <th>Cintura (cm)</th>
-                                    <th>Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($fichas as $ficha): ?>
-                                <tr>
-                                    <td><?= !empty($ficha->getData()) ? date('d/m/Y', strtotime($ficha->getData())) : 'null' ?></td>
-                                    <td><?= !empty($ficha->getPeso()) ? htmlspecialchars($ficha->getPeso()) : 'null' ?></td>
-                                    <td><?= !empty($ficha->getAltura()) ? htmlspecialchars($ficha->getAltura()) : 'null' ?></td>
-                                    <td><?= !empty($ficha->getImc()) ? htmlspecialchars($ficha->getImc()) : 'null' ?></td>
-                                    <td><?= !empty($ficha->getGordura()) ? htmlspecialchars($ficha->getGordura()) . '%' : 'null' ?></td>
-                                    <td><?= !empty($ficha->getCintura()) ? htmlspecialchars($ficha->getCintura()) : 'null' ?></td>
-                                    <td>
-                                        <a href="listaFichas.php?editar=<?= $ficha->getId() ?>" class="btn btn-sm btn-warning" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <?php else: ?>
-                    <div class="alert alert-secondary">
-                        <i class="fas fa-calendar me-2"></i>
-                        Você tem apenas 1 avaliação registrada. Crie mais fichas para acompanhar sua evolução.
-                    </div>
-                    <?php endif; ?>
-                </div>
-
-                <!-- Botões de Ação -->
-                <div class="action-buttons">
-                    <a href="cadastrarFicha.php" class="btn-techfit btn-primary">
-                        <i class="fas fa-plus me-2"></i> Nova Avaliação
-                    </a>
-                    <a href="listaFichas.php" class="btn-techfit btn-success">
-                        <i class="fas fa-list me-2"></i> Ver Todas as Fichas
-                    </a>
                 </div>
             </div>
-            <!-- Mensagem de sucesso da ficha -->
-            <?php if (isset($_GET['ficha']) && $_GET['ficha'] === 'sucesso'): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i> Ficha de avaliação cadastrada com sucesso!
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+            <!-- ===================== SEÇÃO FICHA ===================== -->
+            <div id="ficha" class="hidden">
+
+                <div class="content-header">
+                    <h1 class="page-title">Ficha de Avaliação Física</h1>
+                    <p class="page-subtitle">Acompanhe suas medidas, evolução e composição corporal</p>
+                </div>
+
+                <div class="product-form-container">
+                    <?php
+                    // Buscar ficha de avaliação física (mais recente)
+                    $fichas = !empty($id) ? $controllerFisico->lerPorIdAluno($id) : [];
+                    $fichaRecente = !empty($fichas) ? $fichas[0] : null;
+                    ?>
+
+                    <!-- Tabela com dados do banco -->
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente</h2>
+
+
+                        <?php if ($fichaRecente): ?>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Campo</th>
+                                            <th>Valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Data da Avaliação</strong></td>
+                                            <td><?= !empty($fichaRecente->getData()) ? date('d/m/Y', strtotime($fichaRecente->getData())) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Peso (kg)</strong></td>
+                                            <td><?= !empty($fichaRecente->getPeso()) ? htmlspecialchars($fichaRecente->getPeso()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Altura (m)</strong></td>
+                                            <td><?= !empty($fichaRecente->getAltura()) ? htmlspecialchars($fichaRecente->getAltura()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>IMC</strong></td>
+                                            <td><?= !empty($fichaRecente->getImc()) ? htmlspecialchars($fichaRecente->getImc()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Peitoral (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getPeitoral()) ? htmlspecialchars($fichaRecente->getPeitoral()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cintura (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getCintura()) ? htmlspecialchars($fichaRecente->getCintura()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Quadril (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getQuadril()) ? htmlspecialchars($fichaRecente->getQuadril()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Braço Esquerdo (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getBraEsquerdo()) ? htmlspecialchars($fichaRecente->getBraEsquerdo()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Braço Direito (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getBraDireito()) ? htmlspecialchars($fichaRecente->getBraDireito()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Coxa (cm)</strong></td>
+                                            <td><?= !empty($fichaRecente->getCoxa()) ? htmlspecialchars($fichaRecente->getCoxa()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Gordura Corporal (%)</strong></td>
+                                            <td><?= !empty($fichaRecente->getGordura()) ? htmlspecialchars($fichaRecente->getGordura()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Massa Magra (kg)</strong></td>
+                                            <td><?= !empty($fichaRecente->getMasMagra()) ? htmlspecialchars($fichaRecente->getMasMagra()) : 'null' ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>TMB (kcal)</strong></td>
+                                            <td><?= !empty($fichaRecente->getTmb()) ? htmlspecialchars($fichaRecente->getTmb()) : 'null' ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Sem dados registrados</strong>
+                                <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastrarFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Histórico de Avaliações -->
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-history me-2"></i> Histórico de Avaliações</h2>
+
+                        <?php if (!empty($fichas) && count($fichas) > 1): ?>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Peso (kg)</th>
+                                            <th>Altura (m)</th>
+                                            <th>IMC</th>
+                                            <th>% Gordura</th>
+                                            <th>Cintura (cm)</th>
+                                            <th>Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($fichas as $ficha): ?>
+                                            <tr>
+                                                <td><?= !empty($ficha->getData()) ? date('d/m/Y', strtotime($ficha->getData())) : 'null' ?></td>
+                                                <td><?= !empty($ficha->getPeso()) ? htmlspecialchars($ficha->getPeso()) : 'null' ?></td>
+                                                <td><?= !empty($ficha->getAltura()) ? htmlspecialchars($ficha->getAltura()) : 'null' ?></td>
+                                                <td><?= !empty($ficha->getImc()) ? htmlspecialchars($ficha->getImc()) : 'null' ?></td>
+                                                <td><?= !empty($ficha->getGordura()) ? htmlspecialchars($ficha->getGordura()) . '%' : 'null' ?></td>
+                                                <td><?= !empty($ficha->getCintura()) ? htmlspecialchars($ficha->getCintura()) : 'null' ?></td>
+                                                <td>
+                                                    <a href="listaFichas.php?editar=<?= $ficha->getId() ?>" class="btn btn-sm btn-warning" title="Editar">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <div class="alert alert-secondary">
+                                <i class="fas fa-calendar me-2"></i>
+                                Você tem apenas 1 avaliação registrada. Crie mais fichas para acompanhar sua evolução.
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="action-buttons">
+                        <a href="cadastrarFicha.php" class="btn-techfit btn-primary">
+                            <i class="fas fa-plus me-2"></i> Nova Avaliação
+                        </a>
+                    </div>
+                </div>
+                <!-- Mensagem de sucesso da ficha -->
+                <?php if (isset($_GET['ficha']) && $_GET['ficha'] === 'sucesso'): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i> Ficha de avaliação cadastrada com sucesso!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
             </div>
-            <?php endif; ?>
-        </div>
         </main>
-        </div>
-     </footer>
-      <?php 
-        require_once '../src/views/footer.php';
-      ?>
+    </div>
+    <?php
+    require_once '../src/views/footer.php';
+    ?>
 
-</body>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
@@ -758,4 +764,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 <script src="js/modal.js"></script>
 <script src="js/treino.js"></script>
 <script src="js/config.js"></script>
+
 </html>

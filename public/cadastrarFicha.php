@@ -86,15 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
               floatval($imc),
               $id
           );
-
-          // INSERE A AVALIAÇÃO
-          $sql = "INSERT INTO avaliacoes_fisica (data, peso, altura, ...) VALUES (?, ?, ?, ...)";
-          $stmt = $conn->prepare($sql);
-          $stmt->execute([$sql]);
-
-          // PEGA O ID DA AVALIAÇÃO
-          $idAvaliacao = $conn->insert_id;
-
+          
           // ATUALIZA O ALUNO COM A FK
           $conn->query("UPDATE AVALIACOES_FISICAS SET FK_ALUNO = $id");
           
