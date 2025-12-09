@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
           $idAvaliacao = $conn->insert_id;
 
           // ATUALIZA O ALUNO COM A FK
-          $conn->query("UPDATE AVALICOES_FISICAS SET FK_ALUNO = $id");
+          $conn->query("UPDATE AVALIACOES_FISICAS SET FK_ALUNO = $id");
           
           $sucesso = true;
 

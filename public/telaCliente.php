@@ -597,7 +597,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
             <div class="product-form-container">
                 <?php
                 // Buscar ficha de avaliação física (mais recente)
-                $fichas = !empty($email) ? $controllerFisico->lerPorIdAluno($id) : [];
+                $fichas = !empty($id) ? $controllerFisico->lerPorIdAluno($id) : [];
                 $fichaRecente = !empty($fichas) ? $fichas[0] : null;
                 ?>
 
@@ -605,6 +605,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                 <div class="form-section">
                     <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente</h2>
 
+                    
                     <?php if ($fichaRecente): ?>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">

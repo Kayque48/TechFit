@@ -72,7 +72,8 @@
                         $gordura,
                         $masMagra,
                         $tmb,
-                        $imc
+                        $imc,
+                        $idAluno
                     );
                     $sucesso = "Ficha de avaliação atualizada com sucesso!";
                 } catch (Exception $e) {
