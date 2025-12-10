@@ -1,3 +1,37 @@
+<?php 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+session_start();
+
+if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
+    header('Location: login.php');
+    exit;
+}
+
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/FisicoController.php';
+require_once __DIR__ . '/../src/controllers/PlanoController.php';
+require_once __DIR__ . '/../src/controllers/AdministradorController.php';
+
+$controllerAdm = new AdministradorController();
+$controllerAluno = new AlunoController();
+$controllerFisico = new FisicoController();
+$controllerPlano = new PlanoController();
+
+
+// Buscar dados do aluno logado
+$admin = $controllerAdm->buscarPorEmail($_SESSION['emailAdm']);
+
+if (!$admin) {
+    // Se não encontrar no banco, redirecionar para login
+    header('Location: login.php');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -206,16 +240,6 @@
                 <div class="toolbar mb-4">
                     <div class="row align-items-center">
                         <div class="col-md-6">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCadastroAluno">
-                                <i class="fas fa-plus me-2"></i>
-                                Novo Aluno
-                            </button>
-                            <button class="btn btn-outline-secondary">
-                                <i class="fas fa-file-export me-2"></i>
-                                Exportar CSV
-                            </button>
-                        </div>
-                        <div class="col-md-6">
                             <div class="d-flex justify-content-end">
                                 <div class="filter-group me-3">
                                     <select class="form-select" id="filtroAvaliacao">
@@ -251,7 +275,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Dados dos alunos serão carregados aqui -->
+                                    <td></td>
                                 </tbody>
                             </table>
                         </div>

@@ -1,52 +1,80 @@
 <?php
-    
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
 
-    // Inicia sessão
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    require_once __DIR__ . '/../src/controllers/AlunoController.php';
-    $controller = new AlunoController();
+// Inicia sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    // Processar login
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar') {
-        $email = trim($_POST['email'] ?? '');
-        $senha = trim($_POST['senha'] ?? '');
-        
-        if (empty($email) || empty($senha)) {
-            header('Location: loginCliente.php?erro=1');
-            exit;
-        }
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/AdministradorController.php';
+$controllerAdm = new AdministradorController();
+$controllerAluno = new AlunoController();
+
+// Processar login
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar'){
+    if (str_ends_with($_POST['email'], '@techfit.com.br')) {
+        $emailAdm = trim($_POST['email'] ?? '');
+        $senhaAdm = trim($_POST['senha'] ?? '');
 
         try {
-            $aluno = $controller->buscarPorEmail($email);
-            
+            $admin = $controllerAdm->buscarPorEmail($emailAdm);
+
+            if ($admin && isset($admin['SENHA']) && (password_verify($senha, $admin['SENHA']) || $admin['SENHA'] === $senha)) {
+                // Login bem-sucedido
+                $_SESSION['email'] = $admin['EMAIL_ADM'];
+                $_SESSION['nome'] = $admin['USER'];
+                $_SESSION['logado'] = true;
+
+                header('Location: telaAdministrador.php');
+                exit;
+            } else {
+                header('Location: login.php?erro=1');
+                exit;
+            }
+        } catch (Exception $e) {
+            header('Location: login.php?erro=1');
+            exit;
+        }
+    } else {
+        $emailUser = trim($_POST['email'] ?? '');
+        $senhaUser = trim($_POST['senha'] ?? '');
+
+        try {
+            $aluno = $controllerAluno->buscarPorEmail($email);
+
             if ($aluno && isset($aluno['SENHA']) && (password_verify($senha, $aluno['SENHA']) || $aluno['SENHA'] === $senha)) {
                 // Login bem-sucedido
                 $_SESSION['email'] = $aluno['EMAIL'];
                 $_SESSION['nome'] = $aluno['NOME_ALUNO'];
                 $_SESSION['logado'] = true;
-                
+
                 header('Location: telaCliente.php');
                 exit;
             } else {
-                header('Location: loginCliente.php?erro=1');
+                header('Location: login.php?erro=1');
                 exit;
             }
         } catch (Exception $e) {
-            header('Location: loginCliente.php?erro=1');
+            header('Location: login.php?erro=1');
             exit;
         }
     }
+
+    if (empty($email) || empty($senha)) {
+        header('Location: loginCliente.php?erro=1');
+        exit;
+    }
+}
 ?>
 
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +94,7 @@
         .login-container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             max-width: 900px;
             width: 100%;
@@ -105,7 +133,7 @@
         }
 
         .login-brand p {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 1.1rem;
         }
 
@@ -227,8 +255,13 @@
             background: #e9ecef;
         }
 
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
 
         .signup-link {
             text-align: center;
@@ -278,6 +311,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <!-- Brand Section -->
@@ -296,25 +330,25 @@
                 <p>Entre com suas credenciais para acessar sua conta</p>
             </div>
 
-            <?php if(isset($_GET['erro'])): ?>
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle"></i>
-                Email ou senha incorretos
-            </div>
+            <?php if (isset($_GET['erro'])): ?>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Email ou senha incorretos
+                </div>
             <?php endif; ?>
 
-            <?php if(isset($_GET['recuperacao']) && $_GET['recuperacao'] === 'sucesso'): ?>
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                Senha redefinida com sucesso! Faça login com sua nova senha.
-            </div>
+            <?php if (isset($_GET['recuperacao']) && $_GET['recuperacao'] === 'sucesso'): ?>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    Senha redefinida com sucesso! Faça login com sua nova senha.
+                </div>
             <?php endif; ?>
 
-            <?php if(isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                Cadastro realizado com sucesso! Faça login com suas credenciais.
-            </div>
+            <?php if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    Cadastro realizado com sucesso! Faça login com suas credenciais.
+                </div>
             <?php endif; ?>
 
             <form action="" method="POST">
@@ -323,14 +357,13 @@
                     <label for="email">Email</label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            class="form-input" 
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-input"
                             placeholder="seu@email.com"
-                            required
-                        >
+                            required>
                     </div>
                 </div>
 
@@ -338,14 +371,13 @@
                     <label for="senha">Senha</label>
                     <div class="input-with-icon">
                         <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="senha" 
-                            name="senha" 
-                            class="form-input" 
+                        <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            class="form-input"
                             placeholder="••••••••"
-                            required
-                        >
+                            required>
                     </div>
                 </div>
 
@@ -370,4 +402,5 @@
         </div>
     </div>
 </body>
+
 </html>
