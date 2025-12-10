@@ -16,9 +16,11 @@ require_once __DIR__ . '/../src/controllers/PlanoController.php';
 
 $controllerAluno = new AlunoController();
 $controllerFisico = new FisicoController();
+$controllerPlano = new PlanoController();
 
 // Buscar dados do aluno logado
 $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
+$plano = $controllerPlano->ler();
 
 if (!$aluno) {
     // Se não encontrar no banco, redirecionar para login
@@ -341,153 +343,179 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
             </div>
 
             <!-- Seção Plano -->
-            <section id="plano" class="plans container py-5 hidden">
-                <div class="container py-3">
-                    <div class="content-header">
-                        <h1 class="page-title">Nossos Planos</h1>
-                        <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
+            <!-- ===================== SEÇÃO PLANO - CORRIGIDA ===================== -->
+<section id="plano" class="plans container py-5 hidden">
+    <div class="content-header">
+        <h1 class="page-title">Nossos Planos</h1>
+        <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
+    </div>
+
+    <div class="product-form-container">
+        <div class="pricing-header text-center mb-4">
+            <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
+            <p class="fs-5 text-body-secondary">
+                Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
+            </p>
+        </div>
+
+        <?php if (!empty($mensagemPlano)): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+
+        <!-- Cards dos Planos - GRID CORRIGIDO -->
+        <div class="planos-container">
+            <?php if (empty($plano)): ?>
+                <div class="alert alert-info w-100" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Nenhum plano disponível no momento. Entre em contato conosco para mais informações.
+                </div>
+            <?php else: ?>
+                <?php foreach ($plano as $p): ?>
+                <div class="card-plan">
+                    <div class="card-plan-header">
+                        <h4><?= htmlspecialchars($p->getTipoPlano()) ?></h4>
+                        <div class="card-plan-price">
+                            <span class="price-amount">R$ <?= number_format($p->getPreco(), 2, ',', '.') ?></span>
+                            <span class="price-period">/mês</span>
+                        </div>
                     </div>
 
-                    <div class="product-form-container">
-                        <div class="pricing-header text-center">
-                            <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
-                            <p class="fs-5 text-body-secondary">
-                                Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
-                            </p>
-                        </div>
-
-                        <?php if (!empty($mensagemPlano)): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
+                    <div class="card-plan-body">
+                        <?php if (!empty($p->getDescricao())): ?>
+                        <p class="card-plan-description"><?= htmlspecialchars($p->getDescricao()) ?></p>
                         <?php endif; ?>
 
-                        <!-- Formulário para Atualizar Plano -->
-                        <form id="updatePlanForm" method="POST" action="../../src/models/atualizarPlano.php">
-                            <input type="hidden" id="selectedPlanInput" name="selectedPlan" value="">
-                        </form>
+                        <ul class="card-plan-features">
+                            <?php if (!empty($p->getMaquinas())): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Máquinas: <?= htmlspecialchars($p->getMaquinas()) ?>
+                            </li>
+                            <?php endif; ?>
 
-                        <script>
-                            function updatePlan(plan) {
-                                // Define o valor do plano selecionado no campo oculto
-                                document.getElementById('selectedPlanInput').value = plan;
+                            <?php if (!empty($p->getAulasGrupo())): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Aulas: <?= htmlspecialchars($p->getAulasGrupo()) ?>
+                            </li>
+                            <?php endif; ?>
 
-                                // Submete o formulário para atualizar o plano
-                                document.getElementById('updatePlanForm').submit();
-                            }
-                        </script>
+                            <?php if ($p->getTreinamentos()): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Treinamento personalizado
+                            </li>
+                            <?php endif; ?>
 
-                        <form method="POST" action="">
-                            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-                                <!-- Plano Básico -->
-                                <div class="col">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">Plano Básico</h5>
-                                            <p class="card-text display-6">$20<small class="text-body-secondary fw-light">/mês</small></p>
-                                            <ul class="list-unstyled mb-4 flex-grow-1">
-                                                <li><i class="fas fa-check text-success me-2"></i>Acesso a todas as máquinas</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>1 aula de grupo por semana</li>
-                                                <li><i class="fas fa-check text-success me-2"></i>Suporte online</li>
-                                            </ul>
-                                            <button type="button" class="btn btn-primary btn-select-plan" data-plan="basico" onclick="updatePlan('basico')">Selecionar Plano Básico</button>
-                                        </div>
-                                    </div>
+                            <?php if ($p->getConsultoria()): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Consultoria nutricional
+                            </li>
+                            <?php endif; ?>
 
-                                    <!-- Plano Intermediário -->
-                                    <div class="col">
-                                        <div class="card h-100 shadow-sm border-primary">
-                                            <div class="card-body d-flex flex-column">
-                                                <h5 class="card-title">Plano Intermediário</h5>
-                                                <p class="card-text display-6">$35<small class="text-body-secondary fw-light">/mês</small></p>
-                                                <ul class="list-unstyled mb-4 flex-grow-1">
-                                                    <li><i class="fas fa-check text-success me-2"></i>Acesso ilimitado</li>
-                                                    <li><i class="fas fa-check text-success me-2"></i>3 aulas por semana</li>
-                                                    <li><i class="fas fa-check text-success me-2"></i>Acompanhamento com personal</li>
-                                                </ul>
-                                                <button type="button" class="btn btn-primary btn-select-plan" data-plan="intermediario" onclick="updatePlan('intermediario')">Selecionar Plano Intermediário</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <?php if (!empty($p->getAvaliacao())): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Avaliação: <?= htmlspecialchars($p->getAvaliacao()) ?>
+                            </li>
+                            <?php endif; ?>
 
-                                    <!-- Plano Premium -->
-                                    <div class="col">
-                                        <div class="card h-100 shadow-sm">
-                                            <div class="card-body d-flex flex-column">
-                                                <h5 class="card-title">Plano Premium</h5>
-                                                <p class="card-text display-6">$50<small class="text-body-secondary fw-light">/mês</small></p>
-                                                <ul class="list-unstyled mb-4 flex-grow-1">
-                                                    <li><i class="fas fa-check text-success me-2"></i>Acesso 24h</li>
-                                                    <li><i class="fas fa-check text-success me-2"></i>Aulas ilimitadas</li>
-                                                    <li><i class="fas fa-check text-success me-2"></i>Consultoria nutricional</li>
-                                                    <li><i class="fas fa-check text-success me-2"></i>Treinamento pessoal ilimitado</li>
-                                                </ul>
-                                                <button type="button" class="btn btn-primary btn-select-plan" data-plan="premium" onclick="updatePlan('premium')">Selecionar Plano Premium</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="atualizar_plano" value="1">
-                        </form>
-
-
-                        <div class="product-form-container">
-                            <h2 class="display-6 text-center mb-4">Compare os planos</h2>
-
-                            <div class="table-responsive">
-                                <table class="table text-center">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 34%;"></th>
-                                            <th style="width: 22%;">Básico</th>
-                                            <th style="width: 22%;">Avançado</th>
-                                            <th style="width: 22%;">Premium</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row" class="text-start">Acesso a máquinas</th>
-                                            <td>Limitado</td>
-                                            <td>Total</td>
-                                            <td>Total 24/7</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-start">Aulas de grupo</th>
-                                            <td>1 por semana</td>
-                                            <td>3 por semana</td>
-                                            <td>Ilimitadas</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-start">Treinamento personalizado</th>
-                                            <td>Não incluso</td>
-                                            <td>2x por mês</td>
-                                            <td>Ilimitado</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-start">Consultoria nutricional</th>
-                                            <td>Não incluso</td>
-                                            <td>1x por mês</td>
-                                            <td>Quinzenal</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-start">Avaliação física</th>
-                                            <td>Trimestral</td>
-                                            <td>Bimestral</td>
-                                            <td>Mensal</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" class="text-start">Horário de acesso</th>
-                                            <td>Comercial</td>
-                                            <td>Estendido</td>
-                                            <td>24 horas</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            <?php if (!empty($p->getAcesso())): ?>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                Acesso: <?= htmlspecialchars($p->getAcesso()) ?>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
                     </div>
-            </section>
+
+                    <div class="card-plan-footer">
+                        <button class="btn-inscrever" 
+                                onclick="selecionarPlano('<?= htmlspecialchars($p->getTipoPlano()) ?>', <?= $p->getId() ?>)">
+                            <i class="fas fa-check me-2"></i>
+                            Inscreva-se
+                        </button>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- Tabela Comparativa -->
+        <?php if (!empty($plano) && count($plano) > 1): ?>
+        <div class="comparison-section">
+            <h2 class="comparison-title">Compare os planos</h2>
+
+            <div class="table-responsive">
+                <table class="table table-comparison">
+                    <thead>
+                        <tr>
+                            <th class="text-start">Benefícios</th>
+                            <?php foreach ($plano as $p): ?>
+                            <th class="text-center"><?= htmlspecialchars($p->getTipoPlano()) ?></th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start"><strong>Preço Mensal</strong></td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center">
+                                <strong class="text-success">R$ <?= number_format($p->getPreco(), 2, ',', '.') ?></strong>
+                            </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Acesso a máquinas</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center"><?= htmlspecialchars($p->getMaquinas()) ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Aulas de grupo</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center"><?= htmlspecialchars($p->getAulasGrupo()) ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Treinamento personalizado</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center">
+                                <?= $p->getTreinamentos() ?>
+                            </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Consultoria nutricional</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center">
+                                <?= $p->getConsultoria()?>
+                            </td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Avaliação física</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center"><?= htmlspecialchars($p->getAvaliacao()) ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Horário de acesso</td>
+                            <?php foreach ($plano as $p): ?>
+                            <td class="text-center"><?= htmlspecialchars($p->getAcesso()) ?></td>
+                            <?php endforeach; ?>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</section>
 
 
             <!-- ===================== SEÇÃO TREINO ===================== -->
