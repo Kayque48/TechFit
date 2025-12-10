@@ -18,9 +18,9 @@ $controllerAluno = new AlunoController();
 $controllerFisico = new FisicoController();
 $controllerPlano = new PlanoController();
 
+
 // Buscar dados do aluno logado
 $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
-$plano = $controllerPlano->ler();
 
 if (!$aluno) {
     // Se não encontrar no banco, redirecionar para login
@@ -34,17 +34,34 @@ $id = $aluno['ID_ALUNO'] ?? null;
 // Usar o email do aluno
 $Alunoemail = $_SESSION['email'];
 
+// Buscar TODOS os planos disponíveis
+$plano = $controllerPlano->ler();
+
+// Buscar o plano ESPECÍFICO do aluno (se tiver)
+$planoDoAluno = null;
+if (!empty($aluno['FK_PLANO'])) {
+    $planoDoAluno = $controllerPlano->buscarPorId($aluno['FK_PLANO']);
+}
+
 // Processar atualização do plano
 $mensagemPlano = '';
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
-    $novoPlano = trim($_POST['plano_selecionado'] ?? '');
-    if (!empty($novoPlano)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
+    $idPlanoSelecionado = trim($_POST['plano_selecionado'] ?? '');
+    $senhaConfirmacao = trim($_POST['senha_confirmacao'] ?? '');
+
+    if (!empty($idPlanoSelecionado) && !empty($senhaConfirmacao)) {
         try {
-            $controllerAluno->getDAO()->atualizarPlano($email, $novoPlano);
-            $mensagemPlano = 'Plano atualizado com sucesso!';
+            // Verificar senha
+            if (password_verify($senhaConfirmacao, $aluno['SENHA'])) {
+                $controllerAluno->getDAO()->atualizarPlano($_SESSION['email'], $idPlanoSelecionado);
+                $mensagemPlano = 'Plano atualizado com sucesso!';
 
-            $conn->query("UPDATE ALUNOS SET FK_PLANO = $id");
-
+                // Recarregar dados do aluno
+                $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
+                $planoDoAluno = $controllerPlano->buscarPorId($aluno['FK_PLANO']);
+            } else {
+                $mensagemPlano = 'Senha incorreta!';
+            }
         } catch (Exception $e) {
             $mensagemPlano = 'Erro ao atualizar plano: ' . $e->getMessage();
         }
@@ -113,16 +130,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                 <div class="form-group">
                                     <label class="form-label" for="clientOld">Endereço:</label>
                                     <p id="endereco-cliente">
-                                        <?php echo htmlspecialchars($aluno['ENDERECO_ALUNO'] ?? 'N/A'); ?></p>
+                                        <?php echo htmlspecialchars($aluno['ENDERECO_ALUNO'] ?? 'N/A'); ?>
+                                    </p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPlan">Plano:</label>
-                                    <p id="Plano-cliente"><?php echo htmlspecialchars($plano['TIPO_PLANO'] ?? 'N/A'); ?></p>
+                                    <p id="Plano-cliente">
+                                        <?php
+                                        if ($planoDoAluno) {
+                                            echo htmlspecialchars($planoDoAluno->getTipoPlano());
+                                        } else {
+                                            echo 'Nenhum plano selecionado';
+                                        }
+                                        ?>
+                                    </p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPhone">Telefone:</label>
                                     <p id="telefone-cliente">
-                                        <?php echo htmlspecialchars($aluno['TELEFONE'] ?? 'N/A'); ?></p>
+                                        <?php echo htmlspecialchars($aluno['TELEFONE'] ?? 'N/A'); ?>
+                                    </p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientEmail">Email:</label>
@@ -462,14 +489,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                     <div class="card-plan-footer">
                                         <form method="POST" class="d-inline">
                                             <input type="hidden" name="plano_selecionado"
-                                                value="<?= htmlspecialchars($p->getTipoPlano()) ?>">
+                                                value="<?= htmlspecialchars($p->getId()) ?>">
 
                                             <input type="password" name="senha_confirmacao"
-                                                class="form-control form-control-sm d-inline-block w-auto" placeholder="Senha"
-                                                required>
+                                                class="form-control form-control-sm mb-2"
+                                                placeholder="Digite sua senha para confirmar" required>
 
-                                            <button type="submit" name="confirmar_plano" class="btn btn-success btn-sm ms-2">
-                                                Confirmar
+                                            <button type="submit" name="confirmar_plano" class="btn-inscrever">
+                                                <i class="fas fa-check-circle"></i>
+                                                <?php
+                                                if ($planoDoAluno && $planoDoAluno->getId() == $p->getId()) {
+                                                    echo 'Plano Atual';
+                                                } else {
+                                                    echo 'Selecionar Plano';
+                                                }
+                                                ?>
                                             </button>
                                         </form>
                                     </div>
@@ -851,3 +885,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 <script src="js/config.js"></script>
 
 </html>
+
+
+
+// No telaCliente.php, adicione debug temporário (remova depois):
+<?php
+echo "<!-- DEBUG: ";
+echo "ID do Aluno: " . ($aluno['ID_ALUNO'] ?? 'null') . " | ";
+echo "FK_PLANO: " . ($aluno['FK_PLANO'] ?? 'null') . " | ";
+if ($planoDoAluno) {
+    echo "Tipo Plano: " . $planoDoAluno->getTipoPlano();
+}
+echo " -->";
+?>
