@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-  
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -35,42 +35,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
       // data inválida
       $erro = "Data de nascimento inválida. Use dd/mm/aaaa.";
     }
-    
+
     $senha = $_POST['senha'] ?? '';
-    
+
     // Validação de email e telefone duplicados
     $erroValidacao = '';
-    
+
     if ($controller->getDAO()->emailExiste($email)) {
-        $erroValidacao = 'Email já cadastrado no sistema';
+      $erroValidacao = 'Email já cadastrado no sistema';
     } elseif (!empty($telefone) && $controller->getDAO()->telefoneExiste($telefone)) {
-        $erroValidacao = 'Telefone já cadastrado no sistema';
+      $erroValidacao = 'Telefone já cadastrado no sistema';
     }
-    
+
     // Hash da senha
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-    
+
     if (!empty($nome) && !empty($email) && !empty($endereco) && !empty($senha)) {
       if (!empty($erroValidacao)) {
-          $erro = $erroValidacao;
+        $erro = $erroValidacao;
       } else {
-          try {
-              $controller->criar(
-                  $nome,
-                  $dataNasc,
-                  $endereco,
-                  $telefone,
-                  $email,
-                  null, // plano será escolhido após login
-                  $senhaHash
-              );
-              
-              // Redirecionar para login com sucesso
-              header('Location: loginCliente.php?cadastro=sucesso');
-              exit;
-          } catch (Exception $e) {
-              $erro = "Erro ao cadastrar: " . $e->getMessage();
-          }
+        try {
+          $controller->criar(
+            $nome,
+            $dataNasc,
+            $endereco,
+            $telefone,
+            $email,
+            null, // plano será escolhido após login
+            $senhaHash
+          );
+
+          // Redirecionar para login com sucesso
+          header('Location: loginCliente.php?cadastro=sucesso');
+          exit;
+        } catch (Exception $e) {
+          $erro = "Erro ao cadastrar: " . $e->getMessage();
+        }
       }
     } else {
       $erro = "Preencha todos os campos obrigatórios";
@@ -81,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,32 +92,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
 
   <!-- Estilos do Flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  
+
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <!-- Estilos customizados -->
   <link rel="stylesheet" href="css/CadUser.css">
-  
+
   <title>Cadastro de Clientes - TechFit</title>
 </head>
+
 <body>
-
-<?php require_once('../src/views/header.php'); ?>
-
   <main class="container mt-4">
-    
-    <?php if (isset($erro)): ?>
-    <div class="alert alert-danger">
-        <i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($erro) ?>
+
+    <div class="d-flex align-items-center mb-4">
+      <!-- Voltar -->
+      <a href="javascript:history.back()" class="text-decoration-none d-flex align-items-center"
+        style="color: var(--verde-escuro); font-weight: 600;">
+        <i class="fas fa-arrow-left me-2"></i>
+        Voltar
+      </a>
     </div>
+
+    <h2 class="text-center mb-4" style="color: var(--verde-escuro); font-weight: 700;">
+      Cadastro de Clientes
+    </h2>
+
+    <?php if (isset($erro)): ?>
+      <div class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i> <?= htmlspecialchars($erro) ?>
+      </div>
     <?php endif; ?>
 
     <div class="row g-3">
       <form action="" method="post">
         <input type="hidden" name="cadastro" value="criar">
-        
+
         <!-- Nome -->
         <div class="col-sm-12">
           <label for="name" class="form-label">Nome Completo *</label>
@@ -127,17 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
         <div class="col-sm-6">
           <label for="dataNasc" class="form-label">Data de Nascimento *</label>
           <div style="position: relative;">
-            <input 
-              type="text" 
-              class="form-control" 
-              id="dataNasc" 
-              name="dataNasc" 
-              placeholder="00/00/0000"
-              autocomplete="off"
-              maxlength="10"
-              required
-            >
-            <i class="fas fa-calendar-alt" id="calendar-icon" 
+            <input type="text" class="form-control" id="dataNasc" name="dataNasc" placeholder="00/00/0000"
+              autocomplete="off" maxlength="10" required>
+            <i class="fas fa-calendar-alt" id="calendar-icon"
               style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #6c757d;"></i>
           </div>
         </div>
@@ -157,14 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
         <!-- Telefone -->
         <div class="col-12">
           <label for="telefone" class="form-label">Telefone</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="telefone" 
-            name="telefone" 
-            placeholder="(00) 00000-0000"
-            maxlength="15"
-          >
+          <input type="text" class="form-control" id="telefone" name="telefone" placeholder="(00) 00000-0000"
+            maxlength="15">
         </div>
 
         <!-- Endereço -->
@@ -194,25 +192,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
 
     </div>
   </main>
-  
+
   <script>
     const input = document.getElementById('dataNasc');
     const icon = document.getElementById('calendar-icon');
-    
+
     // Formatação automática com "/"
-    input.addEventListener('input', function(e) {
+    input.addEventListener('input', function (e) {
       let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
-      
+
       if (value.length >= 2) {
         value = value.substring(0, 2) + '/' + value.substring(2);
       }
       if (value.length >= 5) {
         value = value.substring(0, 5) + '/' + value.substring(5, 9);
       }
-      
+
       e.target.value = value;
     });
-    
+
     // Inicializa flatpickr
     const picker = flatpickr("#dataNasc", {
       dateFormat: "d/m/Y",
@@ -221,18 +219,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
       minDate: "01/01/1900",
       maxDate: new Date(),
     });
-    
+
     // Abre calendário ao clicar no ícone
-    icon.addEventListener('click', function() {
+    icon.addEventListener('click', function () {
       picker.open();
     });
 
     // Formatação automática de telefone
     const telefoneInput = document.getElementById('telefone');
 
-    telefoneInput.addEventListener('input', function(e) {
+    telefoneInput.addEventListener('input', function (e) {
       let value = e.target.value.replace(/\D/g, ''); // Remove não-dígitos
-      
+
       if (value.length <= 10) {
         // Formato: (00) 0000-0000
         if (value.length >= 2) {
@@ -245,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
         // Formato: (00) 00000-0000
         value = '(' + value.substring(0, 2) + ') ' + value.substring(2, 7) + '-' + value.substring(7, 11);
       }
-      
+
       e.target.value = value;
     });
 
@@ -256,4 +254,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -77,13 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styleCadProduto.css">
+    <link rel="stylesheet" href="css/styleClient.css">
     <link rel="stylesheet" href="css/hidden.css">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/ajuste.css">
     <link rel="stylesheet" href="css/secTreino.css">
-    <link rel="stylesheet" href="css/secPlano.css">
-    <link rel="stylesheet" href="css/secConfig.css">
+    <link rel="stylesheet" href="css/secPlano.css">]
     <title> Perfil - TechFit</title>
 
 </head>
@@ -91,14 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
 <body>
     <!-- Header -->
     <?php
-    require_once '../src/views/headerUser.php'
+    require_once '../src/views/client/headerUser.php'
         ?>
 
     <!-- Layout Principal -->
     <div class="main-container">
         <!-- Sidebar -->
         <?php
-        require_once '../src/views/sidebars.php';
+        require_once '../src/views/client/sidebars.php';
         ?>
 
         <!-- Sessão Visão Geral -->
@@ -873,7 +872,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
         </main>
     </div>
     <?php
-    require_once '../src/views/footer.php';
+    require_once '../src/views/client/footer.php';
     ?>
 
 </body>
