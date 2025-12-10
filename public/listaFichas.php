@@ -6,11 +6,6 @@
 
     session_start();
 
-    // Validar se usuário está logado
-    if (!isset($_SESSION['aluno_id'])) {
-        header('Location: loginCliente.php');
-        exit;
-    }
 
     require_once __DIR__ . '/../src/controllers/FisicoController.php';
     require_once __DIR__ . '/../src/controllers/AlunoController.php';
@@ -19,8 +14,8 @@
     $controllerAluno = new AlunoController();
 
     // Buscar dados do aluno logado
-    $aluno = $controllerAluno->buscarPorEmail($_SESSION['aluno_email']);
-    $idAluno = $aluno['ID_ALUNO'] ?? $_SESSION['aluno_id'];
+    $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
+    $idAluno = $aluno['ID_ALUNO'] ?? $_SESSION['aluno'];
 
     $erro = '';
     $sucesso = '';
@@ -126,7 +121,7 @@
 </head>
 <body>
 
-<?php require_once('../src/views/header.php'); ?>
+<?php require_once '../src/views/client/header.php'; ?>
 
   <main class="container mt-4">
     

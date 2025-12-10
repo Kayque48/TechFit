@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 $idade = $_SESSION['idade'];
@@ -82,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/ajuste.css">
     <link rel="stylesheet" href="css/secTreino.css">
-    <link rel="stylesheet" href="css/secPlano.css">]
+    <link rel="stylesheet" href="css/secPlano.css">
     <title> Perfil - TechFit</title>
 
 </head>
@@ -90,9 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
 <body>
     <!-- Header -->
     <?php
-    require_once '../src/views/client/headerUser.php'
+    require_once __DIR__ . '/../src/views/client/header.php'
         ?>
-
     <!-- Layout Principal -->
     <div class="main-container">
         <!-- Sidebar -->
@@ -858,6 +862,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
                     <div class="action-buttons">
                         <a href="cadastrarFicha.php" class="btn-techfit btn-primary">
                             <i class="fas fa-plus me-2"></i> Nova Avaliação
+                        </a>
+                        <a href="listaFichas.php" class="btn-techfit btn-success">
+                            <i class="fas fa-list me-2"></i> Ver Todas as Fichas
                         </a>
                     </div>
                 </div>

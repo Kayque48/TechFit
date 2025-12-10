@@ -2,13 +2,16 @@
 
     class Administrador {
         private $id;
-        private $auser;
+        private $user;
+        private $emailAdm;
         private $senha;
 
-        public function __construct ($auser, $senha, $id = null) {
-            $this->id = $id;
-            $this->auser = $auser;
-            $this->senha = $senha;
+        public function __construct ($user, $emailAdm, $senha, $id = null) {
+           $this->setUser($user);
+           $this->setEmailAdm($emailAdm);
+           $this->setSenha($senha);
+           $this->setId($id);
+
         }
 
         public function getId () {
@@ -19,12 +22,20 @@
             $this->id = $id;
         }
 
-        public function getAuser () {
-            return $this->auser;
+        public function getUser () {
+            return $this->user;
         }
 
-        public function setAuser ($auser) {
-            $this->auser = $auser;
+        public function setUser ($user) {
+            $this->user = $user;
+        }
+
+        public function getEmailAdm () {
+            return $this->emailAdm;
+        }
+
+        public function setEmailAdm ($emailAdm) {
+            $this->emailAdm = $emailAdm;
         }
 
         public function getSenha () {

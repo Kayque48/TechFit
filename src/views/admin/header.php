@@ -24,9 +24,11 @@
 
             <!-- Menu do usuário -->
             <div class="user-menu dropdown">
-                <a href="#" class="d-block text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
-                    <img src="https://github.com/mdo.png" alt="Admin" width="40" height="40" class="rounded-circle">
-                </a>
+                <?php
+                $nomeCompleto = $Admin['USER'] ?? '';
+                $primeiroNome = explode(' ', trim($nomeCompleto))[0];
+                ?>
+                <h4 class="adm-ola">Olá, <span class="adm-nome"><?= htmlspecialchars($primeiroNome) ?></span></h4>
                 <ul class="dropdown-menu dropdown-menu-end shadow">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configurações</a></li>

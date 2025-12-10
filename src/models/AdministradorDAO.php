@@ -13,22 +13,24 @@ class AdministradorDAO {
     // CREATE
     public function criarAdministrador(Administrador $admin) {
         $stmt = $this->conn->prepare("
-            INSERT INTO ADMINISTRACAO (AUSER, SENHA)
-            VALUES (:auser, :senha)
+            INSERT INTO ADMINISTRACAO (USER, EMAIL_ADM, SENHA)
+            VALUES (:user, :emailAdm, :senha)
         ");
         $stmt->execute([
-            ':auser' => $admin->getAuser(),
+            ':user' => $admin->getUser(),
+            ':emailAdm' => $admin->getEmailAdm(),
             ':senha' => $admin->getSenha()
         ]);
     }
 
     // READ ALL
     public function lerAdministradores() {
-        $stmt = $this->conn->query("SELECT * FROM ADMINISTRACAO ORDER BY AUSER");
+        $stmt = $this->conn->query("SELECT * FROM ADMINISTRACAO ORDER BY USER");
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Administrador(
-                $row['AUSER'],
+                $row['USER'],
+                $row['EMAIL_ADM'],
                 $row['SENHA'],
                 $row['ID_ADMINISTRADOR']
             );
@@ -43,7 +45,8 @@ class AdministradorDAO {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new Administrador(
-                $row['AUSER'],
+                $row['USER'],
+                $row['EMAIL_ADM'],
                 $row['SENHA'],
                 $row['ID_ADMINISTRADOR']
             );
@@ -52,14 +55,15 @@ class AdministradorDAO {
     }
 
     // UPDATE
-    public function atualizarAdministrador($id, $auser, $senha) {
+    public function atualizarAdministrador($id, $user, $emailAdm, $senha) {
         $stmt = $this->conn->prepare("
             UPDATE ADMINISTRACAO
-            SET AUSER = :auser, SENHA = :senha
+            SET USER = :user, EMAIL_ADM = :emailAdm, SENHA = :senha
             WHERE ID_ADMINISTRADOR = :id
         ");
         $stmt->execute([
-            ':auser' => $auser,
+            ':user' => $user,
+            ':emailAdm' => $emailAdm,
             ':senha' => $senha,
             ':id' => $id
         ]);

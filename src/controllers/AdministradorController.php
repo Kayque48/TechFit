@@ -15,8 +15,8 @@ class AdministradorController {
         return $this->dao->lerAdministradores();
     }
 
-    public function criar($auser, $senha) {
-        $admin = new Administrador($auser, $senha);
+    public function criar($user, $emailAdm, $senha) {
+        $admin = new Administrador($user, $emailAdm, $senha);
         $this->dao->criarAdministrador($admin);
     }
 
@@ -24,8 +24,8 @@ class AdministradorController {
         $this->dao->excluirAdministrador($id);
     }
 
-    public function atualizar($id, $auser, $senha) {
-        $this->dao->atualizarAdministrador($id, $auser, $senha);
+    public function atualizar($id, $user, $emailAdm, $senha) {
+        $this->dao->atualizarAdministrador($id, $user, $emailAdm, $senha);
     }
 
     public function buscarPorId($id) {

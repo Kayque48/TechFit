@@ -76,8 +76,8 @@
 <body>
 
     <div class="card">
-        <h1>Página de Cadastro do Usuário</h1>
-        <a href="../public/cadastroCliente.php">Acessar</a>
+        <h1>Página do Administrador</h1>
+        <a href="../public/telaAdministrador.php">Acessar</a>
     </div>
 
     <div class="card">
