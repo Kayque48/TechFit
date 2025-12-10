@@ -42,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
         try {
             $controllerAluno->getDAO()->atualizarPlano($email, $novoPlano);
             $mensagemPlano = 'Plano atualizado com sucesso!';
+
+            $conn->query("UPDATE ALUNOS SET FK_PLANO = $id");
+
         } catch (Exception $e) {
             $mensagemPlano = 'Erro ao atualizar plano: ' . $e->getMessage();
         }
@@ -72,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
     <!-- Header -->
     <?php
     require_once '../src/views/headerUser.php'
-    ?>
+        ?>
 
     <!-- Layout Principal -->
     <div class="main-container">
@@ -100,7 +103,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="clientName">Nome:</label>
-                                    <p id="nome-cliente"><?php echo htmlspecialchars($aluno['NOME_ALUNO'] ?? 'N/A'); ?></p>
+                                    <p id="nome-cliente"><?php echo htmlspecialchars($aluno['NOME_ALUNO'] ?? 'N/A'); ?>
+                                    </p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientYear">Idade:</label>
@@ -108,15 +112,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientOld">Endereço:</label>
-                                    <p id="endereco-cliente"><?php echo htmlspecialchars($aluno['ENDERECO_ALUNO'] ?? 'N/A'); ?></p>
+                                    <p id="endereco-cliente">
+                                        <?php echo htmlspecialchars($aluno['ENDERECO_ALUNO'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPlan">Plano:</label>
-                                    <p id="Plano-cliente"><?php echo htmlspecialchars($aluno['PLANO'] ?? 'N/A'); ?></p>
+                                    <p id="Plano-cliente"><?php echo htmlspecialchars($plano['TIPO_PLANO'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientPhone">Telefone:</label>
-                                    <p id="telefone-cliente"><?php echo htmlspecialchars($aluno['TELEFONE'] ?? 'N/A'); ?></p>
+                                    <p id="telefone-cliente">
+                                        <?php echo htmlspecialchars($aluno['TELEFONE'] ?? 'N/A'); ?></p>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="clientEmail">Email:</label>
@@ -134,18 +140,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                 <?php
                                 $dias = [
                                     ['nome' => 'Segunda-feira', 'img' => 'https://plus.unsplash.com/premium_photo-1672862927484-cfc92dd88081?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Terça-feira',   'img' => 'https://plus.unsplash.com/premium_photo-1661630801762-b59faf22d543?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Quarta-feira',  'img' => 'https://images.unsplash.com/photo-1669989179344-3e84780dab7d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Quinta-feira',  'img' => 'https://images.unsplash.com/photo-1605720789771-a7fb8ab19d04?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Sexta-feira',   'img' => 'https://images.unsplash.com/photo-1734458211458-4d508abf564e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Sábado',        'img' => 'https://images.unsplash.com/photo-1609899517237-77d357b047cf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
-                                    ['nome' => 'Domingo',       'img' => 'https://images.unsplash.com/photo-1581122584612-713f89daa8eb?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Terça-feira', 'img' => 'https://plus.unsplash.com/premium_photo-1661630801762-b59faf22d543?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Quarta-feira', 'img' => 'https://images.unsplash.com/photo-1669989179344-3e84780dab7d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Quinta-feira', 'img' => 'https://images.unsplash.com/photo-1605720789771-a7fb8ab19d04?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Sexta-feira', 'img' => 'https://images.unsplash.com/photo-1734458211458-4d508abf564e?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Sábado', 'img' => 'https://images.unsplash.com/photo-1609899517237-77d357b047cf?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
+                                    ['nome' => 'Domingo', 'img' => 'https://images.unsplash.com/photo-1581122584612-713f89daa8eb?q=80&w=688&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'],
                                 ];
                                 foreach ($dias as $dia): ?>
                                     <div class="col-6 col-md-4 col-lg-3 mb-4 d-flex flex-column align-items-center dia-semana"
-                                        onclick="atualizarTitulo('<?= $dia['nome'] ?>')"
-                                        role="button" style="cursor:pointer;">
-                                        <img src="<?= $dia['img'] ?>" alt="<?= $dia['nome'] ?>" class="rounded-circle shadow" width="100" height="100" style="object-fit:cover; background:#f8f9fa;">
+                                        onclick="atualizarTitulo('<?= $dia['nome'] ?>')" role="button"
+                                        style="cursor:pointer;">
+                                        <img src="<?= $dia['img'] ?>" alt="<?= $dia['nome'] ?>"
+                                            class="rounded-circle shadow" width="100" height="100"
+                                            style="object-fit:cover; background:#f8f9fa;">
                                         <h5 class="fw-normal mt-3"><?= $dia['nome'] ?></h5>
                                     </div>
                                 <?php endforeach; ?>
@@ -197,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                 }
 
                                 // inicializar mostrando todos
-                                document.addEventListener('DOMContentLoaded', function() {
+                                document.addEventListener('DOMContentLoaded', function () {
                                     mostrarTodos();
                                 });
                             </script>
@@ -205,12 +213,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                             <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
                                 <!-- Card 1 - Segunda -->
                                 <div class="col card-col" data-day="Segunda-feira">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/abs.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/abs.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">ABS</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://github.com/twbs.png" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://github.com/twbs.png" alt="Instrutor" width="32"
+                                                        height="32" class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -227,12 +237,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                                 <!-- Card 2 - Terça -->
                                 <div class="col card-col" data-day="Terça-feira">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/peito.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/peito.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Peito</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                                                        alt="Instrutor" width="32" height="32"
+                                                        class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -249,12 +262,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                                 <!-- Card 3 - Quarta -->
                                 <div class="col card-col" data-day="Quarta-feira">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/costas.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/costas.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Costas</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://randomuser.me/api/portraits/men/45.jpg"
+                                                        alt="Instrutor" width="32" height="32"
+                                                        class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -271,12 +287,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                                 <!-- Card 4 - Quinta -->
                                 <div class="col card-col" data-day="Quinta-feira">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/pernas.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/pernas.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Pernas</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                                        alt="Instrutor" width="32" height="32"
+                                                        class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -293,12 +312,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                                 <!-- Card 5 - Sexta -->
                                 <div class="col card-col" data-day="Sexta-feira">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/biceps.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/biceps.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Bíceps</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://randomuser.me/api/portraits/men/50.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://randomuser.me/api/portraits/men/50.jpg"
+                                                        alt="Instrutor" width="32" height="32"
+                                                        class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -315,12 +337,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                                 <!-- Card 6 - Sábado -->
                                 <div class="col card-col" data-day="Sábado">
-                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" style="background-image: url('img/cards/triceps.jpg'); background-size:cover;">
+                                    <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"
+                                        style="background-image: url('img/cards/triceps.jpg'); background-size:cover;">
                                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
                                             <h4 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Tríceps</h4>
                                             <ul class="d-flex list-unstyled mt-auto">
                                                 <li class="me-auto">
-                                                    <img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Instrutor" width="32" height="32" class="rounded-circle border border-white">
+                                                    <img src="https://randomuser.me/api/portraits/women/55.jpg"
+                                                        alt="Instrutor" width="32" height="32"
+                                                        class="rounded-circle border border-white">
                                                 </li>
                                                 <li class="d-flex align-items-center me-3">
                                                     <i class="fas fa-location-dot me-2"></i>
@@ -343,179 +368,188 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
             </div>
 
             <!-- Seção Plano -->
-            <!-- ===================== SEÇÃO PLANO - CORRIGIDA ===================== -->
-<section id="plano" class="plans container py-5 hidden">
-    <div class="content-header">
-        <h1 class="page-title">Nossos Planos</h1>
-        <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
-    </div>
-
-    <div class="product-form-container">
-        <div class="pricing-header text-center mb-4">
-            <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
-            <p class="fs-5 text-body-secondary">
-                Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de opções.
-            </p>
-        </div>
-
-        <?php if (!empty($mensagemPlano)): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php endif; ?>
-
-        <!-- Cards dos Planos - GRID CORRIGIDO -->
-        <div class="planos-container">
-            <?php if (empty($plano)): ?>
-                <div class="alert alert-info w-100" role="alert">
-                    <i class="fas fa-info-circle me-2"></i>
-                    Nenhum plano disponível no momento. Entre em contato conosco para mais informações.
+            <section id="plano" class="plans container py-5 hidden">
+                <div class="content-header">
+                    <h1 class="page-title">Nossos Planos</h1>
+                    <p class="page-subtitle">Escolha o plano que melhor se adapta a você</p>
                 </div>
-            <?php else: ?>
-                <?php foreach ($plano as $p): ?>
-                <div class="card-plan">
-                    <div class="card-plan-header">
-                        <h4><?= htmlspecialchars($p->getTipoPlano()) ?></h4>
-                        <div class="card-plan-price">
-                            <span class="price-amount">R$ <?= number_format($p->getPreco(), 2, ',', '.') ?></span>
-                            <span class="price-period">/mês</span>
+
+                <div class="product-form-container">
+                    <div class="pricing-header text-center mb-4">
+                        <h1 class="display-4 fw-normal text-body-emphasis">Planos de Academia</h1>
+                        <p class="fs-5 text-body-secondary">
+                            Encontre o plano ideal para alcançar seus objetivos de fitness com nossa variedade de
+                            opções.
+                        </p>
+                    </div>
+
+                    <?php if (!empty($mensagemPlano)): ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i> <?= htmlspecialchars($mensagemPlano) ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
-                    <div class="card-plan-body">
-                        <?php if (!empty($p->getDescricao())): ?>
-                        <p class="card-plan-description"><?= htmlspecialchars($p->getDescricao()) ?></p>
+                    <!-- Cards dos Planos - GRID CORRIGIDO -->
+                    <div class="planos-container">
+                        <?php if (empty($plano)): ?>
+                            <div class="alert alert-info w-100" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Nenhum plano disponível no momento. Entre em contato conosco para mais informações.
+                            </div>
+                        <?php else: ?>
+                            <?php foreach ($plano as $p): ?>
+                                <div class="card-plan">
+                                    <div class="card-plan-header">
+                                        <h4><?= htmlspecialchars($p->getTipoPlano()) ?></h4>
+                                        <div class="card-plan-price">
+                                            <span class="price-amount">R$
+                                                <?= number_format($p->getPreco(), 2, ',', '.') ?></span>
+                                            <span class="price-period">/mês</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-plan-body">
+                                        <?php if (!empty($p->getDescricao())): ?>
+                                            <p class="card-plan-description"><?= htmlspecialchars($p->getDescricao()) ?></p>
+                                        <?php endif; ?>
+
+                                        <ul class="card-plan-features">
+                                            <?php if (!empty($p->getMaquinas())): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Máquinas: <?= htmlspecialchars($p->getMaquinas()) ?>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php if (!empty($p->getAulasGrupo())): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Aulas: <?= htmlspecialchars($p->getAulasGrupo()) ?>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php if ($p->getTreinamentos()): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Treinamento personalizado
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php if ($p->getConsultoria()): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Consultoria nutricional
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php if (!empty($p->getAvaliacao())): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Avaliação: <?= htmlspecialchars($p->getAvaliacao()) ?>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php if (!empty($p->getAcesso())): ?>
+                                                <li>
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Acesso: <?= htmlspecialchars($p->getAcesso()) ?>
+                                                </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </div>
+
+                                    <div class="card-plan-footer">
+                                        <form method="POST" class="d-inline">
+                                            <input type="hidden" name="plano_selecionado"
+                                                value="<?= htmlspecialchars($p->getTipoPlano()) ?>">
+
+                                            <input type="password" name="senha_confirmacao"
+                                                class="form-control form-control-sm d-inline-block w-auto" placeholder="Senha"
+                                                required>
+
+                                            <button type="submit" name="confirmar_plano" class="btn btn-success btn-sm ms-2">
+                                                Confirmar
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         <?php endif; ?>
-
-                        <ul class="card-plan-features">
-                            <?php if (!empty($p->getMaquinas())): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Máquinas: <?= htmlspecialchars($p->getMaquinas()) ?>
-                            </li>
-                            <?php endif; ?>
-
-                            <?php if (!empty($p->getAulasGrupo())): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Aulas: <?= htmlspecialchars($p->getAulasGrupo()) ?>
-                            </li>
-                            <?php endif; ?>
-
-                            <?php if ($p->getTreinamentos()): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Treinamento personalizado
-                            </li>
-                            <?php endif; ?>
-
-                            <?php if ($p->getConsultoria()): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Consultoria nutricional
-                            </li>
-                            <?php endif; ?>
-
-                            <?php if (!empty($p->getAvaliacao())): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Avaliação: <?= htmlspecialchars($p->getAvaliacao()) ?>
-                            </li>
-                            <?php endif; ?>
-
-                            <?php if (!empty($p->getAcesso())): ?>
-                            <li>
-                                <i class="fas fa-check-circle"></i>
-                                Acesso: <?= htmlspecialchars($p->getAcesso()) ?>
-                            </li>
-                            <?php endif; ?>
-                        </ul>
                     </div>
 
-                    <div class="card-plan-footer">
-                        <button class="btn-inscrever" 
-                                onclick="selecionarPlano('<?= htmlspecialchars($p->getTipoPlano()) ?>', <?= $p->getId() ?>)">
-                            <i class="fas fa-check me-2"></i>
-                            Inscreva-se
-                        </button>
-                    </div>
+                    <!-- Tabela Comparativa -->
+                    <?php if (!empty($plano) && count($plano) > 1): ?>
+                        <div class="comparison-section">
+                            <h2 class="comparison-title">Compare os planos</h2>
+
+                            <div class="table-responsive">
+                                <table class="table table-comparison">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-start">Benefícios</th>
+                                            <?php foreach ($plano as $p): ?>
+                                                <th class="text-center"><?= htmlspecialchars($p->getTipoPlano()) ?></th>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-start"><strong>Preço Mensal</strong></td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center">
+                                                    <strong class="text-success">R$
+                                                        <?= number_format($p->getPreco(), 2, ',', '.') ?></strong>
+                                                </td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Acesso a máquinas</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center"><?= htmlspecialchars($p->getMaquinas()) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Aulas de grupo</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center"><?= htmlspecialchars($p->getAulasGrupo()) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Treinamento personalizado</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center">
+                                                    <?= $p->getTreinamentos() ?>
+                                                </td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Consultoria nutricional</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center">
+                                                    <?= $p->getConsultoria() ?>
+                                                </td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Avaliação física</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center"><?= htmlspecialchars($p->getAvaliacao()) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-start">Horário de acesso</td>
+                                            <?php foreach ($plano as $p): ?>
+                                                <td class="text-center"><?= htmlspecialchars($p->getAcesso()) ?></td>
+                                            <?php endforeach; ?>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
-        <!-- Tabela Comparativa -->
-        <?php if (!empty($plano) && count($plano) > 1): ?>
-        <div class="comparison-section">
-            <h2 class="comparison-title">Compare os planos</h2>
-
-            <div class="table-responsive">
-                <table class="table table-comparison">
-                    <thead>
-                        <tr>
-                            <th class="text-start">Benefícios</th>
-                            <?php foreach ($plano as $p): ?>
-                            <th class="text-center"><?= htmlspecialchars($p->getTipoPlano()) ?></th>
-                            <?php endforeach; ?>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-start"><strong>Preço Mensal</strong></td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center">
-                                <strong class="text-success">R$ <?= number_format($p->getPreco(), 2, ',', '.') ?></strong>
-                            </td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Acesso a máquinas</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center"><?= htmlspecialchars($p->getMaquinas()) ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Aulas de grupo</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center"><?= htmlspecialchars($p->getAulasGrupo()) ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Treinamento personalizado</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center">
-                                <?= $p->getTreinamentos() ?>
-                            </td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Consultoria nutricional</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center">
-                                <?= $p->getConsultoria()?>
-                            </td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Avaliação física</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center"><?= htmlspecialchars($p->getAvaliacao()) ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Horário de acesso</td>
-                            <?php foreach ($plano as $p): ?>
-                            <td class="text-center"><?= htmlspecialchars($p->getAcesso()) ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <?php endif; ?>
-    </div>
-</section>
+            </section>
 
 
             <!-- ===================== SEÇÃO TREINO ===================== -->
@@ -535,7 +569,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                         <div class="form-grid">
                             <div class="form-group">
                                 <label class="form-label">Pesquisar por nome do treino</label>
-                                <input type="text" class="form-control-custom" placeholder="Ex: Peito, Costas, Pernas...">
+                                <input type="text" class="form-control-custom"
+                                    placeholder="Ex: Peito, Costas, Pernas...">
                             </div>
 
                             <div class="form-group">
@@ -642,7 +677,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
 
                     <!-- Tabela com dados do banco -->
                     <div class="form-section">
-                        <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente</h2>
+                        <h2 class="section-title"><i class="fas fa-chart-line me-2"></i> Avaliação Física Mais Recente
+                        </h2>
 
 
                         <?php if ($fichaRecente): ?>
@@ -657,55 +693,68 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                     <tbody>
                                         <tr>
                                             <td><strong>Data da Avaliação</strong></td>
-                                            <td><?= !empty($fichaRecente->getData()) ? date('d/m/Y', strtotime($fichaRecente->getData())) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getData()) ? date('d/m/Y', strtotime($fichaRecente->getData())) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Peso (kg)</strong></td>
-                                            <td><?= !empty($fichaRecente->getPeso()) ? htmlspecialchars($fichaRecente->getPeso()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getPeso()) ? htmlspecialchars($fichaRecente->getPeso()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Altura (m)</strong></td>
-                                            <td><?= !empty($fichaRecente->getAltura()) ? htmlspecialchars($fichaRecente->getAltura()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getAltura()) ? htmlspecialchars($fichaRecente->getAltura()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>IMC</strong></td>
-                                            <td><?= !empty($fichaRecente->getImc()) ? htmlspecialchars($fichaRecente->getImc()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getImc()) ? htmlspecialchars($fichaRecente->getImc()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Peitoral (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getPeitoral()) ? htmlspecialchars($fichaRecente->getPeitoral()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getPeitoral()) ? htmlspecialchars($fichaRecente->getPeitoral()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Cintura (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getCintura()) ? htmlspecialchars($fichaRecente->getCintura()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getCintura()) ? htmlspecialchars($fichaRecente->getCintura()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Quadril (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getQuadril()) ? htmlspecialchars($fichaRecente->getQuadril()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getQuadril()) ? htmlspecialchars($fichaRecente->getQuadril()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Braço Esquerdo (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getBraEsquerdo()) ? htmlspecialchars($fichaRecente->getBraEsquerdo()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getBraEsquerdo()) ? htmlspecialchars($fichaRecente->getBraEsquerdo()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Braço Direito (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getBraDireito()) ? htmlspecialchars($fichaRecente->getBraDireito()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getBraDireito()) ? htmlspecialchars($fichaRecente->getBraDireito()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Coxa (cm)</strong></td>
-                                            <td><?= !empty($fichaRecente->getCoxa()) ? htmlspecialchars($fichaRecente->getCoxa()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getCoxa()) ? htmlspecialchars($fichaRecente->getCoxa()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Gordura Corporal (%)</strong></td>
-                                            <td><?= !empty($fichaRecente->getGordura()) ? htmlspecialchars($fichaRecente->getGordura()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getGordura()) ? htmlspecialchars($fichaRecente->getGordura()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Massa Magra (kg)</strong></td>
-                                            <td><?= !empty($fichaRecente->getMasMagra()) ? htmlspecialchars($fichaRecente->getMasMagra()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getMasMagra()) ? htmlspecialchars($fichaRecente->getMasMagra()) : 'null' ?>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>TMB (kcal)</strong></td>
-                                            <td><?= !empty($fichaRecente->getTmb()) ? htmlspecialchars($fichaRecente->getTmb()) : 'null' ?></td>
+                                            <td><?= !empty($fichaRecente->getTmb()) ? htmlspecialchars($fichaRecente->getTmb()) : 'null' ?>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -714,7 +763,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
                                 <strong>Sem dados registrados</strong>
-                                <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastrarFicha.php" class="alert-link">Clique aqui para criar uma</a></p>
+                                <p>Você ainda não tem nenhuma ficha de avaliação. <a href="cadastrarFicha.php"
+                                        class="alert-link">Clique aqui para criar uma</a></p>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -740,14 +790,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['atualizar_plano'])) {
                                     <tbody>
                                         <?php foreach ($fichas as $ficha): ?>
                                             <tr>
-                                                <td><?= !empty($ficha->getData()) ? date('d/m/Y', strtotime($ficha->getData())) : 'null' ?></td>
-                                                <td><?= !empty($ficha->getPeso()) ? htmlspecialchars($ficha->getPeso()) : 'null' ?></td>
-                                                <td><?= !empty($ficha->getAltura()) ? htmlspecialchars($ficha->getAltura()) : 'null' ?></td>
-                                                <td><?= !empty($ficha->getImc()) ? htmlspecialchars($ficha->getImc()) : 'null' ?></td>
-                                                <td><?= !empty($ficha->getGordura()) ? htmlspecialchars($ficha->getGordura()) . '%' : 'null' ?></td>
-                                                <td><?= !empty($ficha->getCintura()) ? htmlspecialchars($ficha->getCintura()) : 'null' ?></td>
+                                                <td><?= !empty($ficha->getData()) ? date('d/m/Y', strtotime($ficha->getData())) : 'null' ?>
+                                                </td>
+                                                <td><?= !empty($ficha->getPeso()) ? htmlspecialchars($ficha->getPeso()) : 'null' ?>
+                                                </td>
+                                                <td><?= !empty($ficha->getAltura()) ? htmlspecialchars($ficha->getAltura()) : 'null' ?>
+                                                </td>
+                                                <td><?= !empty($ficha->getImc()) ? htmlspecialchars($ficha->getImc()) : 'null' ?>
+                                                </td>
+                                                <td><?= !empty($ficha->getGordura()) ? htmlspecialchars($ficha->getGordura()) . '%' : 'null' ?>
+                                                </td>
+                                                <td><?= !empty($ficha->getCintura()) ? htmlspecialchars($ficha->getCintura()) : 'null' ?>
+                                                </td>
                                                 <td>
-                                                    <a href="listaFichas.php?editar=<?= $ficha->getId() ?>" class="btn btn-sm btn-warning" title="Editar">
+                                                    <a href="listaFichas.php?editar=<?= $ficha->getId() ?>"
+                                                        class="btn btn-sm btn-warning" title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 </td>
