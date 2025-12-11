@@ -15,8 +15,8 @@ class AdministradorController {
         return $this->dao->lerAdministradores();
     }
 
-    public function criar($user, $emailAdm, $senha) {
-        $admin = new Administrador($user, $emailAdm, $senha);
+    public function criar($user, $senha) {
+        $admin = new Administrador($user, $senha);
         $this->dao->criarAdministrador($admin);
     }
 
@@ -24,12 +24,12 @@ class AdministradorController {
         $this->dao->excluirAdministrador($id);
     }
 
-    public function atualizar($id, $user, $emailAdm, $senha) {
-        $this->dao->atualizarAdministrador($id, $user, $emailAdm, $senha);
+    public function atualizar($id, $userNova, $senhaNova) {
+        $this->dao->atualizarAdministrador($id, $userNova, $senhaNova);
     }
 
-    public function buscarPorId($id) {
-        return $this->dao->buscarPorId($id);
+    public function buscarPorUsuario($user) {
+        return $this->dao->buscarPorUsuario($user);
     }
 
     public function getDAO() {

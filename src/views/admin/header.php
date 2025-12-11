@@ -28,6 +28,10 @@
                 $nomeCompleto = $Admin['USER'] ?? '';
                 $primeiroNome = explode(' ', trim($nomeCompleto))[0];
                 ?>
+                <a class="nav-link text-danger" href="admin.php?action=logout"
+                    onclick="return confirm('Deseja realmente sair?')">
+                    <i class="bi bi-box-arrow-right"></i> Sair
+                </a>
                 <h4 class="adm-ola">Olá, <span class="adm-nome"><?= htmlspecialchars($primeiroNome) ?></span></h4>
                 <ul class="dropdown-menu dropdown-menu-end shadow">
                     <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>

@@ -4,6 +4,12 @@ class Connection
 {
     private static $instance = null;
 
+    private $conn;
+
+    public function getConnection($conn) {
+        return $this->conn;
+    }
+
     public static function getInstance()
     {
         if (!self::$instance) {
@@ -35,4 +41,7 @@ class Connection
 
         return self::$instance;
     }
+
+
+
 }

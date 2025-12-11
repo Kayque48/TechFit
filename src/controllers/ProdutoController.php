@@ -1,39 +1,87 @@
 <?php
+require_once __DIR__ . '/Controller.php';
+require_once __DIR__ . '/../models/ProdutoModel.php';
 
-require_once __DIR__ .'/../models/Produto.php';
-require_once __DIR__ . '/../models/ProdutoDAO.php';
-
-class ProdutoController {
-
-    private $dao;
-
+class ProdutoController extends Controller {
+    private $model;
+    
     public function __construct() {
-        $this->dao = new ProdutoDAO();
+        $this->model = new ProdutoModel();
     }
-
-    public function ler() {
-        return $this->dao->lerProdutos();
+    
+    public function index() {
+        $produtos = $this->model->findAll();
+        require_once __DIR__ . '/../views/produtos/index.php';
     }
-
-    public function criar($nomeProduto, $preco, $quantidade = 20, $status = 'DISPONÍVEL') {
-        $produto = new Produto($nomeProduto, $preco, $quantidade, $status);
-        $this->dao->criarProduto($produto);
+    
+    public function create() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'NOME_PRODUTO' => $_POST['nome'] ?? '',
+                'QUANTIDADE' => $_POST['quantidade'] ?? 20,
+                'PSTATUS' => $_POST['status'] ?? 'DISPONÍVEL',
+                'PRECO' => $_POST['preco'] ?? 0
+            ];
+            
+            if ($this->model->create($data)) {
+                $this->redirect('index.php?controller=produto&action=index');
+            }
+        }
+        
+        require_once __DIR__ . '/../views/produtos/create.php';
     }
-
-    public function excluir($id) {
-        $this->dao->excluirProduto($id);
+    
+    public function update() {
+        $id = $_GET['id'] ?? null;
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'NOME_PRODUTO' => $_POST['nome'] ?? '',
+                'QUANTIDADE' => $_POST['quantidade'] ?? 20,
+                'PSTATUS' => $_POST['status'] ?? 'DISPONÍVEL',
+                'PRECO' => $_POST['preco'] ?? 0
+            ];
+            
+            if ($this->model->update($id, $data)) {
+                $this->redirect('index.php?controller=produto&action=index');
+            }
+        }
+        
+        $produto = $this->model->findById($id);
+        require_once __DIR__ . '/../views/produtos/update.php';
     }
-
-    public function atualizar($id, $nomeProduto, $quantidade, $status, $preco) {
-        $this->dao->atualizarProduto($id, $nomeProduto, $quantidade, $status, $preco);
+    
+    public function delete() {
+        $id = $_GET['id'] ?? null;
+        if ($id && $this->model->delete($id)) {
+            $this->redirect('index.php?controller=produto&action=index');
+        }
     }
-
-    public function buscarPorId($id) {
-        return $this->dao->buscarPorId($id);
-    }
-
-    public function getDAO() {
-        return $this->dao;
+    
+    public function exportCSV() {
+        $produtos = $this->model->findAll();
+        
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=produtos_' . date('Y-m-d') . '.csv');
+        
+        $output = fopen('php://output', 'w');
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+        
+        fputcsv($output, ['ID', 'Nome', 'Quantidade', 'Status', 'Preço'], ';');
+        
+        foreach ($produtos as $produto) {
+            fputcsv($output, [
+                $produto['ID_PRODUTO'],
+                $produto['NOME_PRODUTO'],
+                $produto['QUANTIDADE'],
+                $produto['PSTATUS'],
+                $produto['PRECO']
+            ], ';');
+        }
+        
+        fclose($output);
+        exit;
     }
 }
 ?>
+

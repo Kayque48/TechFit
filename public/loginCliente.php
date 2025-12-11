@@ -1,52 +1,53 @@
 <?php
-    
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
 
-    // Inicia sessão
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+// Inicia sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
+$controller = new AlunoController();
+
+// Processar login
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar') {
+    $email = trim($_POST['email'] ?? '');
+    $senha = trim($_POST['senha'] ?? '');
+
+    if (empty($email) || empty($senha)) {
+        header('Location: loginCliente.php?erro=1');
+        exit;
     }
 
-    require_once __DIR__ . '/../src/controllers/AlunoController.php';
-    $controller = new AlunoController();
+    try {
+        $aluno = $controller->buscarPorEmail($email);
 
-    // Processar login
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar') {
-        $email = trim($_POST['email'] ?? '');
-        $senha = trim($_POST['senha'] ?? '');
-        
-        if (empty($email) || empty($senha)) {
+        if ($aluno && isset($aluno['SENHA']) && (password_verify($senha, $aluno['SENHA']) || $aluno['SENHA'] === $senha)) {
+            // Login bem-sucedido
+            $_SESSION['email'] = $aluno['EMAIL'];
+            $_SESSION['nome'] = $aluno['NOME_ALUNO'];
+            $_SESSION['logado'] = true;
+
+            header('Location: telaCliente.php');
+            exit;
+        } else {
             header('Location: loginCliente.php?erro=1');
             exit;
         }
-
-        try {
-            $aluno = $controller->buscarPorEmail($email);
-            
-            if ($aluno && isset($aluno['SENHA']) && (password_verify($senha, $aluno['SENHA']) || $aluno['SENHA'] === $senha)) {
-                // Login bem-sucedido
-                $_SESSION['email'] = $aluno['EMAIL'];
-                $_SESSION['nome'] = $aluno['NOME_ALUNO'];
-                $_SESSION['logado'] = true;
-                
-                header('Location: telaCliente.php');
-                exit;
-            } else {
-                header('Location: loginCliente.php?erro=1');
-                exit;
-            }
-        } catch (Exception $e) {
-            header('Location: loginCliente.php?erro=1');
-            exit;
-        }
+    } catch (Exception $e) {
+        header('Location: loginCliente.php?erro=1');
+        exit;
     }
+}
 ?>
 
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +67,7 @@
         .login-container {
             background: white;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             max-width: 900px;
             width: 100%;
@@ -105,7 +106,7 @@
         }
 
         .login-brand p {
-            color: rgba(255,255,255,0.8);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 1.1rem;
         }
 
@@ -227,8 +228,13 @@
             background: #e9ecef;
         }
 
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
 
         .signup-link {
             text-align: center;
@@ -278,6 +284,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <!-- Brand Section -->
@@ -296,25 +303,25 @@
                 <p>Entre com suas credenciais para acessar sua conta</p>
             </div>
 
-            <?php if(isset($_GET['erro'])): ?>
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle"></i>
-                Email ou senha incorretos
-            </div>
+            <?php if (isset($_GET['erro'])): ?>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Email ou senha incorretos
+                </div>
             <?php endif; ?>
 
-            <?php if(isset($_GET['recuperacao']) && $_GET['recuperacao'] === 'sucesso'): ?>
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                Senha redefinida com sucesso! Faça login com sua nova senha.
-            </div>
+            <?php if (isset($_GET['recuperacao']) && $_GET['recuperacao'] === 'sucesso'): ?>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    Senha redefinida com sucesso! Faça login com sua nova senha.
+                </div>
             <?php endif; ?>
 
-            <?php if(isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
-            <div class="alert alert-success">
-                <i class="fas fa-check-circle"></i>
-                Cadastro realizado com sucesso! Faça login com suas credenciais.
-            </div>
+            <?php if (isset($_GET['cadastro']) && $_GET['cadastro'] === 'sucesso'): ?>
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    Cadastro realizado com sucesso! Faça login com suas credenciais.
+                </div>
             <?php endif; ?>
 
             <form action="" method="POST">
@@ -323,14 +330,8 @@
                     <label for="email">Email</label>
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            class="form-input" 
-                            placeholder="seu@email.com"
-                            required
-                        >
+                        <input type="email" id="email" name="email" class="form-input" placeholder="seu@email.com"
+                            required>
                     </div>
                 </div>
 
@@ -338,14 +339,8 @@
                     <label for="senha">Senha</label>
                     <div class="input-with-icon">
                         <i class="fas fa-lock"></i>
-                        <input 
-                            type="password" 
-                            id="senha" 
-                            name="senha" 
-                            class="form-input" 
-                            placeholder="••••••••"
-                            required
-                        >
+                        <input type="password" id="senha" name="senha" class="form-input" placeholder="••••••••"
+                            required>
                     </div>
                 </div>
 
@@ -354,12 +349,23 @@
                         <input type="checkbox" name="lembrar">
                         <span>Lembrar-me</span>
                     </label>
+
                     <a href="recuperarSenha.php" class="forgot-password">Esqueceu a senha?</a>
                 </div>
 
-                <button type="submit" class="btn-login">
-                    <i class="fas fa-sign-in-alt"></i> Entrar
-                </button>
+                <div class="login-actions">
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+
+                    <a href="loginAdm.php" class="login-adm">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Entrar como Administrador
+                    </a>
+                </div>
+
+
+
 
                 <div class="divider">ou</div>
 
@@ -370,4 +376,5 @@
         </div>
     </div>
 </body>
+
 </html>

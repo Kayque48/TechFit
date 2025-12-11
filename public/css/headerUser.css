@@ -6,6 +6,16 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+.element-right {
+    display: flex;
+    width: 50%;
+    height: 50%;
+}
+
+svg {
+    margin-top: 50%;
+}
+
 .header-cliente-container {
     display: flex;
     align-items: center;
