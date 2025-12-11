@@ -1,12 +1,13 @@
 <?php
+
 session_start();
 
-// Autoload simples
+// Autoload
 spl_autoload_register(function ($class) {
     $paths = [
-        __DIR__ . '/controllers/',
-        __DIR__ . '/models/',
-        __DIR__ . '/config/'
+        __DIR__ . '/../src/controllers/',
+        __DIR__ . '/../src/models/',
+        __DIR__ . '/../config/'
     ];
     
     foreach ($paths as $path) {
@@ -18,27 +19,25 @@ spl_autoload_register(function ($class) {
     }
 });
 
-require_once __DIR__ . '/config/auth.php';
+require_once __DIR__ . '/../config/auth.php';
 
 $auth = Auth::getInstance();
 $action = $_GET['action'] ?? 'dashboard';
 $controller = $_GET['controller'] ?? 'dashboard';
 
-// Se for logout
+// Logout
 if ($action === 'logout') {
-    session_destroy();
-    header('Location: index.php');
-    exit;
+    $auth->logout();
 }
 
-// Se for login, mostrar página de login
+// Login
 if ($action === 'login' || $action === 'doLogin') {
     if ($action === 'doLogin' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario = $_POST['usuario'] ?? '';
         $senha = $_POST['senha'] ?? '';
         
         if ($auth->loginAdmin($usuario, $senha)) {
-            header('Location: admin.php?controller=dashboard&action=index');
+            header('Location: index.php?controller=dashboard&action=index');
             exit;
         } else {
             $erro = 'Usuário ou senha inválidos';
@@ -50,18 +49,10 @@ if ($action === 'login' || $action === 'doLogin') {
     exit;
 }
 
-// Se não estiver logado e não for login/logout, redirecionar
-if (!$auth->isAdmin() && $action !== 'login' && $action !== 'doLogin' && $action !== 'logout') {
-    header('Location: admin.php?action=login');
-    exit;
-}
+// Verificar autenticação
+$auth->requireAdmin();
 
-// Requer autenticação admin para outras ações (exceto login/logout)
-if ($action !== 'login' && $action !== 'doLogin' && $action !== 'logout') {
-    $auth->requireAdmin();
-}
-
-// Roteamento para área administrativa
+// Mapeamento de Controllers
 $controllers = [
     'dashboard' => 'DashboardController',
     'aluno' => 'AlunoController',
