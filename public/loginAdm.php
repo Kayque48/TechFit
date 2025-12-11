@@ -150,8 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['aca
             </form>
 
             <div class="text-center mt-3">
-                <a href="index.php" class="text-muted text-decoration-none">
-                    <i class="bi bi-arrow-left"></i> Voltar ao início
+                <a href="loginCliente.php" class="text-muted text-decoration-none">
+                    <i class="bi bi-arrow-left"></i> Voltar para Login do Cliente
                 </a>
             </div>
         </div>

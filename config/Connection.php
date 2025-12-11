@@ -4,10 +4,8 @@ class Connection
 {
     private static $instance = null;
 
-    private $conn;
-
-    public function getConnection($conn) {
-        return $this->conn;
+    private function __construct() {
+        // Construtor privado para singleton
     }
 
     public static function getInstance()
@@ -42,6 +40,11 @@ class Connection
         return self::$instance;
     }
 
+    // Método para evitar clonagem
+    private function __clone() {}
 
-
+    // Método para evitar unserialize
+    public function __wakeup() {
+        throw new Exception("Cannot unserialize singleton");
+    }
 }

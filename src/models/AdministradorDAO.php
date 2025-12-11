@@ -1,20 +1,19 @@
 <?php
 
-use Dba\Connection;
-
 require_once 'Administrador.php';
-require_once __DIR__ . '\..\..\config\Connection.php';
+require_once __DIR__ . '/../../config/Connection.php';
 
 class AdministradorDAO
 {
     private $conn;
 
+    public function __construct() {
+        $this->conn = Connection::getInstance();
+    }
 
     // CREATE
     public function criarAdministrador(Administrador $admin)
     {
-
-
         $stmt = $this->conn->prepare("
             INSERT INTO ADMINISTRACAO (USER, SENHA)
             VALUES (:user, :senha)
@@ -57,11 +56,9 @@ class AdministradorDAO
         return null;
     }
 
-    // UPDATE (com hash)
+    // UPDATE
     public function atualizarAdministrador($id, $userNova, $senhaNova)
     {
-
-
         $stmt = $this->conn->prepare("
             UPDATE ADMINISTRACAO
             SET USER = :user, SENHA = :senha
