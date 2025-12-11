@@ -10,7 +10,7 @@ $idade = $_SESSION['idade'];
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['email']) || empty($_SESSION['email'])) {
-    header('Location: loginCliente.php');
+    header('Location: login.php');
     exit;
 }
 
@@ -29,7 +29,7 @@ $aluno = $controllerAluno->buscarPorEmail($_SESSION['email']);
 
 if (!$aluno) {
     // Se não encontrar no banco, redirecionar para login
-    header('Location: loginCliente.php');
+    header('Location: login.php');
     exit;
 }
 

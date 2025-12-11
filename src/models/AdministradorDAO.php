@@ -39,9 +39,9 @@ class AdministradorDAO {
     }
 
     // READ BY ID
-    public function buscarPorId($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM ADMINISTRACAO WHERE ID_ADMINISTRADOR = :id LIMIT 1");
-        $stmt->execute([':id' => $id]);
+    public function buscarPorEmail($email) {
+        $stmt = $this->conn->prepare("SELECT * FROM ADMINISTRACAO WHERE EMAIL = :emailAdm LIMIT 1");
+        $stmt->execute([':emailAdm' => $email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row) {
             return new Administrador(

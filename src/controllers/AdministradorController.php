@@ -28,8 +28,8 @@ class AdministradorController {
         $this->dao->atualizarAdministrador($id, $user, $emailAdm, $senha);
     }
 
-    public function buscarPorId($id) {
-        return $this->dao->buscarPorId($id);
+    public function buscarPorEmail($email) {
+        return $this->dao->buscarPorEmail($email);
     }
 
     public function getDAO() {
