@@ -1,107 +1,110 @@
+<?php
+/**
+ * Página inicial do TechFit
+ * Redireciona para área do cliente ou administração
+ */
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-
+    <title>TechFit - Sistema de Gestão de Academia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
-
         body {
-            background: linear-gradient(135deg, #1E5332, #68A842);
-            color: #fff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 30px;
-            padding: 20px;
         }
-
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+        .welcome-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
         }
-
-        .card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 25px;
+        .welcome-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
             text-align: center;
-            width: 300px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            backdrop-filter: blur(4px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            animation: fadeIn 0.6s ease forwards;
         }
-
-        .card:hover {
+        .welcome-body {
+            padding: 3rem;
+        }
+        .access-card {
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .access-card:hover {
+            border-color: #667eea;
             transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
         }
-
-        a {
-            display: inline-block;
-            margin-top: 10px;
-            background: #FBC70B;
-            color: #1E5332;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: background 0.3s ease, transform 0.2s ease;
+        .access-card .icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
         }
-
-        a:hover {
-            background: #E95D29;
-            color: #fff;
-            transform: scale(1.05);
+        .btn-access {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            margin-top: 1rem;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-access:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-
-    <div class="card">
-        <h1>Página de Cadastro do Usuário</h1>
-        <a href="../public/cadastroCliente.php">Acessar</a>
+    <div class="welcome-card">
+        <div class="welcome-header">
+            <i class="bi bi-activity" style="font-size: 4rem;"></i>
+            <h1 class="mt-3 mb-0">TechFit</h1>
+            <p class="mb-0">Sistema de Gestão de Academia</p>
+        </div>
+        <div class="welcome-body">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="access-card">
+                        <div class="icon text-primary">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <h3>Área do Cliente</h3>
+                        <p class="text-muted">Acesse sua conta para visualizar seu perfil, avaliações físicas e plano ativo.</p>
+                        <a href="cliente.php?action=login" class="btn btn-primary btn-access">
+                            <i class="bi bi-box-arrow-in-right"></i> Entrar como Cliente
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="access-card">
+                        <div class="icon text-danger">
+                            <i class="bi bi-shield-lock"></i>
+                        </div>
+                        <h3>Área Administrativa</h3>
+                        <p class="text-muted">Acesse o painel administrativo para gerenciar alunos, professores, planos e muito mais.</p>
+                        <a href="admin.php?action=login" class="btn btn-danger btn-access">
+                            <i class="bi bi-shield-check"></i> Entrar como Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="card">
-        <h1>Página de Login do Usuário</h1>
-        <a href="public/loginCliente.php">Acessar</a>
-    </div>
-
-    <div class="card">
-        <h1>Página de Cadastro de Produto</h1>
-        <a href="public/cadastroProduto.php">Acessar</a>
-    </div>
-
-    <div class="card">
-        <h1>Página da Tela do Cliente</h1>
-        <a href="public/telaCliente.php">Acessar</a>
-    </div>
-
-    <script>
-        // Pequeno script para logar no console quando clicarem em um link
-        document.querySelectorAll("a").forEach(link => {
-            link.addEventListener("click", () => {
-                console.log(`Redirecionando para: ${link.getAttribute("href")}`);
-            });
-        });
-    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
