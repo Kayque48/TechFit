@@ -35,5 +35,11 @@
         public function getDAO() {
             return $this->dao;
         }
-    }
+
+        public function contar() {
+            return $this->dao->contarAlunos();
+        }
+
+}
+
 ?>

@@ -4,15 +4,18 @@ require_once 'Aluno.php';
 require_once __DIR__ . '\..\..\config\Connection.php';
 
 
-class AlunoDAO {
+class AlunoDAO
+{
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = Connection::getInstance();
     }
-    
+
     // helper: garante colunas ID e senha
-    private function ensureColumnExists($column, $definitionSql = 'VARCHAR(255) DEFAULT NULL') {
+    private function ensureColumnExists($column, $definitionSql = 'VARCHAR(255) DEFAULT NULL')
+    {
         try {
             // Try generic IF NOT EXISTS (MySQL 8+/MariaDB)
             $this->conn->query("ALTER TABLE Alunos ADD COLUMN IF NOT EXISTS $column $definitionSql");
@@ -26,7 +29,10 @@ class AlunoDAO {
                 $stmt = $this->conn->query("PRAGMA table_info(Alunos)");
                 $cols = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
                 foreach ($cols as $col) {
-                    if (isset($col['name']) && strtolower($col['name']) === strtolower($column)) { $has = true; break; }
+                    if (isset($col['name']) && strtolower($col['name']) === strtolower($column)) {
+                        $has = true;
+                        break;
+                    }
                 }
             } elseif ($driver === 'mysql') {
                 $stmt = $this->conn->prepare("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'Alunos' AND COLUMN_NAME = :col");
@@ -67,7 +73,8 @@ class AlunoDAO {
     }
 
     // CREATE
-    public function criarAluno(Aluno $Aluno) {
+    public function criarAluno(Aluno $Aluno)
+    {
 
         // Ensure columns exist
         $this->ensureColumnExists('ID_ALUNO');
@@ -97,7 +104,8 @@ class AlunoDAO {
     }
 
     // READ
-    public function lerAlunos() {
+    public function lerAlunos()
+    {
         $stmt = $this->conn->query("SELECT * FROM Alunos ORDER BY NOME_ALUNO");
         $result = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -116,7 +124,8 @@ class AlunoDAO {
     }
 
     // UPDATE by nome (mantido por compatibilidade)
-    public function atualizarAluno($nomeOriginal, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano) {
+    public function atualizarAluno($nomeOriginal, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano)
+    {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
             SET NOME_ALUNO = :novoNome, IDADE = :dataNasc, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, fk_plano = :plano
@@ -134,7 +143,8 @@ class AlunoDAO {
     }
 
     // UPDATE by ID (recomendado)
-    public function atualizarAlunoPorId($id, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano) {
+    public function atualizarAlunoPorId($id, $novoNome, $dataNasc, $endereco, $telefone, $email, $plano)
+    {
         $stmt = $this->conn->prepare("
             UPDATE Alunos
             SET NOME_ALUNO = :novoNome, IDADE = :dataNasc, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_PLANO = :plano
@@ -152,19 +162,22 @@ class AlunoDAO {
     }
 
     // DELETE by nome (mantido)
-    public function excluirAluno($nome) {
+    public function excluirAluno($nome)
+    {
         $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE NOME_ALUNO = :nome");
         $stmt->execute([':nome' => $nome]);
     }
 
     // DELETE by ID (recomendado)
-    public function excluirAlunoPorId($id) {
+    public function excluirAlunoPorId($id)
+    {
         $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE ID = :id");
         $stmt->execute([':id' => $id]);
     }
 
     // BUSCAR POR NOME
-    public function buscarPorNome($nome) {
+    public function buscarPorNome($nome)
+    {
         $stmt = $this->conn->prepare("SELECT * FROM Alunos WHERE NOME_ALUNO = :nome LIMIT 1");
         $stmt->execute([':nome' => $nome]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -184,7 +197,8 @@ class AlunoDAO {
     }
 
     // BUSCAR POR EMAIL
-    public function buscarPorEmail($email) {
+    public function buscarPorEmail($email)
+    {
         $stmt = $this->conn->prepare("SELECT * FROM Alunos WHERE EMAIL = :email LIMIT 1");
         $stmt->execute([':email' => $email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -204,21 +218,24 @@ class AlunoDAO {
     }
 
     // VERIFICAR SE EMAIL EXISTE
-    public function emailExiste($email) {
+    public function emailExiste($email)
+    {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Alunos WHERE EMAIL = :email");
         $stmt->execute([':email' => $email]);
         return (int)$stmt->fetchColumn() > 0;
     }
 
     // VERIFICAR SE TELEFONE EXISTE
-    public function telefoneExiste($telefone) {
+    public function telefoneExiste($telefone)
+    {
         $stmt = $this->conn->prepare("SELECT COUNT(*) FROM Alunos WHERE TELEFONE = :telefone");
         $stmt->execute([':telefone' => $telefone]);
         return (int)$stmt->fetchColumn() > 0;
     }
 
     // ATUALIZAR SENHA
-    public function atualizarSenha($email, $senhaHash) {
+    public function atualizarSenha($email, $senhaHash)
+    {
         $stmt = $this->conn->prepare("UPDATE Alunos SET senha = :senha WHERE EMAIL = :email");
         $stmt->execute([
             ':senha' => $senhaHash,
@@ -227,11 +244,21 @@ class AlunoDAO {
     }
 
     // ATUALIZAR PLANO
-    public function atualizarPlano($email, $plano) {
+    public function atualizarPlano($email, $plano)
+    {
         $stmt = $this->conn->prepare("UPDATE Alunos SET fk_plano = :plano WHERE EMAIL = :email");
         $stmt->execute([
             ':plano' => $plano,
             ':email' => $email
         ]);
+    }
+
+    public function contarAlunos()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM alunos";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado['total'];
     }
 }

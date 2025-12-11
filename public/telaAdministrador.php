@@ -11,6 +11,12 @@ if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
     exit;
 }
 
+require_once __DIR__. '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/PlanoController.php';
+
+$alunoController = new AlunoController();
+$planoController = new PlanoController();
+
 // Dados do admin para o header
 $Admin = ['USER' => $_SESSION['usuario']];
 
@@ -31,11 +37,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- CSS Customizados -->
-    <link rel="stylesheet" href="css/headerAdmin.css">
-    <link rel="stylesheet" href="css/sidebars.css">
-    <link rel="stylesheet" href="css/styleClient.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
     <style>
         :root {
@@ -50,50 +52,206 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
         body {
             background-color: var(--gray-light);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
         }
 
+        /* Header Aprimorado */
+        .techfit-header {
+            background: linear-gradient(135deg, var(--verde-escuro) 0%, #2a7a4a 100%);
+            color: white;
+            padding: 1.25rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1.6rem;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-icon {
+            background: var(--amarelo);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--verde-escuro);
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(251, 199, 11, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .admin-greeting {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .admin-name {
+            color: var(--amarelo);
+            font-weight: 700;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-logout:hover {
+            background: var(--laranja);
+            border-color: var(--laranja);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(233, 93, 41, 0.4);
+        }
+
+        /* Layout */
         .main-container {
             display: flex;
             min-height: calc(100vh - 80px);
         }
 
+        /* Sidebar Aprimorada */
+        .techfit-sidebar {
+            width: 280px;
+            background: white;
+            padding: 2rem 0;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section-title {
+            color: var(--verde-escuro);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .nav-pills .nav-link {
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            padding: 0.85rem 1.25rem;
+            color: #495057;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .nav-pills .nav-link:hover {
+            background: rgba(104, 168, 66, 0.1);
+            color: var(--verde-escuro);
+            transform: translateX(5px);
+        }
+
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, var(--verde-claro), #5a9438);
+            color: white;
+            box-shadow: 0 4px 12px rgba(104, 168, 66, 0.3);
+        }
+
+        .nav-icon {
+            width: 22px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* Conteúdo Principal */
         .main-content {
             flex: 1;
-            padding: 2rem;
+            padding: 2.5rem;
+            background: var(--gray-light);
         }
 
         .page-hidden {
             display: none;
         }
 
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .card-header {
-            background: linear-gradient(135deg, var(--verde-claro), #5a9438);
-            color: white;
-            font-weight: 600;
-            border-radius: 12px 12px 0 0 !important;
-            padding: 1rem 1.5rem;
-        }
-
-        .stats-card {
+        .stat-card {
             background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .stats-card:hover {
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
         }
 
-        .stats-icon {
+        .stat-card.primary::before { background: linear-gradient(135deg, #007bff, #0056b3); }
+        .stat-card.success::before { background: linear-gradient(135deg, #28a745, #1e7e34); }
+        .stat-card.warning::before { background: linear-gradient(135deg, #ffc107, #e0a800); }
+        .stat-card.danger::before { background: linear-gradient(135deg, #dc3545, #bd2130); }
+
+        .stat-icon {
             width: 60px;
             height: 60px;
             border-radius: 12px;
@@ -101,37 +259,220 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.primary .stat-icon {
+            background: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+        }
+
+        .stat-card.success .stat-icon {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .stat-card.warning .stat-icon {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .stat-card.danger .stat-icon {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        /* Action Cards */
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-color: var(--verde-claro);
+        }
+
+        .action-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .action-card.primary .action-icon {
+            background: linear-gradient(135deg, #007bff, #0056b3);
             color: white;
         }
 
-        .bg-primary-custom { background: linear-gradient(135deg, #007bff, #0056b3); }
-        .bg-success-custom { background: linear-gradient(135deg, #28a745, #1e7e34); }
-        .bg-warning-custom { background: linear-gradient(135deg, #ffc107, #e0a800); }
-        .bg-danger-custom { background: linear-gradient(135deg, #dc3545, #bd2130); }
+        .action-card.success .action-icon {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+            color: white;
+        }
 
-        .quick-action {
-            padding: 1rem;
-            border-radius: 10px;
+        .action-card.warning .action-icon {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+            color: white;
+        }
+
+        .action-card.danger .action-icon {
+            background: linear-gradient(135deg, #dc3545, #bd2130);
+            color: white;
+        }
+
+        .action-title {
+            color: #212529;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* Content Cards */
+        .content-card {
             background: white;
-            border: 2px solid var(--gray-light);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
         }
 
-        .quick-action:hover {
-            border-color: var(--verde-claro);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        .content-card-header {
+            border-bottom: 2px solid var(--gray-light);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .section-title {
+        .content-card-title {
             color: var(--verde-escuro);
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--verde-claro);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+
+        /* Activity List */
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .activity-item {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--gray-light);
+            transition: background 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(104, 168, 66, 0.05);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #212529;
+            margin: 0;
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .activity-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .techfit-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
         }
     </style>
 </head>
@@ -144,22 +485,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 <div class="logo-icon">
                     <i class="fas fa-dumbbell"></i>
                 </div>
-                TechFit Admin
+                <span>TechFit Admin</span>
             </a>
 
-            <form class="search-form" role="search">
-                <input type="search" class="form-control" placeholder="Buscar produtos, alunos, relatórios...">
-            </form>
-
-            <div class="user-menu">
+            <div class="user-info">
                 <?php
                 $nomeCompleto = $Admin['USER'] ?? '';
                 $primeiroNome = explode(' ', trim($nomeCompleto))[0];
                 ?>
-                <h4 class="adm-ola">Olá, <span class="adm-nome"><?= htmlspecialchars($primeiroNome) ?></span></h4>
-                <a class="btn btn-danger btn-sm" href="telaAdministrador.php?action=logout" 
+                <span class="admin-greeting">
+                    Olá, <span class="admin-name"><?= htmlspecialchars($primeiroNome) ?></span>
+                </span>
+                <a class="btn-logout" href="telaAdministrador.php?action=logout" 
                    onclick="return confirm('Deseja realmente sair?')">
-                    <i class="fas fa-sign-out-alt"></i> Sair
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sair
                 </a>
             </div>
         </div>
@@ -169,226 +509,255 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     <div class="main-container">
         <!-- Sidebar -->
         <nav class="techfit-sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Painel de Controle
-                </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Menu Principal</div>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showPage('dashboard'); return false;">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cadastroCliente.php" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            Alunos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="PlanoCRUD.php" class="nav-link">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            Planos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('treinos'); return false;">
+                            <i class="nav-icon fas fa-dumbbell"></i>
+                            Treinos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cadastroProduto.php" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-bag"></i>
+                            Produtos
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" onclick="showPage('visao-geral'); return false;">
-                        <i class="nav-icon fas fa-home"></i>
-                        Visão Geral
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="PlanoCRUD.php" class="nav-link">
-                        <i class="nav-icon fas fa-calendar-alt"></i>
-                        Planos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showPage('alunos'); return false;">
-                        <i class="nav-icon fas fa-users"></i>
-                        Alunos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showPage('treinos'); return false;">
-                        <i class="nav-icon fas fa-dumbbell"></i>
-                        Treinos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showPage('produtos'); return false;">
-                        <i class="nav-icon fas fa-shopping-bag"></i>
-                        Produtos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="showPage('relatorios'); return false;">
-                        <i class="nav-icon fas fa-chart-bar"></i>
-                        Relatórios
-                    </a>
-                </li>
-            </ul>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Relatórios</div>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('relatorios'); return false;">
+                            <i class="nav-icon fas fa-chart-bar"></i>
+                            Financeiro
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('analytics'); return false;">
+                            <i class="nav-icon fas fa-analytics"></i>
+                            Analytics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Configurações</div>
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('config'); return false;">
+                            <i class="nav-icon fas fa-cog"></i>
+                            Sistema
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </nav>
 
         <!-- Conteúdo Principal -->
         <main class="main-content">
-            <!-- Visão Geral -->
-            <div id="visao-geral" class="page-content">
-                <h2 class="section-title">
+            <!-- Dashboard -->
+            <div id="dashboard" class="page-content fade-in">
+                <h2 style="color: var(--verde-escuro); font-weight: 700; margin-bottom: 2rem;">
                     <i class="fas fa-chart-line me-2"></i>
-                    Dashboard - Visão Geral
+                    Visão Geral do Sistema
                 </h2>
 
-                <!-- Cards de Estatísticas -->
-                <div class="row g-4 mb-4">
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <div class="d-flex align-items-center">
-                                <div class="stats-icon bg-primary-custom">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="mb-0 text-muted">Total Alunos</h6>
-                                    <h3 class="mb-0">150</h3>
-                                </div>
-                            </div>
+                <!-- Estatísticas -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
                         </div>
+                        <div class="stat-label">Total de Alunos</div>
+                        <div class="stat-value"><?= $alunoController->contar()?></div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <div class="d-flex align-items-center">
-                                <div class="stats-icon bg-success-custom">
-                                    <i class="fas fa-calendar-check"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="mb-0 text-muted">Planos Ativos</h6>
-                                    <h3 class="mb-0">120</h3>
-                                </div>
-                            </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
                         </div>
+                        <div class="stat-label">Planos Ativos</div>
+                        <div class="stat-value"><?= $planoController->contar()?></div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <div class="d-flex align-items-center">
-                                <div class="stats-icon bg-warning-custom">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="mb-0 text-muted">Produtos</h6>
-                                    <h3 class="mb-0">45</h3>
-                                </div>
-                            </div>
+
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
                         </div>
+                        <div class="stat-label">Produtos</div>
+                        <div class="stat-value">48</div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <div class="d-flex align-items-center">
-                                <div class="stats-icon bg-danger-custom">
-                                    <i class="fas fa-dollar-sign"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="mb-0 text-muted">Receita Mensal</h6>
-                                    <h3 class="mb-0">R$ 25k</h3>
-                                </div>
-                            </div>
+
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
                         </div>
+                        <div class="stat-label">Receita Mensal</div>
+                        <div class="stat-value">R$ 28k</div>
                     </div>
                 </div>
 
                 <!-- Ações Rápidas -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-bolt me-2"></i> Ações Rápidas
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-bolt"></i>
+                            Ações Rápidas
+                        </h3>
                     </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <a href="cadastroCliente.php" class="quick-action text-center">
-                                    <i class="fas fa-user-plus fa-2x mb-2 text-primary"></i>
-                                    <h6 class="mb-0">Novo Aluno</h6>
-                                </a>
+                    <div class="action-cards">
+                        <a href="cadastroCliente.php" class="action-card primary">
+                            <div class="action-icon">
+                                <i class="fas fa-user-plus"></i>
                             </div>
-                            <div class="col-md-3">
-                                <a href="PlanoCRUD.php" class="quick-action text-center">
-                                    <i class="fas fa-calendar-plus fa-2x mb-2 text-success"></i>
-                                    <h6 class="mb-0">Novo Plano</h6>
-                                </a>
+                            <h6 class="action-title">Novo Aluno</h6>
+                        </a>
+
+                        <a href="PlanoCRUD.php" class="action-card success">
+                            <div class="action-icon">
+                                <i class="fas fa-calendar-plus"></i>
                             </div>
-                            <div class="col-md-3">
-                                <a href="cadastroProduto.php" class="quick-action text-center">
-                                    <i class="fas fa-box-open fa-2x mb-2 text-warning"></i>
-                                    <h6 class="mb-0">Novo Produto</h6>
-                                </a>
+                            <h6 class="action-title">Novo Plano</h6>
+                        </a>
+
+                        <a href="cadastroProduto.php" class="action-card warning">
+                            <div class="action-icon">
+                                <i class="fas fa-box-open"></i>
                             </div>
-                            <div class="col-md-3">
-                                <a href="#" onclick="showPage('relatorios'); return false;" class="quick-action text-center">
-                                    <i class="fas fa-chart-bar fa-2x mb-2 text-danger"></i>
-                                    <h6 class="mb-0">Relatórios</h6>
-                                </a>
+                            <h6 class="action-title">Novo Produto</h6>
+                        </a>
+
+                        <a href="#" onclick="showPage('relatorios'); return false;" class="action-card danger">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-bar"></i>
                             </div>
-                        </div>
+                            <h6 class="action-title">Relatórios</h6>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Atividades Recentes -->
-                <div class="card">
-                    <div class="card-header">
-                        <i class="fas fa-clock me-2"></i> Atividades Recentes
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-clock"></i>
+                            Atividades Recentes
+                        </h3>
                     </div>
-                    <div class="card-body">
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">Novo aluno cadastrado</h6>
-                                    <small>Há 5 minutos</small>
-                                </div>
-                                <p class="mb-1">João Silva realizou cadastro</p>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-header">
+                                <h6 class="activity-title">
+                                    <i class="fas fa-user-plus text-primary me-2"></i>
+                                    Novo aluno cadastrado
+                                </h6>
+                                <span class="activity-time">Há 5 minutos</span>
                             </div>
-                            <div class="list-group-item">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">Plano atualizado</h6>
-                                    <small>Há 1 hora</small>
-                                </div>
-                                <p class="mb-1">Plano Premium foi modificado</p>
+                            <p class="activity-description">João Silva realizou cadastro no plano Premium</p>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-header">
+                                <h6 class="activity-title">
+                                    <i class="fas fa-edit text-warning me-2"></i>
+                                    Plano atualizado
+                                </h6>
+                                <span class="activity-time">Há 1 hora</span>
                             </div>
-                            <div class="list-group-item">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1">Produto adicionado</h6>
-                                    <small>Há 2 horas</small>
-                                </div>
-                                <p class="mb-1">Whey Protein foi adicionado ao estoque</p>
+                            <p class="activity-description">Plano Premium teve o preço ajustado para R$ 149,90</p>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-header">
+                                <h6 class="activity-title">
+                                    <i class="fas fa-box text-success me-2"></i>
+                                    Produto adicionado
+                                </h6>
+                                <span class="activity-time">Há 2 horas</span>
                             </div>
-                        </div>
-                    </div>
+                            <p class="activity-description">Whey Protein 1kg foi adicionado ao estoque</p>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-header">
+                                <h6 class="activity-title">
+                                    <i class="fas fa-file-invoice text-info me-2"></i>
+                                    Pagamento processado
+                                </h6>
+                                <span class="activity-time">Há 3 horas</span>
+                            </div>
+                            <p class="activity-description">Maria Oliveira efetuou pagamento de R$ 89,90</p>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Outras páginas (escondidas inicialmente) -->
-            <div id="alunos" class="page-content page-hidden">
-                <h2 class="section-title">Gerenciar Alunos</h2>
-                <div class="card">
-                    <div class="card-body">
-                        <p>Funcionalidade de gerenciamento de alunos em desenvolvimento...</p>
-                        <a href="cadastroCliente.php" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Adicionar Aluno
-                        </a>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Outras páginas (escondidas) -->
             <div id="treinos" class="page-content page-hidden">
-                <h2 class="section-title">Gerenciar Treinos</h2>
-                <div class="card">
-                    <div class="card-body">
-                        <p>Funcionalidade de gerenciamento de treinos em desenvolvimento...</p>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-dumbbell"></i>
+                            Gerenciar Treinos
+                        </h3>
                     </div>
-                </div>
-            </div>
-
-            <div id="produtos" class="page-content page-hidden">
-                <h2 class="section-title">Gerenciar Produtos</h2>
-                <div class="card">
-                    <div class="card-body">
-                        <p>Funcionalidade de gerenciamento de produtos em desenvolvimento...</p>
-                        <a href="cadastroProduto.php" class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Adicionar Produto
-                        </a>
-                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de treinos em desenvolvimento...</p>
                 </div>
             </div>
 
             <div id="relatorios" class="page-content page-hidden">
-                <h2 class="section-title">Relatórios e Análises</h2>
-                <div class="card">
-                    <div class="card-body">
-                        <p>Funcionalidade de relatórios em desenvolvimento...</p>
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Relatórios Financeiros
+                        </h3>
                     </div>
+                    <p class="text-muted">Funcionalidade de relatórios em desenvolvimento...</p>
+                </div>
+            </div>
+
+            <div id="analytics" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-analytics"></i>
+                            Analytics do Sistema
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de analytics em desenvolvimento...</p>
+                </div>
+            </div>
+
+            <div id="config" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-cog"></i>
+                            Configurações do Sistema
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de configurações em desenvolvimento...</p>
                 </div>
             </div>
         </main>
@@ -411,16 +780,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             const selectedPage = document.getElementById(pageId);
             if (selectedPage) {
                 selectedPage.classList.remove('page-hidden');
+                selectedPage.classList.add('fade-in');
             }
             
-            // Adicionar active ao link clicado
-            event.target.closest('.nav-link')?.classList.add('active');
+            // Adicionar active ao link clicado (se existir no sidebar)
+            const activeLink = document.querySelector(`.nav-link[onclick*="${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
         }
-        
-        // Mostrar visão geral por padrão
-        document.addEventListener('DOMContentLoaded', function() {
-            showPage('visao-geral');
-        });
     </script>
 </body>
 </html>

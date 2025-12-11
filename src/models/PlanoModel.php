@@ -17,6 +17,7 @@ class PlanoModel extends Model {
         ");
         return $stmt->fetchAll();
     }
+
 }
 ?>
 

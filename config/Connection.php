@@ -15,7 +15,7 @@ class Connection
                 $host = 'localhost';
                 $dbname = 'techfit_db';
                 $user = 'root';
-                $pass = 'BoiDataBase'; // altere caso sua senha seja diferente
+                $pass = 'senaisp'; // altere caso sua senha seja diferente
 
                 // Conecta ao MySQL
                 self::$instance = new PDO(

@@ -112,5 +112,14 @@ class PlanoDAO {
         $stmt = $this->conn->prepare("DELETE FROM PLANOS WHERE ID_PLANO = :id");
         $stmt->execute([':id' => $id]);
     }
+
+     public function contarPlanos()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM planos";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado['total'];
+    }
 }
 ?>
