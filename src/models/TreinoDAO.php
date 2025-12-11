@@ -7,7 +7,7 @@ class TreinoDAO {
     private $conn;
 
     public function __construct() {
-        $this->conn = Connection::getInstance();
+       $this->conn = Connection::getInstance()->getConnection();
         $this->criarTabelaTreinos();
     }
 

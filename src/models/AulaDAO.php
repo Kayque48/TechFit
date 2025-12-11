@@ -1,26 +1,41 @@
 <?php
 
-require_once 'Aula.php';
-require_once __DIR__ . '\..\..\config\Connection.php';
+require_once 'Aluno.php';
+require_once __DIR__ . '/../../config/Connection.php';
+echo "Connection carregado: " . __DIR__ . '/../../config/Connection.php';
 
-class AulaDAO {
+class AlunoDAO {
     private $conn;
 
     public function __construct() {
-        $this->conn = Connection::getInstance();
+        Connection::getInstance()->teste();
+        $this->conn = Connection::getInstance()->getConnection();
     }
 
+    
+
     // CREATE
-    public function criarAula(Aula $aula) {
+   public function criarAluno(Aluno $Aluno) {
+    try {
         $stmt = $this->conn->prepare("
-            INSERT INTO AULAS (NOME_AULA, AVALIACAO)
-            VALUES (:nome, :avaliacao)
+            INSERT INTO ALUNOS (NOME_ALUNO, IDADE, ENDERECO_ALUNO, TELEFONE, EMAIL, FK_PLANO, SENHA)
+            VALUES (:nome, :dataNasc, :endereco, :telefone, :email, :plano, :senha)
         ");
         $stmt->execute([
-            ':nome' => $aula->getNomeAula(),
-            ':avaliacao' => $aula->getAvaliacao()
+            ':nome' => $Aluno->getNome(),
+            ':dataNasc' => $Aluno->getDataNasc(),
+            ':endereco' => $Aluno->getEndereco(),
+            ':telefone' => $Aluno->getTelefone(),
+            ':email' => $Aluno->getEmail(),
+            ':plano' => $Aluno->getPlano(),
+            ':senha' => $Aluno->getSenha(),
         ]);
+
+        return $this->conn->lastInsertId();
+    } catch (PDOException $e) {
+        throw new Exception("Erro ao criar aluno: " . $e->getMessage());
     }
+}
 
     // READ ALL
     public function lerAulas() {

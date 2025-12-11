@@ -82,7 +82,7 @@
 
     <div class="card">
         <h1>Página de Login do Usuário</h1>
-        <a href="public/loginCliente.php">Acessar</a>
+        <a href="public/login.php">Acessar</a>
     </div>
 
     <div class="card">

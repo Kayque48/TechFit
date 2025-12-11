@@ -34,21 +34,24 @@ class Auth {
      * Login de Admin
      */
     public function loginAdmin($usuario, $senha) {
-        require_once __DIR__ . '/../src/models/AdministradorDAO.php';
-        $dao = new AdministradorDAO();
-        
-        $admin = $dao->buscarPorUsuario($usuario);
-        
-        if ($admin && password_verify($senha, $admin['SENHA'])) {
-            $_SESSION['admin_id'] = $admin['ID_ADMINISTRADOR'];
-            $_SESSION['admin_usuario'] = $admin['AUSER'];
+    require_once __DIR__ . '/../src/models/AdministradorDAO.php';
+    $dao = new AdministradorDAO();
+    
+    // Use o método correto
+    $admins = $dao->lerAdministradores();
+    
+    foreach ($admins as $admin) {
+        if ($admin->getUser() === $usuario && password_verify($senha, $admin->getSenha())) {
+            $_SESSION['admin_id'] = $admin->getId();
+            $_SESSION['admin_usuario'] = $admin->getUser();
             $_SESSION['tipo_usuario'] = 'admin';
             $_SESSION['logado'] = true;
             return true;
         }
-        
-        return false;
     }
+    
+    return false;
+}
     
     /**
      * Verificações de Tipo de Usuário
@@ -97,5 +100,8 @@ class Auth {
     public function getAdminId() {
         return $_SESSION['admin_id'] ?? null;
     }
+
+    
+
 }
 ?>

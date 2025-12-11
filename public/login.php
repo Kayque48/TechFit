@@ -15,59 +15,59 @@ $controllerAdm = new AdministradorController();
 $controllerAluno = new AlunoController();
 
 // Processar login
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar'){
-    if (str_ends_with($_POST['email'], '@techfit.com.br')) {
-        $emailAdm = trim($_POST['email'] ?? '');
-        $senhaAdm = trim($_POST['senha'] ?? '');
-
-        try {
-            $admin = $controllerAdm->buscarPorEmail($emailAdm);
-
-            if ($admin && isset($admin['SENHA']) && (password_verify($senha, $admin['SENHA']) || $admin['SENHA'] === $senha)) {
-                // Login bem-sucedido
-                $_SESSION['email'] = $admin['EMAIL_ADM'];
-                $_SESSION['nome'] = $admin['USER'];
-                $_SESSION['logado'] = true;
-
-                header('Location: telaAdministrador.php');
-                exit;
-            } else {
-                header('Location: login.php?erro=1');
-                exit;
-            }
-        } catch (Exception $e) {
-            header('Location: login.php?erro=1');
-            exit;
-        }
-    } else {
-        $emailUser = trim($_POST['email'] ?? '');
-        $senhaUser = trim($_POST['senha'] ?? '');
-
-        try {
-            $aluno = $controllerAluno->buscarPorEmail($email);
-
-            if ($aluno && isset($aluno['SENHA']) && (password_verify($senha, $aluno['SENHA']) || $aluno['SENHA'] === $senha)) {
-                // Login bem-sucedido
-                $_SESSION['email'] = $aluno['EMAIL'];
-                $_SESSION['nome'] = $aluno['NOME_ALUNO'];
-                $_SESSION['logado'] = true;
-
-                header('Location: telaCliente.php');
-                exit;
-            } else {
-                header('Location: login.php?erro=1');
-                exit;
-            }
-        } catch (Exception $e) {
-            header('Location: login.php?erro=1');
-            exit;
-        }
-    }
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'logar') {
+    $email = trim($_POST['email'] ?? '');
+    $senha = trim($_POST['senha'] ?? '');
+    
     if (empty($email) || empty($senha)) {
-        header('Location: loginCliente.php?erro=1');
+        header('Location: login.php?erro=1');
         exit;
     }
+
+    // Verificar se é admin (@techfit.com.br)
+    if (str_ends_with($email, '@techfit.com.br')) {
+        try {
+            require_once __DIR__ . '/../src/controllers/AdministradorController.php';
+            $controllerAdm = new AdministradorController();
+            
+            $admin = $controllerAdm->buscarPorEmail($email);
+            
+            if ($admin && password_verify($senha, $admin['SENHA'])) {
+                $_SESSION['email'] = $admin['EMAIL_ADM'];
+                $_SESSION['nome'] = $admin['AUSER'];
+                $_SESSION['tipo_usuario'] = 'admin';
+                $_SESSION['logado'] = true;
+                
+                header('Location: telaAdministrador.php');
+                exit;
+            }
+        } catch (Exception $e) {
+            // Log error
+        }
+    } else {
+        // Login de cliente
+        try {
+            require_once __DIR__ . '/../src/controllers/AlunoController.php';
+            $controllerAluno = new AlunoController();
+            
+            $aluno = $controllerAluno->buscarPorEmail($email);
+            
+            if ($aluno && password_verify($senha, $aluno['SENHA'])) {
+                $_SESSION['email'] = $aluno['EMAIL'];
+                $_SESSION['nome'] = $aluno['NOME_ALUNO'];
+                $_SESSION['tipo_usuario'] = 'cliente';
+                $_SESSION['logado'] = true;
+                
+                header('Location: telaCliente.php');
+                exit;
+            }
+        } catch (Exception $e) {
+            // Log error
+        }
+    }
+    
+    header('Location: login.php?erro=1');
+    exit;
 }
 ?>
 

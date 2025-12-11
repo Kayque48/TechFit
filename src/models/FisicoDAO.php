@@ -7,8 +7,8 @@ require_once __DIR__ . '/../../config/Connection.php';
 class FisicoDAO {
     private $conn;
 
-    public function __construct() {
-        $this->conn = Connection::getInstance();
+   public function __construct() {
+        $this->conn = Connection::getInstance()->getConnection();
     }
     
 

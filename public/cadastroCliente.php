@@ -10,70 +10,47 @@ require_once __DIR__ . '/../src/controllers/AlunoController.php';
 $controller = new AlunoController();
 
 // Processar cadastro
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
-  if ($_POST['cadastro'] == 'criar') {
-    // Validação básica
-    $nome = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $endereco = trim($_POST['endereco'] ?? '');
-    $telefone = trim($_POST['telefone'] ?? '');
-    $dataNasc = trim($_POST['dataNasc'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro']) && $_POST['cadastro'] == 'criar') {
+  // Validação básica
+  $nome = trim($_POST['name'] ?? '');
+  $email = trim($_POST['email'] ?? '');
+  $endereco = trim($_POST['endereco'] ?? '');
+  $telefone = trim($_POST['telefone'] ?? '');
+  $dataNasc = trim($_POST['dataNasc'] ?? '');
 
-    $dataObj = DateTime::createFromFormat('d/m/Y', $dataNasc);
+  $dataNasc = trim($_POST['dataNasc'] ?? '');
+  $dataObj = DateTime::createFromFormat('d/m/Y', $dataNasc);
 
-    if ($dataObj && $dataObj->format('d/m/Y') === $dataNasc) {
+  if (!$dataObj || $dataObj->format('d/m/Y') !== $dataNasc) {
+    $erro = "Data de nascimento inválida. Use dd/mm/aaaa.";
+  } else {
+    // Converter para formato MySQL
+    $dataNascSQL = $dataObj->format('Y-m-d');
 
-      // Salvar a data no banco em formato Y-m-d:
-      $dataNasc = $dataObj->format('Y-m-d');
+    // Calcular idade
+    $hoje = new DateTime();
+    $idadeEmAnos = $dataObj->diff($hoje)->y;
 
-      // Calcular a idade em anos:
-      $idadeEmAnos = $dataObj->diff(new DateTime())->y;
-
-      $_SESSION['idade'] = $idadeEmAnos;
-
-    } else {
-      // data inválida
-      $erro = "Data de nascimento inválida. Use dd/mm/aaaa.";
-    }
-
-    $senha = $_POST['senha'] ?? '';
-
-    // Validação de email e telefone duplicados
-    $erroValidacao = '';
-
-    if ($controller->getDAO()->emailExiste($email)) {
-      $erroValidacao = 'Email já cadastrado no sistema';
-    } elseif (!empty($telefone) && $controller->getDAO()->telefoneExiste($telefone)) {
-      $erroValidacao = 'Telefone já cadastrado no sistema';
-    }
+    $_SESSION['idade'] = $idadeEmAnos;
 
     // Hash da senha
     $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-    if (!empty($nome) && !empty($email) && !empty($endereco) && !empty($senha)) {
-      if (!empty($erroValidacao)) {
-        $erro = $erroValidacao;
-      } else {
-        try {
-          $controller->criar(
-            $nome,
-            $dataNasc,
-            $endereco,
-            $telefone,
-            $email,
-            null, // plano será escolhido após login
-            $senhaHash
-          );
+    try {
+      $controller->criar(
+        $nome,
+        $dataNascSQL, // Use o formato SQL aqui
+        $endereco,
+        $telefone,
+        $email,
+        null,
+        $senhaHash
+      );
 
-          // Redirecionar para login com sucesso
-          header('Location: loginCliente.php?cadastro=sucesso');
-          exit;
-        } catch (Exception $e) {
-          $erro = "Erro ao cadastrar: " . $e->getMessage();
-        }
-      }
-    } else {
-      $erro = "Preencha todos os campos obrigatórios";
+      header('Location: login.php?cadastro=sucesso');
+      exit;
+    } catch (Exception $e) {
+      $erro = "Erro ao cadastrar: " . $e->getMessage();
     }
   }
 }

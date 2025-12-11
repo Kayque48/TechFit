@@ -891,16 +891,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
 <script src="js/config.js"></script>
 
 </html>
-
-
-
-// No telaCliente.php, adicione debug temporário (remova depois):
-<?php
-echo "<!-- DEBUG: ";
-echo "ID do Aluno: " . ($aluno['ID_ALUNO'] ?? 'null') . " | ";
-echo "FK_PLANO: " . ($aluno['FK_PLANO'] ?? 'null') . " | ";
-if ($planoDoAluno) {
-    echo "Tipo Plano: " . $planoDoAluno->getTipoPlano();
-}
-echo " -->";
-?>
