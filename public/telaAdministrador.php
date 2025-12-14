@@ -464,6 +464,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             margin: 0;
         }
 
+
+
         /* Responsivo */
         @media (max-width: 992px) {
             .main-container {
@@ -552,7 +554,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 <div class="sidebar-section-title">Menu Principal</div>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" data-page="dashboard" onclick="showPage('dashboard'); return false;">
+                        <a href="#" class="nav-link active" data-page="dashboard"
+                            onclick="showPage('dashboard'); return false;">
                             <i class="nav-icon fas fa-chart-line"></i>
                             Dashboard
                         </a>
@@ -570,7 +573,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-page="colaboradores" onclick="showPage('colaboradores'); return false;">
+                        <a href="#" class="nav-link" data-page="colaboradores"
+                            onclick="showPage('colaboradores'); return false;">
                             <i class="nav-icon fas fa-user-tie"></i>
                             colaboradores
                         </a>
@@ -813,10 +817,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             Alunos Cadastrados
                         </h3>
 
-                        <a href="cadastroAluno.php" class="btn btn-success">
-                            <i class="fas fa-plus"></i>
-                            Novo Aluno
-                        </a>
+                        <div class="action-buttons">
+                            <a href="cadastroCliente.php" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                Novo Aluno
+                            </a>
+
+                            <a href="listaAlunos.php" class="btn btn-success">
+                                <i class="fas fa-list me-2"></i> Ver Todas as Fichas
+                            </a>
+                        </div>
+
                     </div>
 
                     <?php if (!empty($alunos)): ?>
@@ -831,7 +842,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                                         <th>Data de Nascimento</th>
                                         <th>Endereço</th>
                                         <th>Plano</th>
-                                        <th class="text-center">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -845,17 +855,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                                             <td><?= $aluno->getDataNasc() ?></td>
                                             <td><?= $aluno->getEndereco() ?></td>
                                             <td><?= $aluno->getPlano() ?></td>
-                                            <td class="text-center">
-                                                <a href="editarAluno.php?id=<?= $aluno->getId() ?>"
-                                                    class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="excluirAluno.php?id=<?= $aluno->getId() ?>"
-                                                    onclick="return confirm('Deseja realmente excluir?')"
-                                                    class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
 

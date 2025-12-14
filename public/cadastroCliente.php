@@ -7,7 +7,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/AdministradorController.php';
 $controller = new AlunoController();
+$controllerAdmin = new AdministradorController();
 
 // Processar cadastro
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
@@ -65,9 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
             $senhaHash
           );
 
-          // Redirecionar para login com sucesso
-          header('Location: loginCliente.php?cadastro=sucesso');
-          exit;
+          if (isset($_SESSION['tipo'])) {
+            if ($_SESSION['tipo'] === 'admin') {
+              header('Location: telaAdministrador.php');
+              exit;
+            } elseif ($_SESSION['tipo'] === 'aluno') {
+              header('Location: loginCliente.php?cadastro=sucesso');
+              exit;
+            }
+          }
         } catch (Exception $e) {
           $erro = "Erro ao cadastrar: " . $e->getMessage();
         }
@@ -189,10 +197,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
           <li>Já tem uma conta? <a href="loginCliente.php">Logar</a></li>
         </ul>
       </div>
+
     </div>
   </main>
-
-
 
   <script>
     const input = document.getElementById('dataNasc');

@@ -15,21 +15,28 @@
             return $this->dao->lerAlunos();
         }
 
+        public function lerPorId($id) {
+            return $this->dao->buscarPorId($id);
+        }
+
         public function criar($nome, $dataNasc, $endereco, $telefone, $email, $plano, $senhaHash = null) {
             $aluno = new Aluno( $nome, $dataNasc, $endereco, $telefone, $email, $plano, $senhaHash);
             $this->dao->criarAluno($aluno);
         }
 
-        public function excluir($nome) {
-            $this->dao->excluirAluno($nome);
+        public function excluir($id) {
+            $this->dao->excluirAluno($id);
         }
-        
-        public function atualizar($nome, $novoNome, $novoDataNasc, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano) {
-            $this->dao->atualizarAluno($nome, $novoNome, $novoDataNasc, $novoEndereco, $novoTelefone, $novoEmail, $novoPlano);
+        public function atualizar($id, $nome, $dataNasc, $endereco, $telefone, $email) {
+            $this->dao->atualizarAlunoPorId($id, $nome, $dataNasc, $endereco, $telefone, $email);
         }
 
         public function buscarPorEmail($email) {
             return $this->dao->buscarPorEmail($email);
+        }
+
+        public function buscarPorId($id) {
+            return $this->dao->buscarPorId($id);
         }
 
         public function getDAO() {
