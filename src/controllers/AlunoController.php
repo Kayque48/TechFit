@@ -51,6 +51,14 @@
             return $this->dao->contarAlunosPorPlano($planoId);
         }
 
+        public function planoComMaisAlunos() {
+            return $this->dao->planoComMaisAlunos();
+        }
+
+        public function planoComMenosAlunos() {
+            return $this->dao->planoComMenosAlunos();
+        }
+
 }
 
 ?>

@@ -11,7 +11,7 @@
                 <div class="stats-grid">
                     <div class="stat-card primary">
                         <div class="stat-icon">
-                            <i class="fas fa-box"></i>
+                            <i class="fas fa-layer-group"></i>
                         </div>
                         <div class="stat-label">Total de Planos</div>
                         <div class="stat-value"><?= $planoController->contar() ?></div>
@@ -19,18 +19,18 @@
 
                     <div class="stat-card success">
                         <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
+                            <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-label">Plano com mais Alunos</div>
-                        <div class="stat-value"></div>
+                        <div class="stat-value"><?= $alunoController->planoComMaisAlunos() ?></div>
                     </div>
 
                     <div class="stat-card danger">
                         <div class="stat-icon">
-                            <i class="fas fa-times-circle"></i>
+                            <i class="fas fa-user-minus"></i>
                         </div>
                         <div class="stat-label">Plano Com menos Alunos</div>
-                        <div class="stat-value"><</div>
+                        <div class="stat-value"><?= $alunoController->planoComMenosAlunos() ?></div>
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@
                                         <th>Nome</th>
                                         <th>Descrição</th>
                                         <th>Preço</th>
-                                        <th>Quantidade de Alunos</th>
+                                        <th style="text-align: right;">Quantidade de Alunos</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,7 +75,7 @@
                                             <td><?= $plano->getTipoPlano() ?></td>
                                             <td><?= $plano->getDescricao() ?></td>
                                             <td><?= $plano->getPreco() ?></td>
-                                            <td><?= $alunoController->contarPorPlano($plano->getId()) ?></td>
+                                            <td style="text-align: right;"><?= $alunoController->contarPorPlano($plano->getId()) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
 

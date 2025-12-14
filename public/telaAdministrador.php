@@ -30,6 +30,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     header('Location: loginAdm.php');
     exit;
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

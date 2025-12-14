@@ -234,10 +234,39 @@ class AlunoDAO
         return $resultado['total'];
     }
 
-     public function contarAlunosPorPlano($planoId) {
+    public function contarAlunosPorPlano($planoId)
+    {
         $stmt = $this->conn->prepare("SELECT COUNT(*) as total FROM ALUNOS WHERE FK_PLANO = :planoId");
         $stmt->execute([':planoId' => $planoId]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? (int)$row['total'] : 0;
+        return $row ? (int) $row['total'] : 0;
+    }
+
+    public function PlanoComMaisAlunos()
+    {
+        $stmt = $this->conn->query("
+            SELECT p.ID_PLANO, p.TIPO_PLANO, COUNT(a.ID_ALUNO) AS total_alunos
+            FROM PLANOS p
+            LEFT JOIN ALUNOS a ON a.FK_PLANO = p.ID_PLANO
+            GROUP BY p.ID_PLANO, p.TIPO_PLANO
+            ORDER BY total_alunos DESC
+            LIMIT 1;
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['TIPO_PLANO'] : null;
+    }
+
+    public function PlanoComMenosAlunos()
+    {
+        $stmt = $this->conn->query("
+            SELECT p.ID_PLANO, p.TIPO_PLANO, COUNT(a.ID_ALUNO) AS total_alunos
+            FROM PLANOS p
+            LEFT JOIN ALUNOS a ON a.FK_PLANO = p.ID_PLANO
+            GROUP BY p.ID_PLANO, p.TIPO_PLANO
+            ORDER BY total_alunos ASC
+            LIMIT 1;
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['TIPO_PLANO'] : null;
     }
 }

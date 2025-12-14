@@ -70,5 +70,6 @@ class AulaDAO {
         $stmt = $this->conn->prepare("DELETE FROM AULAS WHERE ID_AULA = :id");
         $stmt->execute([':id' => $id]);
     }
+    
 
 }
