@@ -468,7 +468,7 @@ if (isset($_GET['editar'])) {
     </div>
 
     <div class="main-container">
-        <a href="javascript:history.back()" class="text-decoration-none d-flex align-items-center" style="color: var(--verde-escuro); font-weight: 600;">
+        <a href="telaAdministrador.php" class="text-decoration-none d-flex align-items-center" style="color: var(--verde-escuro); font-weight: 600;">
             <i class="fas fa-arrow-left me-2"></i>
             Voltar
         </a>
@@ -612,84 +612,20 @@ if (isset($_GET['editar'])) {
                 </div>
             </form>
         </div>
-
-        <!-- Tabela de Planos -->
-        <div class="table-card">
-            <div class="table-header">
-                <h2>
-                    <i class="fas fa-list"></i>
-                    Planos Cadastrados
-                </h2>
-                <div class="badge-count">
-                    Total: <?= count($controller->ler()) ?>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <?php
-                $planos = $controller->ler();
-                if (empty($planos)):
-                ?>
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <h3>Nenhum plano cadastrado</h3>
-                        <p>Comece criando seu primeiro plano usando o formulário acima.</p>
-                    </div>
-                <?php else: ?>
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Recursos</th>
-                                <th>Preço</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($planos as $plano): ?>
-                                <tr>
-                                    <td><strong>#<?= htmlspecialchars($plano->getId()) ?></strong></td>
-                                    <td><strong><?= htmlspecialchars($plano->getTipoPlano()) ?></strong></td>
-                                    <td style="max-width: 250px;"><?= htmlspecialchars($plano->getDescricao()) ?></td>
-                                    <td>
-                                        <small>
-                                            <strong>Máquinas:</strong> <?= htmlspecialchars($plano->getMaquinas()) ?><br>
-                                            <strong>Aulas:</strong> <?= htmlspecialchars($plano->getAulasGrupo()) ?><br>
-                                            <strong>Acesso:</strong> <?= htmlspecialchars($plano->getAcesso()) ?>
-                                        </small>
-                                    </td>
-                                    <td>
-                                        <span class="price-badge">
-                                            R$ <?= number_format($plano->getPreco(), 2, ',', '.') ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <a href="?editar=<?= $plano->getId() ?>" class="btn-action btn-edit">
-                                                <i class="fas fa-edit"></i>
-                                                Editar
-                                            </a>
-                                            <form action="" method="post" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir este plano?')">
-                                                <input type="hidden" name="acao" value="deletar">
-                                                <input type="hidden" name="id" value="<?= $plano->getId() ?>">
-                                                <button type="submit" class="btn-action btn-delete">
-                                                    <i class="fas fa-trash"></i>
-                                                    Excluir
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php endif; ?>
-            </div>
-        </div>
-
     </div>
+
+    <script>
+        function contarAlunosPorPlano() {
+            // Função fictícia para contar alunos por plano
+            // Substitua com a lógica real conforme necessário
+            const contagem = {
+                1: 25,
+                2: 10,
+                3: 5
+            };
+            return contagem[planoId] || 0;
+        }
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

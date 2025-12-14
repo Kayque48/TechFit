@@ -59,7 +59,7 @@ class PlanoController {
     }
 
     public function contar() {
-            return $this->dao->contarPlanos();
-        }
+        return $this->dao->contarPlanos();
+    }
 }
 ?>

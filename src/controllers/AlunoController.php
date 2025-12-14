@@ -47,6 +47,10 @@
             return $this->dao->contarAlunos();
         }
 
+        public function contarPorPlano($planoId) {
+            return $this->dao->contarAlunosPorPlano($planoId);
+        }
+
 }
 
 ?>

@@ -121,5 +121,6 @@ class PlanoDAO {
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado['total'];
     }
+
 }
 ?>

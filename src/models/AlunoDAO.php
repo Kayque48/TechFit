@@ -233,4 +233,11 @@ class AlunoDAO
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado['total'];
     }
+
+     public function contarAlunosPorPlano($planoId) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) as total FROM ALUNOS WHERE FK_PLANO = :planoId");
+        $stmt->execute([':planoId' => $planoId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['total'] : 0;
+    }
 }
