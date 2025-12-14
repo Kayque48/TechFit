@@ -11,7 +11,7 @@ if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
     exit;
 }
 
-require_once __DIR__. '/../src/controllers/AlunoController.php';
+require_once __DIR__ . '/../src/controllers/AlunoController.php';
 require_once __DIR__ . '/../src/controllers/PlanoController.php';
 
 $alunoController = new AlunoController();
@@ -29,16 +29,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - TechFit</title>
-    
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+
     <style>
         :root {
             --verde-escuro: #1E5332;
@@ -60,7 +61,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             background: linear-gradient(135deg, var(--verde-escuro) 0%, #2a7a4a 100%);
             color: white;
             padding: 1.25rem 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -150,7 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             width: 280px;
             background: white;
             padding: 2rem 0;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.08);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 80px;
             height: calc(100vh - 80px);
@@ -225,7 +226,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             background: white;
             padding: 2rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -243,13 +244,24 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
 
-        .stat-card.primary::before { background: linear-gradient(135deg, #007bff, #0056b3); }
-        .stat-card.success::before { background: linear-gradient(135deg, #28a745, #1e7e34); }
-        .stat-card.warning::before { background: linear-gradient(135deg, #ffc107, #e0a800); }
-        .stat-card.danger::before { background: linear-gradient(135deg, #dc3545, #bd2130); }
+        .stat-card.primary::before {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        .stat-card.warning::before {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
+        }
+
+        .stat-card.danger::before {
+            background: linear-gradient(135deg, #dc3545, #bd2130);
+        }
 
         .stat-icon {
             width: 60px;
@@ -276,6 +288,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             background: rgba(255, 193, 7, 0.1);
             color: #ffc107;
         }
+
+        .stat-card.purple::before {
+            background: linear-gradient(135deg, #6f42c1, #4b2e83);
+        }
+
+        .stat-card.purple .stat-icon {
+            background: rgba(111, 66, 193, 0.15);
+            color: #6f42c1;
+        }
+
 
         .stat-card.danger .stat-icon {
             background: rgba(220, 53, 69, 0.1);
@@ -307,7 +329,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             background: white;
             padding: 2rem 1.5rem;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             text-align: center;
             text-decoration: none;
             transition: all 0.3s ease;
@@ -316,7 +338,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
         .action-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             border-color: var(--verde-claro);
         }
 
@@ -346,6 +368,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             color: white;
         }
 
+        .action-card.purple .action-icon {
+            background: linear-gradient(135deg, #6f42c1, #4b2e83);
+            color: white;
+        }
+
+        .action-card.purple:hover {
+            border-color: #6f42c1;
+        }
+
+
         .action-card.danger .action-icon {
             background: linear-gradient(135deg, #dc3545, #bd2130);
             color: white;
@@ -363,7 +395,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             background: white;
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
 
@@ -433,7 +465,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             .main-container {
                 flex-direction: column;
             }
-            
+
             .techfit-sidebar {
                 width: 100%;
                 height: auto;
@@ -453,6 +485,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
         }
 
         @media (max-width: 768px) {
+
             .stats-grid,
             .action-cards {
                 grid-template-columns: 1fr;
@@ -465,6 +498,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -476,6 +510,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
         }
     </style>
 </head>
+
 <body>
 
     <!-- Header -->
@@ -496,8 +531,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 <span class="admin-greeting">
                     Olá, <span class="admin-name"><?= htmlspecialchars($primeiroNome) ?></span>
                 </span>
-                <a class="btn-logout" href="telaAdministrador.php?action=logout" 
-                   onclick="return confirm('Deseja realmente sair?')">
+                <a class="btn-logout" href="telaAdministrador.php?action=logout"
+                    onclick="return confirm('Deseja realmente sair?')">
                     <i class="fas fa-sign-out-alt"></i>
                     Sair
                 </a>
@@ -519,15 +554,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="cadastroCliente.php" class="nav-link">
+                        <a href="#" class="nav-link" onclick="showPage('alunos'); return false;">
                             <i class="nav-icon fas fa-users"></i>
                             Alunos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="PlanoCRUD.php" class="nav-link">
+                        <a href="#" class="nav-link" onclick="showPage('planos'); return false;">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             Planos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage('colaboradores'); return false;">
+                            <i class="nav-icon fas fa-user-tie"></i>
+                            colaboradores
                         </a>
                     </li>
                     <li class="nav-item">
@@ -537,7 +578,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="cadastroProduto.php" class="nav-link">
+                        <a href="#" class="nav-link" onclick="showPage('produtos'); return false;">
                             <i class="nav-icon fas fa-shopping-bag"></i>
                             Produtos
                         </a>
@@ -592,7 +633,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             <i class="fas fa-users"></i>
                         </div>
                         <div class="stat-label">Total de Alunos</div>
-                        <div class="stat-value"><?= $alunoController->contar()?></div>
+                        <div class="stat-value"><?= $alunoController->contar() ?></div>
                     </div>
 
                     <div class="stat-card success">
@@ -600,7 +641,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             <i class="fas fa-calendar-check"></i>
                         </div>
                         <div class="stat-label">Planos Ativos</div>
-                        <div class="stat-value"><?= $planoController->contar()?></div>
+                        <div class="stat-value"><?= $planoController->contar() ?></div>
                     </div>
 
                     <div class="stat-card warning">
@@ -610,6 +651,15 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         <div class="stat-label">Produtos</div>
                         <div class="stat-value">48</div>
                     </div>
+
+                    <div class="stat-card purple">
+                        <div class="stat-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <div class="stat-label">Professores</div>
+                        <div class="stat-value">8</div>
+                    </div>
+
 
                     <div class="stat-card danger">
                         <div class="stat-icon">
@@ -649,6 +699,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             </div>
                             <h6 class="action-title">Novo Produto</h6>
                         </a>
+
+                        <a href="cadastroProfessor.php" class="action-card purple">
+                            <div class="action-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <h6 class="action-title">Novo Professor</h6>
+                        </a>
+
 
                         <a href="#" onclick="showPage('relatorios'); return false;" class="action-card danger">
                             <div class="action-icon">
@@ -712,7 +770,31 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 </div>
             </div>
 
-            <!-- Outras páginas (escondidas) -->
+
+            <!-- Página de Alunos (escondida) -->
+            <div id="alunos" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-users"></i>
+                            Gerenciar Alunos
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de alunos em desenvolvimento...</p>
+                </div>
+            </div>
+            <!-- Página de Planos (escondida) -->
+            <div id="planos" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Gerenciar Planos
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de planos em desenvolvimento...</p>
+                </div>
+            </div>
             <div id="treinos" class="page-content page-hidden">
                 <div class="content-card">
                     <div class="content-card-header">
@@ -725,6 +807,46 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 </div>
             </div>
 
+            <!-- Página de Colaboradores (escondida) -->
+            <div id="colaboradores" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-user-tie"></i>
+                            Gerenciar Colaboradores
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de colaboradores em desenvolvimento...</p>
+                </div>
+            </div>
+
+            <!-- Página de Treinos (escondida) -->
+            <div id="treinos" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-dumbbell"></i>
+                            Gerenciar Treinos
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de treinos em desenvolvimento...</p>
+                </div>
+            </div>
+
+            <!-- Página de Produtos (escondida) -->
+            <div id="produtos" class="page-content page-hidden">
+                <div class="content-card">
+                    <div class="content-card-header">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-shopping-bag"></i>
+                            Gerenciar Produtos
+                        </h3>
+                    </div>
+                    <p class="text-muted">Funcionalidade de gerenciamento de produtos em desenvolvimento...</p>
+                </div>
+            </div>
+
+            <!-- Página de Relatórios (escondida) -->
             <div id="relatorios" class="page-content page-hidden">
                 <div class="content-card">
                     <div class="content-card-header">
@@ -737,6 +859,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 </div>
             </div>
 
+            <!-- Página de Analytics (escondida) -->
             <div id="analytics" class="page-content page-hidden">
                 <div class="content-card">
                     <div class="content-card-header">
@@ -749,6 +872,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 </div>
             </div>
 
+            <!-- Página de Configurações (escondida) -->
             <div id="config" class="page-content page-hidden">
                 <div class="content-card">
                     <div class="content-card-header">
@@ -770,19 +894,19 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             document.querySelectorAll('.page-content').forEach(page => {
                 page.classList.add('page-hidden');
             });
-            
+
             // Remover active de todos os links
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            
+
             // Mostrar página selecionada
             const selectedPage = document.getElementById(pageId);
             if (selectedPage) {
                 selectedPage.classList.remove('page-hidden');
                 selectedPage.classList.add('fade-in');
             }
-            
+
             // Adicionar active ao link clicado (se existir no sidebar)
             const activeLink = document.querySelector(`.nav-link[onclick*="${pageId}"]`);
             if (activeLink) {
@@ -791,4 +915,5 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
         }
     </script>
 </body>
+
 </html>
