@@ -17,6 +17,9 @@ require_once __DIR__ . '/../src/controllers/PlanoController.php';
 $alunoController = new AlunoController();
 $planoController = new PlanoController();
 
+$alunos = $alunoController->ler();
+
+
 // Dados do admin para o header
 $Admin = ['USER' => $_SESSION['usuario']];
 
@@ -39,6 +42,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styleAdmin.css">
 
     <style>
         :root {
@@ -548,37 +552,37 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 <div class="sidebar-section-title">Menu Principal</div>
                 <ul class="nav nav-pills flex-column">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active" onclick="showPage('dashboard'); return false;">
+                        <a href="#" class="nav-link active" data-page="dashboard" onclick="showPage('dashboard'); return false;">
                             <i class="nav-icon fas fa-chart-line"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('alunos'); return false;">
+                        <a href="#" class="nav-link" data-page="alunos" onclick="showPage('alunos'); return false;">
                             <i class="nav-icon fas fa-users"></i>
                             Alunos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('planos'); return false;">
+                        <a href="#" class="nav-link" data-page="planos" onclick="showPage('planos'); return false;">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             Planos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('colaboradores'); return false;">
+                        <a href="#" class="nav-link" data-page="colaboradores" onclick="showPage('colaboradores'); return false;">
                             <i class="nav-icon fas fa-user-tie"></i>
                             colaboradores
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('treinos'); return false;">
+                        <a href="#" class="nav-link" data-page="treinos" onclick="showPage('treinos'); return false;">
                             <i class="nav-icon fas fa-dumbbell"></i>
                             Treinos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" onclick="showPage('produtos'); return false;">
+                        <a href="#" class="nav-link" data-page="produtos" onclick="showPage('produtos'); return false;">
                             <i class="nav-icon fas fa-shopping-bag"></i>
                             Produtos
                         </a>
@@ -773,16 +777,107 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
             <!-- Página de Alunos (escondida) -->
             <div id="alunos" class="page-content page-hidden">
-                <div class="content-card">
-                    <div class="content-card-header">
-                        <h3 class="content-card-title">
-                            <i class="fas fa-users"></i>
-                            Gerenciar Alunos
-                        </h3>
+
+                <!-- Cards Resumo -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-label">Total de Alunos</div>
+                        <div class="stat-value">48</div>
                     </div>
-                    <p class="text-muted">Funcionalidade de gerenciamento de alunos em desenvolvimento...</p>
+
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-label">Último Acesso ao Site</div>
+                        <div class="stat-value">40</div>
+                    </div>
+
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-label">Último Acesso ao Academia</div>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+
+                <!-- Tabela -->
+                <div class="content-card">
+                    <div class="content-card-header d-flex justify-content-between align-items-center">
+                        <h3 class="content-card-title">
+                            <i class="fas fa-shopping-bag"></i>
+                            Alunos Cadastrados
+                        </h3>
+
+                        <a href="cadastroAluno.php" class="btn btn-success">
+                            <i class="fas fa-plus"></i>
+                            Novo Aluno
+                        </a>
+                    </div>
+
+                    <?php if (!empty($alunos)): ?>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Telefone</th>
+                                        <th>Email</th>
+                                        <th>Data de Nascimento</th>
+                                        <th>Endereço</th>
+                                        <th>Plano</th>
+                                        <th class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <?php foreach ($alunos as $aluno): ?>
+                                        <tr>
+                                            <td><?= $aluno->getId() ?></td>
+                                            <td><?= $aluno->getNome() ?></td>
+                                            <td><?= $aluno->getTelefone() ?></td>
+                                            <td><?= $aluno->getEmail() ?></td>
+                                            <td><?= $aluno->getDataNasc() ?></td>
+                                            <td><?= $aluno->getEndereco() ?></td>
+                                            <td><?= $aluno->getPlano() ?></td>
+                                            <td class="text-center">
+                                                <a href="editarAluno.php?id=<?= $aluno->getId() ?>"
+                                                    class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a href="excluirAluno.php?id=<?= $aluno->getId() ?>"
+                                                    onclick="return confirm('Deseja realmente excluir?')"
+                                                    class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    <?php else: ?>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Sem dados registrados</strong>
+                            <p>
+                                Você ainda não tem nenhum aluno cadastrado.
+                                <a href="cadastrarAluno.php" class="alert-link">Clique aqui para criar um</a>
+                            </p>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
+
+
+
             <!-- Página de Planos (escondida) -->
             <div id="planos" class="page-content page-hidden">
                 <div class="content-card">
@@ -793,17 +888,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </h3>
                     </div>
                     <p class="text-muted">Funcionalidade de gerenciamento de planos em desenvolvimento...</p>
-                </div>
-            </div>
-            <div id="treinos" class="page-content page-hidden">
-                <div class="content-card">
-                    <div class="content-card-header">
-                        <h3 class="content-card-title">
-                            <i class="fas fa-dumbbell"></i>
-                            Gerenciar Treinos
-                        </h3>
-                    </div>
-                    <p class="text-muted">Funcionalidade de gerenciamento de treinos em desenvolvimento...</p>
                 </div>
             </div>
 
@@ -835,16 +919,88 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
             <!-- Página de Produtos (escondida) -->
             <div id="produtos" class="page-content page-hidden">
+
+                <!-- Cards Resumo -->
+                <div class="stats-grid">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-label">Total de Produtos</div>
+                        <div class="stat-value">48</div>
+                    </div>
+
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-label">Ativos</div>
+                        <div class="stat-value">40</div>
+                    </div>
+
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-label">Inativos</div>
+                        <div class="stat-value">8</div>
+                    </div>
+                </div>
+
+                <!-- Tabela -->
                 <div class="content-card">
-                    <div class="content-card-header">
+                    <div class="content-card-header d-flex justify-content-between align-items-center">
                         <h3 class="content-card-title">
                             <i class="fas fa-shopping-bag"></i>
-                            Gerenciar Produtos
+                            Produtos Cadastrados
                         </h3>
+
+                        <a href="cadastroProduto.php" class="btn btn-success">
+                            <i class="fas fa-plus"></i>
+                            Novo Produto
+                        </a>
                     </div>
-                    <p class="text-muted">Funcionalidade de gerenciamento de produtos em desenvolvimento...</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome</th>
+                                    <th>Categoria</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Whey Protein</td>
+                                    <td>Suplemento</td>
+                                    <td>R$ 129,90</td>
+                                    <td>
+                                        <span class="badge bg-success">Ativo</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="editarProduto.php?id=1" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="excluirProduto.php?id=1"
+                                            onclick="return confirm('Deseja realmente excluir?')"
+                                            class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <!-- PHP foreach depois -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Página de Relatórios (escondida) -->
             <div id="relatorios" class="page-content page-hidden">
@@ -908,7 +1064,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             }
 
             // Adicionar active ao link clicado (se existir no sidebar)
-            const activeLink = document.querySelector(`.nav-link[onclick*="${pageId}"]`);
+            const activeLink = document.querySelector(`.nav-link[data-page="${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
             if (activeLink) {
                 activeLink.classList.add('active');
             }

@@ -148,7 +148,7 @@ class AlunoDAO
         $stmt = $this->conn->prepare("
             UPDATE Alunos
             SET NOME_ALUNO = :novoNome, IDADE = :dataNasc, ENDERECO_ALUNO = :endereco, TELEFONE = :telefone, EMAIL = :email, FK_PLANO = :plano
-            WHERE ID = :id
+            WHERE ID_ALUNO = :id
         ");
         $stmt->execute([
             ':novoNome' => $novoNome,
@@ -171,7 +171,7 @@ class AlunoDAO
     // DELETE by ID (recomendado)
     public function excluirAlunoPorId($id)
     {
-        $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE ID = :id");
+        $stmt = $this->conn->prepare("DELETE FROM Alunos WHERE ID_ALUNO = :id");
         $stmt->execute([':id' => $id]);
     }
 

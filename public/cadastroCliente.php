@@ -189,9 +189,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cadastro'])) {
           <li>Já tem uma conta? <a href="loginCliente.php">Logar</a></li>
         </ul>
       </div>
-
     </div>
   </main>
+
+
 
   <script>
     const input = document.getElementById('dataNasc');
