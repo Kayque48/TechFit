@@ -168,15 +168,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
                                 </div>
                             </div>
                         </div>
-                        <div class="exercise-details container px-4 py-5" id="custom-cards">
-                            <h3 class="section-title pb-2 border-bottom">
-                                <i class="fas fa-dumbbell me-2"></i>
-                                Agendar Excercícios
-                            </h3>
-
-                            
-
-                        </div>
                     </form>
                 </div>
             </div>
@@ -374,113 +365,239 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar_plano'])) {
 
 
             <!-- ===================== SEÇÃO TREINO ===================== -->
-            <div id="treino" class="hidden">
-
+           <div id="treino" class="hidden">
                 <div class="content-header">
-                    <h1 class="page-title">Histórico de Treinos</h1>
-                    <p class="page-subtitle">Consulte os treinos realizados e o total de horas treinadas</p>
+                    <h1 class="page-title">Agendamentos</h1>
+                    <p class="page-subtitle">Realize seus próximos exercícios aqui!</p>
                 </div>
 
-                <div class="product-form-container">
+                <div class="produtc-form-container">
+                    <!-- SEÇÃO DE AGENDAMENTO DE AULAS -->
+                    <div class="exercise-details container px-4 py-5" id="custom-cards">
+                        <h3 class="section-title pb-2 border-bottom">
+                            <i class="fas fa-calendar-plus me-2"></i>
+                            Agendar Aulas
+                        </h3>
 
-                    <!-- Busca -->
-                    <div class="form-section">
-                        <h2 class="section-title">Buscar Treinos</h2>
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Pesquisar por nome do treino</label>
-                                <input type="text" class="form-control-custom"
-                                    placeholder="Ex: Peito, Costas, Pernas...">
+                        <?php if (empty($aulas)): ?>
+                            <div class="alert alert-info mt-4">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Nenhuma aula disponível no momento.
                             </div>
+                        <?php else: ?>
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-2">
+                                <?php foreach ($aulas as $aula): ?>
+                                    <?php
+                                    // Verificar se o aluno já está inscrito nesta aula
+                                    $jaInscrito = false;
+                                    $idAgendamento = null;
+                                    foreach ($aulasAgendadas as $agendamento) {
+                                        if ($agendamento->getAlunoId() == $id && $agendamento->getAulaId() == $aula->getId()) {
+                                            $jaInscrito = true;
+                                            $idAgendamento = $agendamento->getId();
+                                            break;
+                                        }
+                                    }
 
-                            <div class="form-group">
-                                <label class="form-label">Filtrar por data</label>
-                                <input type="date" class="form-control-custom">
+                                    // Obter nome do professor
+                                    $nomeProfessor = $controllerAula->nomeProfessor($aula->getProfessor());
+                                    
+                                    // Formatar data
+                                    $dataAula = '';
+                                    if ($aula->getData()) {
+                                        $dataObj = new DateTime($aula->getData());
+                                        $dataAula = $dataObj->format('d/m/Y H:i');
+                                    }
+                                    ?>
+                                    
+                                    <div class="col">
+                                        <div class="card h-100 shadow-sm <?= $jaInscrito ? 'border-success' : '' ?>" style="border-radius: 12px; overflow: hidden;">
+                                            <div class="card-header text-white <?= $jaInscrito ? 'bg-success' : 'bg-primary' ?>">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-dumbbell me-2"></i>
+                                                    <?= htmlspecialchars($aula->getNomeAula()) ?>
+                                                </h5>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <ul class="list-unstyled mb-3">
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-tag text-primary me-2"></i>
+                                                        <strong>Tipo:</strong> <?= htmlspecialchars($aula->getTipo()) ?>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-clock text-primary me-2"></i>
+                                                        <strong>Duração:</strong> <?= htmlspecialchars($aula->getTempo()) ?>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-calendar text-primary me-2"></i>
+                                                        <strong>Data:</strong> <?= htmlspecialchars($dataAula) ?>
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="fas fa-user-tie text-primary me-2"></i>
+                                                        <strong>Professor:</strong> <?= htmlspecialchars($nomeProfessor) ?>
+                                                    </li>
+                                                </ul>
+
+                                                <?php if ($jaInscrito): ?>
+                                                    <span class="badge bg-success mb-3 w-100 py-2">
+                                                        <i class="fas fa-check-circle me-1"></i>
+                                                        Você está inscrito
+                                                    </span>
+                                                    
+                                                    <form method="POST" onsubmit="return confirm('Deseja realmente cancelar este agendamento?')">
+                                                        <input type="hidden" name="cancelar_agendamento" value="1">
+                                                        <input type="hidden" name="id_agendamento" value="<?= $idAgendamento ?>">
+                                                        <button type="submit" class="btn btn-outline-danger w-100">
+                                                            <i class="fas fa-times-circle me-2"></i>
+                                                            Cancelar Inscrição
+                                                        </button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    <button type="button" 
+                                                            class="btn btn-primary w-100" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#modalAgendar<?= $aula->getId() ?>">
+                                                        <i class="fas fa-calendar-plus me-2"></i>
+                                                        Agendar Aula
+                                                    </button>
+
+                                                    <!-- Modal de Confirmação -->
+                                                    <div class="modal fade" id="modalAgendar<?= $aula->getId() ?>" tabindex="-1">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-primary text-white">
+                                                                    <h5 class="modal-title">
+                                                                        <i class="fas fa-calendar-plus me-2"></i>
+                                                                        Confirmar Agendamento
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                
+                                                                <form method="POST">
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="agendar_aula" value="1">
+                                                                        <input type="hidden" name="id_aula" value="<?= $aula->getId() ?>">
+                                                                        
+                                                                        <div class="alert alert-info">
+                                                                            <i class="fas fa-info-circle me-2"></i>
+                                                                            Você está agendando a aula:
+                                                                            <strong><?= htmlspecialchars($aula->getNomeAula()) ?></strong>
+                                                                        </div>
+
+                                                                        <div class="mb-3">
+                                                                            <label class="form-label">
+                                                                                <i class="fas fa-lock me-2"></i>
+                                                                                Digite sua senha para confirmar:
+                                                                            </label>
+                                                                            <input type="password" 
+                                                                                class="form-control" 
+                                                                                name="senha_agendamento" 
+                                                                                required 
+                                                                                placeholder="Sua senha">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                            <i class="fas fa-times me-2"></i>
+                                                                            Cancelar
+                                                                        </button>
+                                                                        <button type="submit" class="btn btn-primary">
+                                                                            <i class="fas fa-check me-2"></i>
+                                                                            Confirmar Agendamento
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
+                        <?php endif; ?>
 
-                            <div class="form-group">
-                                <label class="form-label">Filtrar por duração</label>
-                                <select class="form-control-custom">
-                                    <option value="">Selecione</option>
-                                    <option>Menos de 30 min</option>
-                                    <option>30 min - 1h</option>
-                                    <option>1h - 2h</option>
-                                    <option>Mais de 2h</option>
-                                </select>
+                        <!-- Minhas Aulas Agendadas -->
+                        <?php
+                        // Filtrar aulas agendadas do aluno atual
+                        $minhasAulas = [];
+                        foreach ($aulasAgendadas as $agendamento) {
+                            if ($agendamento->getAlunoId() == $id) {
+                                // Buscar detalhes da aula
+                                $aulaDetalhes = $controllerAula->buscarPorId($agendamento->getAulaId());
+                                if ($aulaDetalhes) {
+                                    $minhasAulas[] = [
+                                        'agendamento' => $agendamento,
+                                        'aula' => $aulaDetalhes
+                                    ];
+                                }
+                            }
+                        }
+                        ?>
+
+                        <?php if (!empty($minhasAulas)): ?>
+                            <div class="mt-5">
+                                <h4 class="section-title pb-2 border-bottom">
+                                    <i class="fas fa-calendar-check me-2"></i>
+                                    Minhas Aulas Agendadas (<?= count($minhasAulas) ?>)
+                                </h4>
+
+                                <div class="table-responsive mt-3">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Aula</th>
+                                                <th>Tipo</th>
+                                                <th>Data/Hora</th>
+                                                <th>Duração</th>
+                                                <th>Professor</th>
+                                                <th class="text-center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($minhasAulas as $item): ?>
+                                                <?php 
+                                                $aula = $item['aula'];
+                                                $agendamento = $item['agendamento'];
+                                                $nomeProfessor = $controllerAula->nomeProfessor($aula->getProfessor());
+                                                $dataObj = new DateTime($aula->getData());
+                                                $dataFormatada = $dataObj->format('d/m/Y H:i');
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <strong><?= htmlspecialchars($aula->getNomeAula()) ?></strong>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-primary">
+                                                            <?= htmlspecialchars($aula->getTipo()) ?>
+                                                        </span>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($dataFormatada) ?></td>
+                                                    <td><?= htmlspecialchars($aula->getTempo()) ?></td>
+                                                    <td><?= htmlspecialchars($nomeProfessor) ?></td>
+                                                    <td class="text-center">
+                                                        <form method="POST" class="d-inline" onsubmit="return confirm('Deseja realmente cancelar este agendamento?')">
+                                                            <input type="hidden" name="cancelar_agendamento" value="1">
+                                                            <input type="hidden" name="id_agendamento" value="<?= $agendamento->getId() ?>">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-times"></i> Cancelar
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Histórico -->
-                    <div class="form-section">
-                        <h2 class="section-title">Treinos Realizados</h2>
-
-                        <div class="table-responsive">
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Treino</th>
-                                        <th>Duração</th>
-                                        <th>Calorias</th>
-                                        <th>Ação</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="tabela-treinos">
-                                    <tr>
-                                        <td>20/11/2025</td>
-                                        <td>Peito e Tríceps</td>
-                                        <td>01:12h</td>
-                                        <td>430 kcal</td>
-                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>18/11/2025</td>
-                                        <td>Pernas e Ombros</td>
-                                        <td>01:45h</td>
-                                        <td>520 kcal</td>
-                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>16/11/2025</td>
-                                        <td>Costas e Bíceps</td>
-                                        <td>00:58h</td>
-                                        <td>390 kcal</td>
-                                        <td><button class="btn-techfit btn-primary">Ver</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Estatísticas -->
-                    <div class="form-section">
-                        <h2 class="section-title">Estatísticas Gerais</h2>
-
-                        <div class="form-grid">
-
-                            <div class="form-group">
-                                <label cla ss="form-label">Total de treinos realizados</label>
-                                <input type="text" class="form-control-custom" value="34 treinos" disabled>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Total de horas treinadas</label>
-                                <input type="text" class="form-control-custom" value="41h e 22min" disabled>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Média semanal</label>
-                                <input type="text" class="form-control-custom" value="4 treinos/semana" disabled>
-                            </div>
-
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-
+    
             <!-- ===================== SEÇÃO FICHA ===================== -->
             <div id="ficha" class="hidden">
 

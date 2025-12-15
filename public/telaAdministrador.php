@@ -40,6 +40,67 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     exit;
 }
 
+$mensagemAgendamento = '';
+$tipoMensagemAgendamento = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agendar_aula'])) {
+    $idAula = trim($_POST['id_aula'] ?? '');
+    $senhaConfirmacao = trim($_POST['senha_agendamento'] ?? '');
+
+    if (!empty($idAula) && !empty($senhaConfirmacao)) {
+        try {
+            // Verificar senha
+            if (password_verify($senhaConfirmacao, $aluno['SENHA'])) {
+                // Verificar se já não está agendado
+                $jaAgendado = false;
+                foreach ($aulasAgendadas as $agendamento) {
+                    if ($agendamento->getAlunoId() == $id && $agendamento->getAulaId() == $idAula) {
+                        $jaAgendado = true;
+                        break;
+                    }
+                }
+
+                if ($jaAgendado) {
+                    $mensagemAgendamento = 'Você já está inscrito nesta aula!';
+                    $tipoMensagemAgendamento = 'warning';
+                } else {
+                    $controllerAgendamento->criar($id, $idAula);
+                    $mensagemAgendamento = 'Aula agendada com sucesso!';
+                    $tipoMensagemAgendamento = 'success';
+                    
+                    // Recarregar lista de agendamentos
+                    $aulasAgendadas = $controllerAgendamento->ler();
+                }
+            } else {
+                $mensagemAgendamento = 'Senha incorreta!';
+                $tipoMensagemAgendamento = 'danger';
+            }
+        } catch (Exception $e) {
+            $mensagemAgendamento = 'Erro ao agendar aula: ' . $e->getMessage();
+            $tipoMensagemAgendamento = 'danger';
+        }
+    }
+}
+
+// Processar cancelamento de agendamento
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['cancelar_agendamento'])) {
+    $idAgendamento = trim($_POST['id_agendamento'] ?? '');
+    
+    if (!empty($idAgendamento)) {
+        try {
+            $controllerAgendamento->excluir($idAgendamento);
+            $mensagemAgendamento = 'Agendamento cancelado com sucesso!';
+            $tipoMensagemAgendamento = 'success';
+            
+            // Recarregar lista
+            $aulasAgendadas = $controllerAgendamento->ler();
+        } catch (Exception $e) {
+            $mensagemAgendamento = 'Erro ao cancelar: ' . $e->getMessage();
+            $tipoMensagemAgendamento = 'danger';
+        }
+    }
+}
+
 
 
 ?>
@@ -678,7 +739,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             <i class="fas fa-chalkboard-teacher"></i>
                         </div>
                         <div class="stat-label">Professores</div>
-                        <div class="stat-value">8</div>
+                        <div class="stat-value"><?= $professorController->contar() ?></div>
                     </div>
 
 
@@ -687,7 +748,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                             <i class="nav-icon fas fa-dumbbell"></i>
                         </div>
                         <div class="stat-label">Aulas Ativas</div>
-                        <div class="stat-value">3</div>
+                        <div class="stat-value"><?= $aulaController->contar() ?></div>
                     </div>
                 </div>
 

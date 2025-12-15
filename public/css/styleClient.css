@@ -431,5 +431,60 @@ a:hover {
     background: #68A842;
 }
 
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    border-bottom: none;
+    padding: 1rem 1.25rem;
+}
+
+.list-unstyled li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.list-unstyled li:last-child {
+    border-bottom: none;
+}
+
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Animação para cards de aulas agendadas */
+.border-success {
+    border-width: 2px !important;
+    animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        border-color: #28a745;
+    }
+    50% {
+        border-color: #20c997;
+    }
+}
+
+/* Tabela responsiva */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
 
 
