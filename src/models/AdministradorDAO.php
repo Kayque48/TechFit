@@ -77,4 +77,10 @@ class AdministradorDAO
         $stmt = $this->conn->prepare("DELETE FROM ADMINISTRACAO WHERE ID_ADMINISTRADOR = :id");
         $stmt->execute([':id' => $id]);
     }
+
+    public function contarAdministradores() {
+        $stmt = $this->conn->query("SELECT COUNT(*) as total FROM ADMINISTRACAO");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int) $row['total'];
+    }
 }

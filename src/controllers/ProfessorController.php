@@ -35,5 +35,17 @@ class ProfessorController {
     public function getDAO() {
         return $this->dao;
     }
+
+   public function contar() {
+        return $this->dao->contarProfessores();
+    }
+
+    public function especialidadeComMaisProfessores() {
+        return $this->dao->especialidadeComMaisProfessores();
+    }
+
+    public function especialidadeComMenosProfessores() {
+        return $this->dao->especialidadeComMenosProfessores();
+    }
 }
 ?>

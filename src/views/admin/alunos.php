@@ -49,7 +49,7 @@
                             </a>
 
                             <a href="listaAlunos.php" class="btn btn-success">
-                                <i class="fas fa-list me-2"></i> Ver Todas as Fichas
+                                <i class="fas fa-list me-2"></i> Ver Todos os Alunos
                             </a>
                         </div>
 

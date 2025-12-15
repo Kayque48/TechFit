@@ -15,8 +15,8 @@ class AulaController {
         return $this->dao->lerAulas();
     }
 
-    public function criar($nomeAula, $avaliacao) {
-        $aula = new Aula($nomeAula, $avaliacao);
+    public function criar($nomeAula, $tipo, $tempo, $data, $professor) {
+        $aula = new Aula($nomeAula, $tipo, $tempo, $data, $professor);
         $this->dao->criarAula($aula);
     }
 
@@ -24,8 +24,8 @@ class AulaController {
         $this->dao->excluirAula($id);
     }
 
-    public function atualizar($id, $nomeAula, $avaliacao) {
-        $this->dao->atualizarAula($id, $nomeAula, $avaliacao);
+    public function atualizar($id, $nomeAula, $tipo, $tempo, $data, $professor) {
+        $this->dao->atualizarAula($id, $nomeAula, $tipo, $tempo, $data, $professor);
     }
 
     public function buscarPorId($id) {

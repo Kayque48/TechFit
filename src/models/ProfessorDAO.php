@@ -74,4 +74,41 @@ class ProfessorDAO {
         $stmt = $this->conn->prepare("DELETE FROM PROFESSORES WHERE ID_PROFESSOR = :id");
         $stmt->execute([':id' => $id]);
     }
+
+    public function contarProfessores() {
+        $stmt = $this->conn->query("SELECT COUNT(*) as total FROM PROFESSORES");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int) $row['total'] : 0;
+    }
+
+    public function especialidadeComMaisProfessores() {
+        $stmt = $this->conn->query("
+            SELECT ESPECIALIDADE, COUNT(*) as total
+            FROM PROFESSORES
+            GROUP BY ESPECIALIDADE
+            ORDER BY total DESC
+            LIMIT 1;
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return $row['ESPECIALIDADE'];
+        }
+        return null;
+    }
+
+    public function especialidadeComMenosProfessores() {
+        $stmt = $this->conn->query("
+            SELECT ESPECIALIDADE, COUNT(*) as total
+            FROM PROFESSORES
+            GROUP BY ESPECIALIDADE
+            ORDER BY total ASC
+            LIMIT 1;
+        ");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return $row['ESPECIALIDADE'];
+        }
+        return null;
+    }
 }
+?>

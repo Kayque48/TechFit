@@ -13,12 +13,15 @@ class AulaDAO {
     // CREATE
     public function criarAula(Aula $aula) {
         $stmt = $this->conn->prepare("
-            INSERT INTO AULAS (NOME_AULA, AVALIACAO)
-            VALUES (:nome, :avaliacao)
+            INSERT INTO AULAS (NOME_AULA, TIPO_AULA, TEMPO_AULA, DATA_AULA, FK_PROFESSOR)
+            VALUES (:nome, :tipo, :tempo, :data, :professor)
         ");
         $stmt->execute([
             ':nome' => $aula->getNomeAula(),
-            ':avaliacao' => $aula->getAvaliacao()
+            ':tipo' => $aula->getTipo(),
+            ':tempo' => $aula->getTempo(),
+            ':data' => $aula->getData(),
+            ':professor' => $aula->getProfessor()
         ]);
     }
 
@@ -29,8 +32,10 @@ class AulaDAO {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $result[] = new Aula(
                 $row['NOME_AULA'],
-                $row['AVALIACAO'],
-                $row['ID_AULA']
+                $row['TIPO_AULA'],
+                $row['TEMPO_AULA'],
+                $row['DATA_AULA'],
+                $row['FK_PROFESSOR']
             );
         }
         return $result;
@@ -44,7 +49,10 @@ class AulaDAO {
         if ($row) {
             return new Aula(
                 $row['NOME_AULA'],
-                $row['AVALIACAO'],
+                $row['TIPO_AULA'],
+                $row['TEMPO_AULA'],
+                $row['DATA_AULA'],
+                $row['FK_PROFESSOR'],
                 $row['ID_AULA']
             );
         }
@@ -52,15 +60,18 @@ class AulaDAO {
     }
 
     // UPDATE
-    public function atualizarAula($id, $nomeAula, $avaliacao) {
+    public function atualizarAula($id, $nome, $tipo, $tempo, $data, $professor) {
         $stmt = $this->conn->prepare("
             UPDATE AULAS
-            SET NOME_AULA = :nome, AVALIACAO = :avaliacao
+            SET NOME_AULA = :nome, TIPO_AULA = :tipo, TEMPO_AULA = :tempo, DATA_AULA = :data, FK_PROFESSOR = :professor
             WHERE ID_AULA = :id
         ");
         $stmt->execute([
-            ':nome' => $nomeAula,
-            ':avaliacao' => $avaliacao,
+            ':nome' => $nome,
+            ':tipo' => $tipo,
+            ':tempo' => $tempo,
+            ':data' => $data,
+            ':professor' => $professor,
             ':id' => $id
         ]);
     }

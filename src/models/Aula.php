@@ -3,12 +3,18 @@
     class Aula {
         private $id;
         private $nomeAula;
-        private $avaliacao;
+        private $tipo;
+        private $tempo;
+        private $data;
+        private $professor;
 
-        public function __construct ($nomeAula, $avaliacao, $id = null) {
-            $this->id = $id;
-            $this->nomeAula = $nomeAula;
-            $this->avaliacao = $avaliacao;
+        public function __construct ($nomeAula, $tipo, $tempo, $data, $professor, $id = null) {
+            $this->setId($id);
+            $this->setNomeAula($nomeAula);
+            $this->setTipo($tipo);
+            $this->setTempo($tempo);
+            $this->setData($data);
+            $this->setProfessor($professor);
         }
 
         public function getId () {
@@ -27,11 +33,36 @@
             $this->nomeAula = $nomeAula;
         }
 
-        public function getAvaliacao () {
-            return $this->avaliacao;
+        public function getTipo () {
+            return $this->tipo;
         }
 
-        public function setAvaliacao ($avaliacao) {
-            $this->avaliacao = $avaliacao;
+        public function setTipo ($tipo) {
+            $this->tipo = $tipo;
         }
+
+        public function getTempo () {
+            return $this->tempo;
+        }
+
+        public function setTempo ($tempo) {
+            $this->tempo = $tempo;
+        }
+
+        public function getData () {
+            return $this->data;
+        }
+
+        public function setData ($data) {
+            $this->data = $data;
+        }
+
+        public function getProfessor () {
+            return $this->professor;
+        }
+
+        public function setProfessor ($professor) {
+            $this->professor = $professor;
+        }
+
     }

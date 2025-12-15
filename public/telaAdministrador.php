@@ -13,12 +13,18 @@ if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
 
 require_once __DIR__ . '/../src/controllers/AlunoController.php';
 require_once __DIR__ . '/../src/controllers/PlanoController.php';
+require_once __DIR__ . '/../src/controllers/AdministradorController.php';
+require_once __DIR__ . '/../src/controllers/ProfessorController.php';
 
 $alunoController = new AlunoController();
 $planoController = new PlanoController();
+$professorController = new ProfessorController();
+$adminController = new AdministradorController();
 
 $alunos = $alunoController->ler();
 $planos = $planoController->ler();
+$professores = $professorController->ler();
+$administradores = $adminController->ler();
 
 
 // Dados do admin para o header
@@ -675,10 +681,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
                     <div class="stat-card danger">
                         <div class="stat-icon">
-                            <i class="fas fa-dollar-sign"></i>
+                            <i class="nav-icon fas fa-dumbbell"></i>
                         </div>
-                        <div class="stat-label">Receita Mensal</div>
-                        <div class="stat-value">R$ 28k</div>
+                        <div class="stat-label">Aulas Ativas</div>
+                        <div class="stat-value">3</div>
                     </div>
                 </div>
 
@@ -720,11 +726,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </a>
 
 
-                        <a href="#" onclick="showPage('relatorios'); return false;" class="action-card danger">
+                        <a href="cadastroAula.php" class="action-card danger">
                             <div class="action-icon">
-                                <i class="fas fa-chart-bar"></i>
+                                <i class="nav-icon fas fa-dumbbell"></i>
                             </div>
-                            <h6 class="action-title">Relatórios</h6>
+                            <h6 class="action-title">Nova Aula</h6>
                         </a>
                     </div>
                 </div>
@@ -797,15 +803,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
             <!-- Página de Colaboradores (escondida) -->
             <div id="colaboradores" class="page-content page-hidden">
-                <div class="content-card">
-                    <div class="content-card-header">
-                        <h3 class="content-card-title">
-                            <i class="fas fa-user-tie"></i>
-                            Gerenciar Colaboradores
-                        </h3>
-                    </div>
-                    <p class="text-muted">Funcionalidade de gerenciamento de colaboradores em desenvolvimento...</p>
-                </div>
+                <?php require_once __DIR__ . '/../src/views/admin/colaboradores.php'; ?>
             </div>
 
             <!-- Página de Treinos (escondida) -->
