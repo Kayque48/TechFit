@@ -269,4 +269,12 @@ class AlunoDAO
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row ? $row['TIPO_PLANO'] : null;
     }
+
+    public function nomePlano($planoId)
+    {
+        $stmt = $this->conn->prepare("SELECT TIPO_PLANO FROM PLANOS WHERE ID_PLANO = :planoId LIMIT 1");
+        $stmt->execute([':planoId' => $planoId]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? $row['TIPO_PLANO'] : null;
+    }
 }

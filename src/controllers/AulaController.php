@@ -35,5 +35,25 @@ class AulaController {
     public function getDAO() {
         return $this->dao;
     }
+
+    public function contar() {
+        return $this->dao->contarAulas();
+    }
+
+    public function contarAulasPorTipo($tipo) {
+        return $this->dao->contarAulasPorTipo($tipo);
+    }
+
+    public function tipoComMaisAulas() {
+        return $this->dao->tipoComMaisAulas();
+    }
+
+    public function tipoComMenosAulas() {
+        return $this->dao->tipoComMenosAulas();
+    }
+
+    public function nomeProfessor($professorId) {
+        return $this->dao->nomeProfessor($professorId);
+    }
 }
 ?>

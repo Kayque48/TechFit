@@ -59,6 +59,11 @@
             return $this->dao->planoComMenosAlunos();
         }
 
+        public function nomePlano($planoId)
+        {
+            return $this->dao->nomePlano($planoId);
+        }
+
 }
 
 ?>

@@ -369,11 +369,11 @@ $aulas = $controllerAula->ler();
                             <tbody>
                                 <?php foreach ($aulas as $aula): ?>
                                     <tr>
-                                        <td><strong>#<?= htmlspecialchars($aula->getId()) ?></strong></td>
+                                        <td><strong>#<?= htmlspecialchars($aula->getId() ?? '') ?></strong></td>
                                         <td><strong><?= htmlspecialchars($aula->getNomeAula()) ?></strong></td>
                                         <td style="max-width: 250px;"><?= htmlspecialchars($aula->getTipo()) ?></td>
                                         <td><?= htmlspecialchars($aula->getTempo()) ?></td>
-                                        <td><?= htmlspecialchars($aula->getData()) ?></td>
+                                        <td><?= htmlspecialchars($aula->getData() ?? '') ?></td>
                                         <td><?= htmlspecialchars($aula->getProfessor()) ?></td>
                                         <td>
                                             <a href="?editar=<?= $aula->getId() ?>" class="btn btn-sm btn-warning" title="Editar">

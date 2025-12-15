@@ -15,16 +15,19 @@ require_once __DIR__ . '/../src/controllers/AlunoController.php';
 require_once __DIR__ . '/../src/controllers/PlanoController.php';
 require_once __DIR__ . '/../src/controllers/AdministradorController.php';
 require_once __DIR__ . '/../src/controllers/ProfessorController.php';
+require_once __DIR__ . '/../src/controllers/AulaController.php';
 
 $alunoController = new AlunoController();
 $planoController = new PlanoController();
 $professorController = new ProfessorController();
 $adminController = new AdministradorController();
+$aulaController = new AulaController();
 
 $alunos = $alunoController->ler();
 $planos = $planoController->ler();
 $professores = $professorController->ler();
 $administradores = $adminController->ler();
+$aulas = $aulaController->ler();
 
 
 // Dados do admin para o header
@@ -808,15 +811,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 
             <!-- Página de Treinos (escondida) -->
             <div id="treinos" class="page-content page-hidden">
-                <div class="content-card">
-                    <div class="content-card-header">
-                        <h3 class="content-card-title">
-                            <i class="fas fa-dumbbell"></i>
-                            Gerenciar Treinos
-                        </h3>
-                    </div>
-                    <p class="text-muted">Funcionalidade de gerenciamento de treinos em desenvolvimento...</p>
-                </div>
+                <?php require_once __DIR__ . '/../src/views/admin/aulas.php'; ?>
             </div>
 
             <!-- Página de Produtos (escondida) -->
